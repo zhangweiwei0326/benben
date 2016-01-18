@@ -51,7 +51,7 @@
             <div class="valid am-g am-g-collapse">
                 <div class="am-u-sm-3">有效期：</div>
                 <div class="valid-time am-u-sm-9">
-                    <span><?php echo date("Y年m月d日",$result['valid_left'])?></span>-<span><?php echo date("Y年m月d日",$result['valid_right'])?></span>
+                    <span><?php echo date("Y年m月d日",$result['valid_left']);?></span>-<span><?php echo date("Y年m月d日",$result['valid_right']);?></span>
                 </div>
             </div>
         </div>
