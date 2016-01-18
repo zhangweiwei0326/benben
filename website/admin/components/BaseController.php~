@@ -1,0 +1,124 @@
+<?php
+class BaseController extends Controller {
+	
+	public $menuIndex;
+	public $isRoles = array("member" => "domember", "bxapply" => "dobaixing", 
+												"enterprise" => "doenterprise", 'groups' => "dogroup",
+												"numberTrain" => "dostore", "creation" => "docreation",
+												"buy" => "dorelease", "friend" => "dofriend", "happy" => "dohappy",
+												"user" => "dosystem", "role" => "dosystem","friendDisable" => "dofriend","friendComment"=> "dofriend",
+												"memberDisable" =>"domember", "bxapplyRecord" => "dobaixing",
+												"groupDisable" => "dogroup", "groupMember"=>"dogroup",
+												"numberDisable" => "dostore","protocol" => "dowebsite",
+												'splash' => 'dowebsite',"quote"=>"dorelease",
+												"industry" => "dowebsite","version" => "dowebsite",'complain'=>'dowebsite',
+													"enterpriseDisable" =>'doenterprise', 'enterpriseMember' => 'doenterprise',
+												"buyDisable" => "dorelease", "creationDisable"  => "docreation", "creationComment" => "docreation", "notice" => "donews");
+	
+
+	protected function beforeAction($action) {	
+		if(Yii::app()->controller->id != "site"){
+			if(!$this->getLoginId()){
+				$this->redirect(Yii::app()->createUrl("site/index"));
+			
+				return;
+			}
+		}
+		$array = array('index', 'site', 'password');
+		if(!in_array(Yii::app()->controller->id, $array)){
+			$this->isRoles[Yii::app()->controller->id];
+			$role = $this->getRole($this->isRoles[Yii::app()->controller->id]);	
+			if($role != 1){
+				echo 'system error!';
+				return false;
+			}		
+		}
+		
+		if (Yii::app ()->user->isGuest && !in_array($action->id, array('login','test'))) {
+			// 游客
+// 			$this->redirect ( array ('/' ) );
+			return true;
+		} else {
+			// 更新用户信息
+			if (isset($userid )){
+			
+			$userid = Yii::app ()->user->getState ( "userInfo" )->id;
+			$userData = User::model ()->findByPk ( $userid );
+			}
+			if (! empty ( $userData )) {
+				Yii::app ()->user->setState ( "userInfo", $userData );
+				
+			}
+			return true;
+		}
+	}
+	
+	public function getLoginId(){
+		return Yii::app ()->user->getState('userInfo')->id;
+	}
+	
+	public function getProvince(){
+		$area = new Area();
+		$sql = "SELECT bid ,area_name FROM area WHERE level = 1 AND last = 0 AND parent_bid = 0 ORDER BY bid ASC";
+		$province = $area->findAllBySql($sql);
+		return $province;
+	}
+	
+	public function getCity($parent_bid = 0){
+		$area = new Area();
+		$sqlc = "SELECT bid , parent_bid , area_name FROM area WHERE level = 2";
+		if ($parent_bid > 0) {
+			$sqlc .= " and parent_bid = ".$parent_bid;
+		}
+		$city = $area->findAllBySql($sqlc);
+		$res = array();
+		foreach ($city as $c){
+			$temp  = array("bid" => $c->bid, "parent_bid" => $c->parent_bid, "area_name" => $c->area_name);
+			$res[] = $temp;
+		}
+		return $res;
+	}
+	
+	public function getArea($parent_bid = 0){
+		$area = new Area();
+		$sqlc = "SELECT bid , parent_bid , area_name FROM area WHERE level = 3";
+		if ($parent_bid > 0) {
+			$sqlc .= " and parent_bid = ".$parent_bid;
+		}
+		$ares = $area->findAllBySql($sqlc);
+		$res = array();
+		foreach ($ares as $c){
+			$temp  = array("bid" => $c->bid, "parent_bid" => $c->parent_bid, "area_name" => $c->area_name);
+			$res[] = $temp;
+		}
+		return $res;
+	}
+	
+	public function getRole($what){
+		$model = new User();
+		$user_id = $this->getLoginId();
+		$sql = "SELECT role  FROM user where id = ".$user_id;
+		$role = $model->findBySql($sql);
+		
+		$crole = New Role();
+		$sql = "SELECT ".$what." FROM role WHERE id = ".$role->role;
+		$do = $crole->findBySql($sql);
+		return $do->$what;
+	}
+	
+
+
+	public function areas($bid){
+		$model = new Area();
+		$sql = "SELECT area_name FROM area WHERE bid = ".$bid;
+		$area = $model->findBySql($sql);
+		return $area->area_name;
+
+
+	}
+//$sns_info=array("1001@500814840005","C6897CF7506A8641FEB01E030910B2AF","1815");
+	
+	
+}
+
+?>

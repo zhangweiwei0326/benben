@@ -1,0 +1,93 @@
+<?php
+class HappyController extends  PublicController{
+	public $layout = false;
+	
+	/**
+	 * 开心一刻
+	 */
+	public  function actionHappyList(){
+		$user = $this->check_user();
+		$loginId = $user->id;
+
+		$this->check_key();
+
+		$last_time = Frame::getStringFromRequest("last_time");
+		
+		$cri = new CDbCriteria();
+		if($last_time){
+			$cri->addCondition("t.created_time <".$last_time);
+		}
+		$cri->select = "t.*, happy_like.status as hstatus";
+		$cri->join = "left join happy_like on happy_like.happy_id = t.id and happy_like.member_id = $loginId";
+		$cri->order = "t.created_time desc";
+		$cri->limit = "10";
+		
+		$happy = Happy::model()->findAll($cri);
+		$result = array();
+		if($happy){
+			foreach ($happy as $value){
+				$temp = array("id" => $value->id, "description"=>$value->description, 
+											"status" => $value->hstatus ?  $value->hstatus : "0",
+											"created_time" => $value->created_time);
+				$result['happy'][] = $temp;
+			}
+			$result ['ret_num'] = 0;
+			$result ['ret_msg'] = 'OK';
+		}else{
+			$result ['ret_num'] = 3000;
+			$result ['ret_msg'] = '没有数据';
+		}
+		
+		echo json_encode($result);
+	}
+	
+	/**
+	 * 点赞或者吐槽
+	 * Enter description here ...
+	 */
+	public function actionGoodOrBad(){
+		$this->check_key();
+		$userId = $this->check_user()->id;
+
+		$happy_id = Frame::getIntFromRequest("happy_id");
+		$status = Frame::getIntFromRequest("status");
+		
+		$result = array();
+		if(empty($happy_id )|| empty($status)){
+			$result ['ret_num'] = 3002;
+			$result ['ret_msg'] = '非法操作';
+			echo json_encode($result);
+			die;
+		}
+		
+		$model = new HappyLike();
+		
+		$cri = new CDbCriteria();
+		$cri->addCondition("happy_id = ".$happy_id);
+		$cri->addCondition("member_id = ".$userId);
+		
+		if($model->find($cri)){
+			$result ['ret_num'] = 0;
+			$result ['ret_msg'] = 'OK1';
+			echo json_encode($result);
+			die;
+		}
+		
+		$model->happy_id = $happy_id;
+		$model->member_id = $userId;
+		$model->status = $status;
+		$model->created_time = time();
+		
+		if($model->save()){
+			$result ['ret_num'] = 0;
+			$result ['ret_msg'] = 'OK';
+		}else{
+			$result ['ret_num'] = 3001;
+			$result ['ret_msg'] = '操作失败';
+		}
+		echo json_encode($result);
+	}
+	
+	
+	
+}

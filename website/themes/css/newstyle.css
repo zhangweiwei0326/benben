@@ -1,0 +1,27 @@
+@charset "gb2312";
+/*  全局样式 */
+* { margin:0;padding:0;}
+ul, li { list-style: none; }
+a { text-decoration: none; }
+img, input { border: 0px; }
+body {padding:0;margin:0;color:#666;font-size:62.5%;font-family:微软雅黑,tahoma,arial,sans-serif;}
+.fl{ float:left}
+.fr{ float:right}
+.clear{ clear:both; overflow:hidden;}
+/**begin**/
+
+section{ overflow:hidden; padding-bottom:59px;}
+figure{ overflow:hidden; padding-left:15px;}
+figure figcaption{ display:block; float:left; width:32px;  overflow:hidden;}
+figure figcaption img{ width:100%; height:auto;}
+figure figcaption.por img{ margin-top:20px;}
+figure dl{ display:block; float:right; overflow:hidden; padding:10px 0; border-bottom:1px solid #d8d8d8;line-height:52px; width:85.9999%}
+figure dl dt{ display: inline-block; float:left; font-size:14px; color:#797979; }
+figure dl dd{display: inline-block; float:right; padding-right:15px; font-size:14px; color:#000;}
+figure dl dd img{ max-width:51px; height:auto; display:block; border-radius:50%;}
+figure figcaption.por_t img{ margin-top:10px;}
+figure dl.por_dl{ line-height:32px;}
+
+
+footer{ width:100%; position:fixed;  bottom:0px; left:0px; overflow:hidden; border-top:1px solid #0ca0da; padding:10px 0; background:#fafafa url(../images/ad.png) no-repeat 15px bottom; background-size:5.5rem auto;}
+footer img{ max-height:38px; width:auto; display:block; float:right; margin-right:15px;}

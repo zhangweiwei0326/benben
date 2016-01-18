@@ -1,0 +1,105 @@
+body{font-family: "Microsoft YaHei";height: 100%;}
+.container {
+	background: url("../../themes/images/login_banner.jpg") no-repeat top;
+	width: 100%;
+	float: left;
+	display: inline;
+	height: 100%;
+}
+
+.main {
+	width: 1200px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.main_login {
+	width: 422px;
+	height: 459px;
+	background: url("../../themes/images/login_block_bg2.png") no-repeat;
+	margin:120px auto 0 auto;
+}
+
+.main_login_logo {
+	width: 245px;
+	height: 55px;
+	margin: 0 auto 10px auto;
+	padding-top: 35px;
+	cursor: pointer;
+	font-size: 30px;
+	color: #66728d;
+	text-align: center;
+}
+
+.main_login_name {
+	width: 316px;
+	height: 50px;
+	margin: 20px auto 0 auto;
+	background:#f1f2f4;
+	border: 1px solid #e4e4e4;
+}
+
+input {
+	float: left;
+	display: inline;
+	background-color: transparent;
+	width: 260px;
+	height: 50px;
+	line-height: 50px;
+	font-family: "Microsoft YaHei";
+	font-size: 16px;
+	color: #b2b2b2;
+	overflow: hidden;
+}
+
+.main_login_pwd {
+	width: 316px;
+	height: 50px;
+	margin: 20px auto 0 auto;
+	background:#f1f2f4;
+	border: 1px solid #e4e4e4;
+}
+
+.main_login_btn {
+	width: 316px;
+	height: 50px;
+	background:#7686a9;
+	margin: 30px auto 0 auto;
+	cursor: pointer;
+	line-height: 50px;
+	text-align: center;
+	color: #fff;
+}
+
+.main_login_msg {
+	width: 60px;
+	height: 20px;
+	line-height: 20px;
+	font-family: "SimSun";
+	font-size: 12px;
+	color: #cccccc;
+	margin: 10px auto 0 auto;
+	cursor: pointer;
+}
+.username_icon{
+	width: 23px;
+	height: 23px;
+	background: url("../../themes/images/login_username.png") no-repeat;
+	float: left;
+	display: inline;
+	margin: 14px 14px 0 10px;
+}
+.password_icon{
+	width: 16px;
+	height: 21px;
+	background: url("../../themes/images/login_password.png") no-repeat;
+	float: left;
+	display: inline;
+	margin: 15px 15px 0 13px;
+}
+.line_icon{
+	width: 380px;
+	height: 1px;
+	background: #eeeeee;
+	margin: 35px 21px 0 21px;
+}

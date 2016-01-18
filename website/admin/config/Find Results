@@ -1,0 +1,44 @@
+Searching 2645 files for "管理后台"
+
+/Users/michael/Sites/benben/website/admin/components/views/headerView.php:
+    4  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    5  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    6: <title>犇犇管理后台</title>
+    7  <link href="<?php echo Yii::app()->request->baseUrl; ?>/themes/css/bootstrap/bootstrap.css" rel="stylesheet" />
+    8  <link rel="stylesheet" type="text/css"
+
+/Users/michael/Sites/benben/website/admin/config/main.php:
+   19  	'viewPath' => $admin.'/views',
+   20  	'runtimePath' => $admin.'/runtime',
+   21: 	'name'=>'管理后台',
+   22  
+   23  	// preloading 'log' component
+
+/Users/michael/Sites/benben/website/admin/views/index/index.php:
+    8  		</div>
+    9  		<div class="main_right_content_content_wel">
+   10: 		<div class="welcome_msg">欢迎使用管理后台！</div>
+   11  		</div>
+   12  	</div>
+
+/Users/michael/Sites/benben/website/admin/views/layouts/admin.php:
+    4  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    5  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    6: 	<title>管理后台</title>
+    7  	<link href="<?php echo Yii::app()->request->baseUrl; ?>/themes/css/bootstrap/bootstrap.css" rel="stylesheet" />
+    8  	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/css/public.css" />
+
+/Users/michael/Sites/benben/website/admin/views/site/index.php:
+    3  <head>
+    4  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    5: <title>管理后台</title>
+    6  <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/css/public.css" />
+    7  <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/css/login.css" />
+    .
+   13  			<div class="main_login" id="main_contain">
+   14  				<div class="main_login_logo">
+   15: 					犇犇管理后台
+   16  				</div>
+   17  				<div class="main_login_name">
+
+6 matches across 5 files
