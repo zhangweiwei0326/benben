@@ -6,6 +6,8 @@ $username = 'benben_test';
 $password = 'Benben2015';
 $charset = 'utf8';
 define("BXID", 136);
+define('URL', 'http://112.124.101.177:81');
+define('ROOT','/website/benben_test/website');
 //环信
 define("CLIENT_ID","YXA6hYUeUMCoEeSLzs9YqkHScQ");
 define("CLIENT_SECRET","YXA6fC_v-if7CLg62Ti-kt9zqsOzdDo");
