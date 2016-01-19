@@ -1878,7 +1878,7 @@ class EnterpriseController extends PublicController
             die ();
         }
         $einfo=Enterprise::model()->find("id={$enterpriseid} and status=0");
-        if($einfo){
+        if(!$einfo){
             $result['ret_num'] = 1005;
             $result['ret_msg'] = '该政企通讯录不存在或者被禁用！';
             echo json_encode($result);
