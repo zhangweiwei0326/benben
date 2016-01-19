@@ -1076,12 +1076,6 @@ class OrderController extends PublicController
      */
     public function actionAgreeback()
     {
-        header("Content-type: text/html; charset=utf-8");
-        include_once('lib/alipay/Corefunction.php');
-        include_once('lib/alipay/Md5function.php');
-        include_once('lib/alipay/Rsafunction.php');
-        include_once('lib/alipay/Notify.php');
-        include_once('lib/alipay/Submit.php');
         $this->check_key();
         $user = $this->check_user();
         $order_id = Frame::getIntFromRequest("order_id");
@@ -1107,65 +1101,6 @@ class OrderController extends PublicController
             die();
         }
         $backinfo->status=5;//商家同意退款
-        if ($backinfo->update()) {
-            $result ['ret_num'] = 0;
-            $result ['ret_msg'] = '操作成功';
-            echo json_encode($result);
-        } else {
-            $result ['ret_num'] = 3020;
-            $result ['ret_msg'] = '保存失败，请重新尝试！';
-            echo json_encode($result);
-        }
-        //===========================================支付宝退款操作================================================
-        $alipay_config=Yii::app()->params['alipay_config'];
-        $alipay_info=Yii::app()->params['alipay'];
-        /**************************请求参数**************************/
-
-        //服务器异步通知页面路径
-        $notify_url = $alipay_info['back_notify_url'];
-        //需http://格式的完整路径，不允许加?id=123这类自定义参数
-
-        //卖家支付宝帐户
-        $seller_email = $alipay_info['seller_email'];
-        //必填
-
-        //退款当天日期
-        $refund_date = date("Y-m-d H:i:s",$deal_time);
-        //必填，格式：年[4位]-月[2位]-日[2位] 小时[2位 24小时制]:分[2位]:秒[2位]，如：2007-10-01 13:13:13
-
-        //批次号
-        $batch_no =date("YmdHi",$deal_time).$backinfo['back_id'];
-        //必填，格式：当天日期[8位]+序列号[3至24位]，如：201008010000001
-
-        //退款笔数
-        $batch_num =1;
-        //必填，参数detail_data的值中，“#”字符出现的数量加1，最大支持1000笔（即“#”字符出现的数量999个）
-
-        //退款详细数据
-        $loginfo=PayLog::model()->find("order_id={$order_id}");
-        $detail_data = $loginfo['trade_no']."^".$loginfo['order_amount']."^退款";
-        //必填，具体格式请参见接口技术文档，支付流水单号^钱^原因#支付流水单号^钱^原因.....
-        /************************************************************/
-
-        //构造要请求的参数数组，无需改动
-        $parameter = array(
-            "service" => "refund_fastpay_by_platform_pwd",
-            "partner" => trim($alipay_config['partner']),
-            "notify_url"	=> $notify_url,
-            "seller_email"	=> $seller_email,
-            "refund_date"	=> $refund_date,
-            "batch_no"	=> $batch_no,
-            "batch_num"	=> $batch_num,
-            "detail_data"	=> $detail_data,
-            "_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
-        );
-        //建立请求
-        $alipaySubmit = new \AlipaySubmit($alipay_config);
-        $html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
-        echo $html_text;
-
-        $backinfo->deal_time = $deal_time;
-        $backinfo->status = 4;//退款中，即同意退款
         if ($backinfo->update()) {
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
