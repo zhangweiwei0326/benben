@@ -1071,6 +1071,10 @@ class StoreController extends PublicController
                 $this->addIntegral($number_info->member_id, 20);
                 $result['ret_num'] = 0;
                 $result['ret_msg'] = "收藏成功！";
+                $m = new Memcached();
+                $m->addServer('localhost', 11211);
+                $snapshot = $m->get("addrsversion:" . $user['id']);
+                $m->set("addrsversion:" . $user['id'],($snapshot+1));
                 $phone = array(
                     "id" => "",
                     "contact_info_id" => $number_info->id + 1000000,
@@ -1140,6 +1144,10 @@ class StoreController extends PublicController
             $re->delete();
             $result['ret_num'] = 0;
             $result['ret_msg'] = "操作成功";
+            $m = new Memcached();
+            $m->addServer('localhost', 11211);
+            $snapshot = $m->get("addrsversion:" . $user['id']);
+            $m->set("addrsversion:" . $user['id'],($snapshot+1));
         } else {
             $result['ret_num'] = 5232;
             $result['ret_msg'] = "没有收藏该号码直通车";

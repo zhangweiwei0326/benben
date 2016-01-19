@@ -448,7 +448,7 @@ class OrderController extends PublicController
         }
         $back = new BackOrder();
         $back->order_id = $order_id;
-        $back->status = 1;//1.退款申请中，2.已退款，3.拒绝退款，4.退款中
+        $back->status = 1;//1.退款申请中，2.已退款，3.拒绝退款，4.退款中,5.商家同意退款
         $back->apply_id = $user['id'];
         $back->train_id = $train_id;
         $back->apply_time = time();
@@ -1106,7 +1106,16 @@ class OrderController extends PublicController
             echo json_encode($result);
             die();
         }
-        $deal_time=time();//处理时间
+        $backinfo->status=5;//商家同意退款
+        if ($backinfo->update()) {
+            $result ['ret_num'] = 0;
+            $result ['ret_msg'] = '操作成功';
+            echo json_encode($result);
+        } else {
+            $result ['ret_num'] = 3020;
+            $result ['ret_msg'] = '保存失败，请重新尝试！';
+            echo json_encode($result);
+        }
         //===========================================支付宝退款操作================================================
         $alipay_config=Yii::app()->params['alipay_config'];
         $alipay_info=Yii::app()->params['alipay'];
