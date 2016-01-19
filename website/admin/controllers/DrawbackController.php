@@ -42,8 +42,8 @@ class DrawbackController extends BaseController
         }
         if($created_time1 && $created_time2){
             $cri->addBetweenCondition('apply_time',$created_time1,$created_time2);
-            $result['created_time1'] = date('Y-m-d h:i:s',$created_time1);
-            $result['created_time2'] = date('Y-m-d h:i:s',$created_time2);
+            $result['created_time1'] = date('Y-m-d H:i:s',$created_time1);
+            $result['created_time2'] = date('Y-m-d H:i:s',$created_time2);
         }
 
         //数据查询
@@ -62,24 +62,21 @@ class DrawbackController extends BaseController
 
 
     public function actionRefuseDrawBack(){
-        // $auction_id = Frame::getIntFromRequest('auction_id');
-        
-        // $edit_url = Yii::app()->createUrl('auction/edit',array('auction_id'=>$auction_id));
-        
-        // //访问数据库操作
-        // $ret = Auction::model()->updateAll (array (
-        //                                 'end_time' =>strtotime(time())-1,
-        //                                 'is_close' => 1
-        //                         ), "auction_id=" . $auction_id);
-        // if($ret){
-        //     $result['status']=1;
-        //     $result['url']= $edit_url;
-        //     echo json_encode($result);
-        // }else {
-        //     $result['status']=0;
-        //     $result['url']= $edit_url;
-        //     echo json_encode($result);;
+        $back_id = Frame::getIntFromRequest('back_id');
+        $deal_time = Frame::getIntFromRequest('deal_time');
+        //访问数据库操作
+        $ret = DrawBack::model()->updateAll (array (
+            'status' =>3,
+            'deal_time' =>$deal_time,
+        ), "back_id=" . $back_id);
+        if($ret){
+            $result['status']=1;
+            $result['deal_time']=$deal_time;
+            echo json_encode($result);
+        }else {
+            $result['status']=0;
+            echo json_encode($result);;
 
-        // }
+        }
     }
 }
