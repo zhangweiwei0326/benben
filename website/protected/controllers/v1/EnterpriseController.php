@@ -1871,14 +1871,14 @@ class EnterpriseController extends PublicController
         $user = $this->check_user();
         $enterpriseid = Frame::getIntFromRequest('enterprise_id');
         $remark_name = Frame::getStringFromRequest('remark_name');
-        if($enterpriseid){
+        if(empty($enterpriseid)){
             $result['ret_num'] = 2016;
             $result['ret_msg'] = '缺少参数！';
             echo json_encode($result);
             die ();
         }
         $einfo=Enterprise::model()->find("id={$enterpriseid} and status=0");
-        if($einfo){
+        if(!$einfo){
             $result['ret_num'] = 1005;
             $result['ret_msg'] = '该政企通讯录不存在或者被禁用！';
             echo json_encode($result);
