@@ -186,7 +186,7 @@ class PromotionController extends PublicController
             $result['promotion_price'] = $promotion['promotion_price'];
             $result['valid_left'] = $promotion['valid_left'];
             $result['valid_right'] = $promotion['valid_right'];
-            $result['description'] = $promotion['description'];
+            $result['description'] = nl2br($promotion['description']);
             $result['is_close'] = $promotion['is_close'];
             $result['huanxin_username'] = $ownerInfo ? $ownerInfo['huanxin_username'] : "";//商家消息
             $result['tel'] = $traininfo ? ( $traininfo['phone'] ? ($traininfo['telephone'] ? $traininfo['phone']."#".$traininfo['telephone']:$traininfo['phone']): ($traininfo['telephone'] ?$traininfo['telephone']:"")):"";//商店电话
@@ -361,18 +361,24 @@ class PromotionController extends PublicController
             //有type才可以删除
             if($type) {
                 if (in_array(1, $type)) {
-                    unlink(ROOT.$pinfo->poster_st);
-                    unlink(ROOT.$this->getThumb($pinfo->poster_st));
+                    if(file_exists(ROOT.$pinfo->poster_st)&&$pinfo->poster_st) {
+                        unlink(ROOT . $pinfo->poster_st);
+                        unlink(ROOT . $this->getThumb($pinfo->poster_st));
+                    }
                     $pinfo->poster_st = "";
                 }
                 if (in_array(2, $type)) {
-                    unlink(ROOT.$pinfo->poster_nd);
-                    unlink(ROOT.$this->getThumb($pinfo->poster_nd));
+                    if(file_exists(ROOT.$pinfo->poster_nd)&&$pinfo->poster_nd) {
+                        unlink(ROOT . $pinfo->poster_nd);
+                        unlink(ROOT . $this->getThumb($pinfo->poster_nd));
+                    }
                     $pinfo->poster_nd = "";
                 }
                 if (in_array(3, $type)) {
-                    unlink(ROOT.$pinfo->poster_rd);
-                    unlink(ROOT.$this->getThumb($pinfo->poster_rd));
+                    if(file_exists(ROOT.$pinfo->poster_rd)&&$pinfo->poster_rd) {
+                        unlink(ROOT . $pinfo->poster_rd);
+                        unlink(ROOT . $this->getThumb($pinfo->poster_rd));
+                    }
                     $pinfo->poster_rd = "";
                 }
             }
@@ -422,13 +428,13 @@ class PromotionController extends PublicController
         $pinfo=Promotion::model()->find("id={$promotionid}");
         if($pinfo){
             //排空数据库图库，首张封面图不清空
-            if(file_exists(ROOT.$pinfo['poster_nd'])){
+            if(file_exists(ROOT.$pinfo['poster_nd'])&&$pinfo['poster_nd']){
                 unlink(ROOT.$pinfo['poster_nd']);
                 if(file_exists(ROOT.$this->getThumb($pinfo['poster_nd']))) {
                     unlink(ROOT . $this->getThumb($pinfo['poster_nd']));
                 }
             }
-            if(file_exists(ROOT.$pinfo['poster_rd'])){
+            if(file_exists(ROOT.$pinfo['poster_rd'])&&$pinfo['poster_rd']){
                 unlink(ROOT.$pinfo['poster_rd']);
                 if(file_exists(ROOT.$this->getThumb($pinfo['poster_rd']))) {
                     unlink(ROOT . $this->getThumb($pinfo['poster_rd']));

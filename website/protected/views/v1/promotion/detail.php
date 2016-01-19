@@ -48,7 +48,7 @@
                 <div class="origion-price am-u-sm-6"><span><?php echo $result['promotion_price']?></span>元</div>
                 <div class="promotion-price am-u-sm-6">原价<span><?php echo $result['origion_price']?></span>元</div>
             </div>
-            <div class="valid am-g am-g-collapse">
+            <div class="valid am-g am-g-collapse" style="font-size: 1.4rem;">
                 <div class="am-u-sm-3">有效期：</div>
                 <div class="valid-time am-u-sm-9">
                     <span><?php echo date("Y年m月d日",$result['valid_left']);?></span>-<span><?php echo date("Y年m月d日",$result['valid_right']);?></span>
