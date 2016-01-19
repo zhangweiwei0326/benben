@@ -12,7 +12,6 @@ function getMenu() {
 			1 => array (
 					'name' => '用户管理',
 					'uri' => '/member' ,
-					
 			),
 			2 => array (
 					'name' => '百姓网管理',
@@ -41,7 +40,11 @@ function getMenu() {
 			8 => array (
 					'name' => '系统管理',
 					'uri' => '/user/' 
-			) 
+			),
+			9 => array (
+					'name' => '商家管理',
+					'uri' => '/shop'
+			)
 	);
 	return $menu;
 }
@@ -177,6 +180,24 @@ function getSubMenu() {
 					),
 					
 			) ,
+			9 => array(
+				1 => array(
+					'name'=> '拍卖管理',
+					'uri' => '/auction'
+				),
+				2 => array(
+					'name' =>'退款管理',
+					'uri' =>'/drawback'
+				),
+//				3 => array(
+//					'name' =>'促销管理',
+//					'uri' =>'/promotion'
+//				),
+//				4 => array(
+//					'name' =>'团购管理',
+//					'uri' =>'/groupbuy'
+//				)
+			)
 
 	);
 	return $subMenu;
