@@ -66,9 +66,9 @@ class DrawbackController extends BaseController
         $deal_time = Frame::getIntFromRequest('deal_time');
         //访问数据库操作
         $ret = DrawBack::model()->updateAll (array (
-            'status' =>3,
-            'deal_time' =>$deal_time,
-        ), "back_id=" . $back_id);
+                                        'status' =>3,
+                                        'deal_time' =>$deal_time,
+                                ), "back_id=" . $back_id);
         if($ret){
             $result['status']=1;
             $result['deal_time']=$deal_time;

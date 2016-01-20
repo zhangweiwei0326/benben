@@ -2,8 +2,8 @@
 class BaseController extends Controller {
 	
 	public $menuIndex;
-	public $isRoles = array("member" => "domember", "bxapply" => "dobaixing", 
-												"enterprise" => "doenterprise", 'groups' => "dogroup","auction"=>"doshop","drawback"=>"doshop",
+	public $isRoles = array("member" => "domember", "bxapply" => "dobaixing", "auction"=>"doshop","drawback"=>"doshop","authentication"=>"doshop",
+												"enterprise" => "doenterprise", 'groups' => "dogroup",
 												"numberTrain" => "dostore", "creation" => "docreation",
 												"buy" => "dorelease", "friend" => "dofriend", "happy" => "dohappy", "findstatistic" => "dohappy",
 												"user" => "dosystem", "role" => "dosystem","loginLog" => "dosystem","friendDisable" => "dofriend","friendComment"=> "dofriend",
