@@ -28,8 +28,8 @@ class LeftWidge extends CWidget {
 		$dobaixing = $roles->dobaixing;
 		$doenterprise = $roles->doenterprise;
 		$dogroup = $roles->dogroup;
-		$dostore = $roles->dostore;
 		$doshop = $roles->doshop;
+		$dostore = $roles->dostore;
 		$docreation = $roles->docreation;
 		$dorelease = $roles->dorelease;
 		$dofriend = $roles->dofriend;
@@ -46,9 +46,9 @@ class LeftWidge extends CWidget {
 				"doenterprise"=>$doenterprise,
 				"dogroup"=>$dogroup,
 				"dostore"=>$dostore,
+				"doshop"=>$doshop,
 				"docreation"=>$docreation,
 				"dorelease"=>$dorelease,
-				"doshop"=>$doshop,
 				"dofriend"=>$dofriend,
 				"dohappy"=>$dohappy,
 				"dosystem"=>$dosystem,
@@ -152,18 +152,13 @@ class LeftWidge extends CWidget {
 			$menu['5']['role'] = 1;
 			$subMenu['5']['1']['role'] = 1;
 		}
-
 		//商家管理
 		if($doshop){
 			$menu['9']['role'] = 1;
 			$subMenu['9']['1']['role'] =1;
 			$subMenu['9']['2']['role'] =1;
-//			$subMenu['9']['3']['role'] =1;
-//			$subMenu['9']['4']['role'] =1;
-
+			$subMenu['9']['3']['role'] =1;
 		}
-		
-		
 
 	
 		$this->render ( 'leftView', array (

@@ -11,8 +11,8 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
 
 <div class="main_right_content_content" style="background: #F5F5F5;">
     <form
-        action="<?php echo Yii::app()->createUrl('drawback/index')?>"
-        method="get">
+            action="<?php echo Yii::app()->createUrl('drawback/index')?>"
+            method="get">
         <ul style="margin-top: 0">
             <li style="width:18%">
                 <div class="form-group" style="padding: 0 0 0 5px;">
@@ -34,8 +34,8 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
                     <label for="created_time1" style="float: left; margin-top: 7px;">申请时间:</label>
                     <div class="col-sm-8" style="margin-bottom: 10px;">
                         <span><input type="text" class="form-control"
-                                     name="created_time1" id="created_time1"
-                                     value="<?php echo $result['created_time1']?>" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')"></span>
+                            name="created_time1" id="created_time1"
+                            value="<?php echo $result['created_time1']?>" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')"></span>
                     </div>
                 </div>
             </li>
@@ -44,8 +44,8 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
                     <label for="created_time1" style="float: left; margin-top: 7px;">到:　　　</label>
                     <div class="col-sm-8" style="margin-bottom: 10px;">
                         <input type="text" class="form-control"
-                               name="created_time2" id="created_time2"
-                               value="<?php echo $result['created_time2']?>" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')">
+                            name="created_time2" id="created_time2"
+                            value="<?php echo $result['created_time2']?>" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')">
                     </div>
                 </div>
             </li>
@@ -54,7 +54,7 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
             </li>
             <li style="float: right; text-align: right; width: 60px; padding-right: 10px;">
                 <input
-                    type="submit" class="btn btn-primary" value="查询" id="submit_search">
+                type="submit" class="btn btn-primary" value="查询" id="submit_search">
             </li>
         </ul>
         <input type="button" style ="width:150px;height:30px;float:left;margin-left: 25px;border:1px #000000 solid;background-color: #FFFFFF;" value="批量退款" class="startAllAuction">
@@ -80,60 +80,60 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
         </tr>
         </thead>
         <tbody>
-        <?php
-        $index = 0;
-        foreach ( $items as $item ) {
-            ?>
-            <tr class="main_right_content_content_body">
-                <td><input type="checkbox" class="selectOne" name="<?php echo $item->back_id; ?>" /><?php echo $item->back_id; ?></td>
-                <td><?php echo $item ->order_id; ?></td>
-                <td><?php echo $item ->name; ?></td>
-                <td><?php echo $item ->shop_name; ?></td>
-                <td><?php echo $item ->phone; ?></td>
-                <td><?php echo $item ->account; ?></td>
-                <td><?php echo $item ->apply_reason; ?></td>
-                <td><?php echo $item ->refuse_reason; ?></td>
-                <td class="status"><?php if($item ->status==1){echo "退款申请中";}
-                    if($item ->status==2){echo "已退款";}
-                    if($item ->status==3){echo "商家拒绝退款";}
-                    if($item ->status==4){echo "退款中";}
-                    if($item ->status==5){echo "商家同意退款";} ?>
-                </td>
-                <td><?php echo date('Y-m-d H:i:s',$item ->apply_time); ?></td>
-                <td><?php echo date('Y-m-d H:i:s',$item ->deal_time); ?></td>
-                <td><?php if($item ->status==5){?>
-                        <div class="btn btn-primary" onclick="payBack()">同意</div>
-                        <a class="btn btn-danger refuseBack" style="margin-left: 5px;" name="<?php echo $item ->back_id; ?>">拒绝</a>
-                    <?php }?>
-                </td>
-            </tr>
-        <?php } ?>
+            <?php     
+                $index = 0;
+                foreach ( $items as $item ) {
+                ?>
+                <tr class="main_right_content_content_body">
+                    <td><input type="checkbox" class="selectOne" name="<?php echo $item->back_id; ?>" /></td>
+                    <td><?php echo $item ->order_id; ?></td>
+                    <td><?php echo $item ->name; ?></td>
+                    <td><?php echo $item ->shop_name; ?></td>
+                    <td><?php echo $item ->phone; ?></td>
+                    <td><?php echo $item ->account; ?></td>
+                    <td><?php echo $item ->apply_reason; ?></td>
+                    <td><?php echo $item ->refuse_reason; ?></td>
+                    <td class="status"><?php if($item ->status==1){echo "退款申请中";}
+                              if($item ->status==2){echo "已退款";}
+                              if($item ->status==3){echo "商家拒绝退款";}
+                              if($item ->status==4){echo "退款中";} 
+                              if($item ->status==5){echo "商家同意退款";} ?>
+                    </td>
+                    <td><?php echo date('Y-m-d H:i:s',$item ->apply_time); ?></td>
+                    <td><?php echo date('Y-m-d H:i:s',$item ->deal_time); ?></td>
+                    <td><?php if($item ->status==5){?>
+                                <div class="btn btn-primary" onclick="payBack()">同意</div>
+                                <a class="btn btn-danger refuseBack" style="margin-left: 5px;" name="<?php echo $item ->back_id; ?>">拒绝</a>
+                        <?php }?>
+                    </td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
     <div class="main_footer_page">
-        <?php
-        // $path = substr(dirname(__FILE__), 0, -11)."layouts/searchPages.php";
-        // require_once($path);
-        ?>
-        <?php
-        $page = intval($_GET['page']) ?  intval($_GET['page']) : 1;
-        $url = explode("?", Yii::app()->request->getUrl());
-        $link = Yii::app()->request->hostInfo.$url[0]."?";
-        echo '<ul class="yiiPager" id="yw0">'.$this->textPage($pages->pageCount , $page, $link).'</ul>';
-        ?>
+          <?php 
+                // $path = substr(dirname(__FILE__), 0, -11)."layouts/searchPages.php";
+                // require_once($path);  
+            ?> 
+            <?php       
+            $page = intval($_GET['page']) ?  intval($_GET['page']) : 1;
+            $url = explode("?", Yii::app()->request->getUrl());
+            $link = Yii::app()->request->hostInfo.$url[0]."?";
+            echo '<ul class="yiiPager" id="yw0">'.$this->textPage($pages->pageCount , $page, $link).'</ul>';
+            ?>
     </div>
 </div>
 <script>
     //同意退款
     var payBack=function(){
         var ob=confirm("您确定同意退款？");
-
+        
         if(ob){
             location.href="";
         }
     }
     //拒绝退款
-    $(".refuseBack").on("click",function(){
+     $(".refuseBack").on("click",function(){
         var _this=this;
         var back_id=_this.name;
         var deal_time=new Date().getTime()/1000;
@@ -142,22 +142,21 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
         if(ob){
             alert("发送拒绝请求"+back_id);
             $.post(url,{back_id:back_id,
-                deal_time:deal_time},function(data){
-                if (data.status==1) {
-                    $(_this).parent().parent().find(".status").text("商家拒绝退款");
-                    $(_this).siblings().hide();
-                    $(_this).hide();
-                    alert("操作成功!");
-                }else{
-                    alert("网络错误！");
-                }
+                        deal_time:deal_time},function(data){
+                 if (data.status==1) {
+                     $(_this).parent().parent().find(".status").text("商家拒绝退款");
+                     $(_this).siblings().hide();
+                     $(_this).hide();
+                     alert("操作成功!");
+                 }else{
+                     alert("网络错误！");
+                 }
             },'json');
         }
     });
-    //批量同意
 
     //批量拒绝
-    $(".closeAllDrawback").on("click",function(){
+     $(".closeAllDrawback").on("click",function(){
         var ob=confirm("您确定批量拒绝？");
         var url="<?php echo Yii::app()->createUrl("drawback/refuseDrawBack")?>";//json输出
         var deal_time=new Date().getTime()/1000;
@@ -168,27 +167,27 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
                     var back_id=this.name;
                     $.post(url,{back_id:back_id,
                         deal_time:deal_time},function(data){
-                        if (data.status == 1) {
-                            $(this).parent().parent().find(".status").text("商家拒绝退款");
-                            $(this).siblings().hide();
-                            $(this).hide();
-                            alert("操作成功！");
-                        }else{
-                            alert("网络错误！");
-                        }
+                         if (data.status == 1) {
+                             $(this).parent().parent().find(".status").text("商家拒绝退款");
+                             $(this).siblings().hide();
+                             $(this).hide();
+                             alert("操作成功！");
+                         }else{
+                             alert("网络错误！");
+                         }
                     },'json');
                 }
-            });
-        }
+             });
+        }        
     });
     //点击全选
     $(".SelectAll").click(function(){
-        if(this.value =="全选"){
-            $(".selectOne").prop('checked', true);
+       if(this.value =="全选"){
+            $(".selectOne").prop('checked', true); 
             this.value="取消";
-        }else if(this.value =="取消"){
-            $(".selectOne").prop('checked', false);
+       }else if(this.value =="取消"){
+            $(".selectOne").prop('checked', false); 
             this.value="全选";
-        }
+       }
     });
 </script>
