@@ -38,7 +38,7 @@ class TopAuctionController extends BaseController
         if($industry > 0){
                 $result['industry'] = $industry;
             }
-        $info =  Industry::model ()->findAll ('parent_id = 0');
+        $info =  Industry::model ()->findAll ('level=1');
         $industryInfo = array();
         foreach ($info as $key => $value) {
                 $industryInfo[$value['id']] = $value['name'];
