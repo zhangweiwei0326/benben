@@ -127,7 +127,7 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
     //同意退款
     var payBack=function(){
         var ob=confirm("您确定同意退款？");
-        
+
         if(ob){
             location.href="<?php echo Yii::app()->createUrl("pay/backOrder")?>?";
         }

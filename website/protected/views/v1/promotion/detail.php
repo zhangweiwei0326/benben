@@ -35,7 +35,10 @@
                 <div class="am-gallery-item">
                     <a href=<?php if($result['shownext']){echo("http://s.amazeui.org/media/i/demos/bing-1.jpg");}else{echo("javascript:void(0);");} ?>>
                         <img src="<?php echo $result['smallpic'][$k];?>" alt="<?php echo $result['name'];?>" data-rel="<?php echo $v;?>" />
-                        <h3 class="am-gallery-title am-slider-desc"><?php echo $result['name'];?><?php if($result['shownext']) echo('<b style="float: right">下一组促销</b>');?></h3>
+                        <h3 class="am-gallery-title am-slider-desc">
+                            <div><?php echo $result['name'];?><?php if($result['shownext']) echo('<b style="float: right">下一组促销</b>');?></div>
+                            <?php if($result['model']){echo ("<div>".$result['model']."</div>");}?>
+                        </h3>
                     </a>
                 </div>
             </li>

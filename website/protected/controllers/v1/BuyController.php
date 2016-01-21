@@ -179,6 +179,7 @@ class BuyController extends PublicController
 		$page = max(0, $page);
 		$keyword = Frame::getStringFromRequest('keyword');
 		$province = Frame::getIntFromRequest('province');
+		$industry = Frame::getIntFromRequest('industry');
 		$city = Frame::getIntFromRequest('city');
 		$area = Frame::getIntFromRequest('area');
 		$user = $this->check_user();
@@ -189,7 +190,9 @@ class BuyController extends PublicController
 		$command = $connection->createCommand($sql0);
 		$res0 = $command->execute();
 		
-		$sql = "select b.id MemberId,b.name Name,b.nick_name, b.poster Poster,a.province,a.city,a.area,a.id Id,a.title Title,a.amount Amount,a.description Description,a.deadline Deadline,a.quoted_number QuotedNumber,a.created_time CreatedTime,a.is_close from buy a inner join member b on a.member_id = b.id where a.status = 0 and a.is_close=0 ";
+		$sql = "select b.id MemberId,b.name Name,b.nick_name, b.poster Poster,a.province,a.city,a.area,a.id Id,a.title Title,
+		a.amount Amount,a.description Description,a.deadline Deadline,a.quoted_number QuotedNumber,a.created_time CreatedTime,a.is_close
+		from buy a inner join member b on a.member_id = b.id where a.status = 0 and a.is_close=0 ";
 		//$sql .= " and  Deadline > {$nowtime} ";		
 		if ($keyword) {
 			$sql .= "and a.title like '%{$keyword}%'";
@@ -204,9 +207,9 @@ class BuyController extends PublicController
 		if ($area) {
 			$sql .= "and a.area = {$area} ";
 		}
-		// if ($last_time) {
-		// 	$sql .= "and a.created_time < {$last_time}";
-		// }
+		 if ($industry) {
+		 	$sql .= "and a.industry = {$industry}";
+		 }
 		$start = $page*10;
 		$sql .= " order by a.is_close asc,a.created_time desc limit {$start},10";
 		$command = $connection->createCommand($sql);
@@ -264,6 +267,22 @@ class BuyController extends PublicController
 					$quoteNumber = $quoteInfo[$result0[$key]['Id']];
 				}
 				$result0[$key]['haveQuote'] = $quoteNumber;
+			}
+
+			//查询我的发布图片
+			if($buyid) {
+				$buypic=BuyAttachment::model()->findAll("buy_id in ({$buyid})");
+				if($buypic) {
+					foreach ($buypic as $kb => $vb) {
+						$posterArr[$vb['buy_id']][] = array(
+								"pic_id" => $vb['id'],
+								"poster" => $vb['poster'] ? URL . $vb['poster'] : ""
+						);
+					}
+				}
+				foreach ($result0 as $key =>$value) {
+					$result0[$key]['poster'] = $posterArr[$value['Id']]?$posterArr[$value['Id']]:array();
+				}
 			}
 		}					
 		$result ['ret_num'] = 0;
@@ -346,30 +365,71 @@ class BuyController extends PublicController
 		$amount = Frame::getStringFromRequest('amount');		
 		$deadline = Frame::getIntFromRequest('deadline');
 		$description = Frame::getStringFromRequest('description');
+		$industry = Frame::getIntFromRequest('industry');
+		$pic[] = Frame::saveImage('pic1', 1);
+		$pic[] = Frame::saveImage('pic2', 1);
+		$pic[] = Frame::saveImage('pic3', 1);
+		$pic[] = Frame::saveImage('pic4', 1);
+		$pic[] = Frame::saveImage('pic5', 1);
+		$pic[] = Frame::saveImage('pic6', 1);
 		$user = $this->check_user();
-		$connection = Yii::app()->db;
-		
-		$creation_info = new Buy();		
-		$creation_info->member_id = $user->id;
-		$creation_info->title = $title;
-		$creation_info->province = $province;
-		$creation_info->city = $city;
-		$creation_info->area = $area;
-		$creation_info->street = $street;
-		$creation_info->amount = $amount;
-		$creation_info->deadline = $deadline;
-		$creation_info->description = $description;
-		$creation_info->created_time = time();
 
-		if($creation_info->save()){	
-			$this->addIntegral($user->id, 6);									
-			$result['ret_num'] = 0;
-			$result['ret_msg'] = '操作成功';							
-		}else{
+		$connection = Yii::app()->db;
+		$transaction=$connection->beginTransaction();
+		try {
+			$creation_info = new Buy();
+			$creation_info->member_id = $user->id;
+			$creation_info->title = $title;
+			$creation_info->province = $province;
+			$creation_info->city = $city;
+			$creation_info->area = $area;
+			$creation_info->street = $street;
+			$creation_info->amount = $amount;
+			$creation_info->deadline = $deadline;
+			$creation_info->description = $description;
+			$creation_info->description = $industry;
+			$creation_info->created_time = time();
+			$creation_info->save();
+
+			//储存图片
+			foreach($pic as $v){
+				if($v){
+					$picinfo=new BuyAttachment();
+					$picinfo->poster=$v;
+					$picinfo->buy_id=$creation_info['id'];
+					$picinfo->save();
+				}
+			}
+			$transaction->commit(); //提交事务会真正的执行数据库操作
+		} catch (Exception $e) {
+			$transaction->rollback(); //如果操作失败, 数据回滚
 			$result['ret_num'] = 200;
 			$result['ret_msg'] = '我要买发布失败';
+			echo json_encode( $result );
+			die();
 		}
+
+
+		$this->addIntegral($user->id, 6);
+		$result['ret_num'] = 0;
+		$result['ret_msg'] = '操作成功';
 		echo json_encode( $result );
+	}
+
+	/*
+	 * 我要买删除图片
+	 */
+	public function actionDelpic(){
+		$this->check_key();
+		$user = $this->check_user();
+		$picid = Frame::getIntFromRequest('picid');
+		if(!$picid){
+			$result['ret_num'] = 2016;
+			$result['ret_msg'] = '缺少参数';
+			echo json_encode( $result );
+			die();
+		}
+
 	}
 	
 	/**
@@ -380,6 +440,12 @@ class BuyController extends PublicController
 		$buyid = Frame::getIntFromRequest('buyid');
 		$price = Frame::getStringFromRequest('price');
 		$description = Frame::getStringFromRequest('description');
+		$pic[] = Frame::saveImage('pic1', 1);
+		$pic[] = Frame::saveImage('pic2', 1);
+		$pic[] = Frame::saveImage('pic3', 1);
+		$pic[] = Frame::saveImage('pic4', 1);
+		$pic[] = Frame::saveImage('pic5', 1);
+		$pic[] = Frame::saveImage('pic6', 1);
 		if(empty($buyid)){
 			$result['ret_num'] = 201;
 			$result['ret_msg'] = '我要买ID为空';
@@ -452,39 +518,58 @@ class BuyController extends PublicController
 			echo json_encode( $result );
 			die();
 		}
-		
-		$quote_info = new Quote();
-		$quote_info->item_id = $buyid;
-		$quote_info->store_id = $nt->id;
-		$quote_info->price = $price;
-		$quote_info->description = $description;
-		$quote_info->member_id = $user->id;
-		$quote_info->created_time = time();
-		if($quote_info->save()){
-			$buy->quoted_number = $buy->quoted_number + 1;
-			$buy->update();
-			$this->addIntegral($user->id, 18);
-			$result['ret_num'] = 0;
-			$result['ret_msg'] = '操作成功';
 
-			//推送消息提示报价
-			$content="有商家给予您报价了，快去看看";
-			$t=time();
-			$newinfo= "(8,{$user->id},{$buy['member_id']},'{$content}',{$t},{$buyid},3,0)";
-			$sqln = "insert into news (type,sender,member_id,content,created_time,identity1, identity2,display) values ".$newinfo;
-			$command = $connection->createCommand($sqln);
-			$resultn = $command->execute();
+		$connection=Yii::app()->db;
+		$transaction=$connection->beginTransaction();
+		try {
+			$quote_info = new Quote();
+			$quote_info->item_id = $buyid;
+			$quote_info->store_id = $nt->id;
+			$quote_info->price = $price;
+			$quote_info->description = $description;
+			$quote_info->member_id = $user->id;
+			$quote_info->created_time = time();
+			if ($quote_info->save()) {
+				$buy->quoted_number = $buy->quoted_number + 1;
+				$buy->update();
+				$this->addIntegral($user->id, 18);
 
-			//环信推送消息
-			$buyuser=Member::model()->find("id={$buy['member_id']}");
-			//$arr额外信息(t1为是否显示在聊天栏中0no/1yes；t2为是否进入通知界面0no/1yes；t3为处理进度0wait/1ok/2no,t4为4是我要买)
-			$other_arr=array("t1"=>1,"t2"=>0,"t3"=>0,"t4"=>4,"buyid"=>$buyid,"time"=>$t);
-			$this->sendHXMessage(array(0=>$buyuser['huanxin_username']),$content,$other_arr);
-		}else{
+				//插入评论图片
+				foreach($pic as $k=>$v){
+					if($v) {
+						$quoteAtt = new QuoteAttachment();
+						$quoteAtt->quote_id=$quote_info['id'];
+						$quoteAtt->poster=$v;
+						$quoteAtt->save();
+					}
+				}
+
+				$result['ret_num'] = 0;
+				$result['ret_msg'] = '操作成功';
+
+				//推送消息提示报价
+				$content = "有商家给予您报价了，快去看看";
+				$t = time();
+				$newinfo = "(8,{$user->id},{$buy['member_id']},'{$content}',{$t},{$buyid},3,0)";
+				$sqln = "insert into news (type,sender,member_id,content,created_time,identity1, identity2,display) values " . $newinfo;
+				$command = $connection->createCommand($sqln);
+				$resultn = $command->execute();
+
+				//环信推送消息
+				$buyuser = Member::model()->find("id={$buy['member_id']}");
+				//$arr额外信息(t1为是否显示在聊天栏中0no/1yes；t2为是否进入通知界面0no/1yes；t3为处理进度0wait/1ok/2no,t4为4是我要买)
+				$other_arr = array("t1" => 1, "t2" => 0, "t3" => 0, "t4" => 4, "buyid" => $buyid, "time" => $t);
+				$this->sendHXMessage(array(0 => $buyuser['huanxin_username']), $content, $other_arr);
+			}
+			echo json_encode( $result );
+			die();
+		}catch(Exception $e){
+			$transaction->rollBack();
 			$result['ret_num'] = 206;
 			$result['ret_msg'] = '报价失败';
+			echo json_encode( $result );
+			die();
 		}
-		echo json_encode( $result );
 	}
 	
 	/**
@@ -526,7 +611,17 @@ class BuyController extends PublicController
 			$result1[$key]['poster'] = $value['poster'] ? URL.$value['poster']:""; 
 			//$result1[$key]['created_time'] = date("Y-m-d H:i:s",$value['created_time']);
 		}
+		//查询每张商品图片
+		$pic=array();
+		$picinfo=BuyAttachment::model()->findAll("buy_id={$buyid}");
+		foreach($picinfo as $kp=>$vp){
+			$pic[]=array(
+					"pic_id"=>$vp['id'],
+					"poster"=>$vp['poster']?URL.$vp['poster']:""
+			);
+		}
 		$re[0]['poster'] = $re[0]['poster'] ? URL.$re[0]['poster']:"";
+		$re[0]['sell_pic'] = $pic?$pic:array();
 		$re[0]['short_name'] = $rec[0]['short_name'] ;
 		$province = $this->getProCity($re[0]['province']);
 		$city = $this->getProCity($re[0]['city']);

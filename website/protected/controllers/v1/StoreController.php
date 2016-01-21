@@ -1529,7 +1529,7 @@ class StoreController extends PublicController
                 $pcreate->store_id=$traininfo['id'];
                 $pcreate->member_id=$user['id'];
                 $pcreate->offline_restrict=5;
-                $pcreate->online_restrict=3;
+                $pcreate->online_restrict=5;
                 $pcreate->is_close=1;
                 $pcreate->time=time()+7*24*3600;
                 $pcreate->vip_time=1459353600;//有效期至2016年3月31日00:00:00
@@ -1723,6 +1723,11 @@ class StoreController extends PublicController
                 "t2"=>1,
                 "t3"=>2,
                 "t4"=>6,
+                "receive_nickname"=>$user['nick_name'],
+                "receive_poster"=>$user['poster']?URL.$user['poster']:"",
+                "store_id"=>"hz".$minfo['benben_id'],
+                "store_name"=>$traininfo['short_name'],
+                "transfer_id"=>$transfer_id
             );
             $content=$user['nick_name']."拒绝了您的转让号码直通车:".$traininfo['short_name'];
             $this->sendTextMessage($user['huanxin_username'],array(0=>$minfo['huanxin_username']),$content,$arr);
@@ -1844,6 +1849,11 @@ class StoreController extends PublicController
                 "t2"=>1,
                 "t3"=>1,
                 "t4"=>6,
+                "receive_nickname"=>$user['nick_name'],
+                "receive_poster"=>$user['poster']?URL.$user['poster']:"",
+                "store_id"=>"hz".$user['benben_id'],
+                "store_name"=>$apply_store['short_name'],
+                "transfer_id"=>$transfer_id
             );
             $content=$user['nick_name']."同意了您的转让号码直通车:".$apply_store['short_name'];
             $this->sendTextMessage($user['huanxin_username'],array(0=>$minfo['huanxin_username']),$content,$arr);

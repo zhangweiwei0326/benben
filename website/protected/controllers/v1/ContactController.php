@@ -2207,18 +2207,12 @@ class ContactController extends PublicController
             // }
 
             $connection = Yii::app()->db;
-            //是否与自己通讯录好友的号码、或者百姓网短号重复
+            //是否与自己通讯录好友的号码、或者百姓网短号重复（不要求验证了）
             $sql = "select a.id from group_contact_info a inner join group_contact_phone b on a.id = b.contact_info_id
-					     where a.member_id = {$user->id} and (b.phone = '{$phone}' or b.is_baixing = '{$phone}')";
+					     where a.member_id = {$user->id} and b.phone = '{$phone}'";
             $command = $connection->createCommand($sql);
             $result1 = $command->queryAll();
 
-            if ($result1[0]) {
-                $result ['ret_num'] = 5230;
-                $result ['ret_msg'] = '该号码已存在你的通讯录中';
-                echo json_encode($result);
-                die();
-            }
 
             //该号码是否是犇犇用户,再判断是否和通讯录中犇犇号重复
             $flag = 0;//表示是否搜索到该人的通讯录中已存在这条犇犇号
