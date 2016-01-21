@@ -85,7 +85,7 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
                 foreach ( $items as $item ) {
                 ?>
                 <tr class="main_right_content_content_body">
-                    <td><input type="checkbox" class="selectOne" name="<?php echo $item->back_id; ?>" /></td>
+                    <td><input type="checkbox" class="selectOne" name="<?php echo $item->order_id; ?>" /></td>
                     <td><?php echo $item ->order_id; ?></td>
                     <td><?php echo $item ->name; ?></td>
                     <td><?php echo $item ->shop_name; ?></td>
@@ -129,7 +129,7 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
         var ob=confirm("您确定同意退款？");
         
         if(ob){
-            location.href="";
+            location.href="<?php echo Yii::app()->createUrl("pay/backOrder")?>?";
         }
     }
     //拒绝退款
