@@ -1344,9 +1344,9 @@ class UserController extends PublicController
             //查询该用户的号码直通车
             $trainArr=array();
             $traininfo=NumberTrain::model()->findAll("member_id in (".implode(",",$ids).") and status=0 and is_close=0");
-            foreach($traininfo as $k=>$v){
-                if($userid2benben[$v['member_id']]) {
-                    $trainArr[$userid2benben[$v['member_id']]] = $v;
+            foreach($traininfo as $ktr=>$vtr){
+                if($userid2benben[$vtr['member_id']]) {
+                    $trainArr[$userid2benben[$vtr['member_id']]] = $vtr;
                 }
             }
 
@@ -1356,7 +1356,7 @@ class UserController extends PublicController
             $districtinfo=$this->ProCity($friendinfo);
             foreach($friendinfo as $kk=>$vv){
                 if($userid2benben[$vv['member_id']]) {
-                    $friendArr[$userid2benben[$v['member_id']]] = $vv;
+                    $friendArr[$userid2benben[$vv['member_id']]] = $vv;
                     $districtArr[$userid2benben[$vv['member_id']]] = $districtinfo[$friendinfo['city']] . " " . $districtinfo[$friendinfo['area']];
                 }
             }
