@@ -184,15 +184,15 @@ function getSubMenu() {
 			9 => array(
 				1 => array(
 					'name'=> '拍卖管理',
-					'uri' => '/auction'
+					'uri' => '/topAuction'
 				),
 				2 => array(
 					'name' =>'退款管理',
-					'uri' =>'/drawback'
-				),				
+					'uri' =>'/backOrder'
+				),
 				3 => array(
 					'name' =>'认证管理',
-					'uri' =>'/authentication'
+					'uri' =>'/storeAuth'
 				)
 			)
 
