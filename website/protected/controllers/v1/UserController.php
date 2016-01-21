@@ -852,6 +852,8 @@ class UserController extends PublicController
             $pwd = Frame::getStringFromRequest('password');
             $repwd = Frame::getStringFromRequest('repassword');
             $idcode = Frame::getIntFromRequest('code');
+            $key = Frame::getStringFromRequest('key');
+            $phone_model = Frame::getStringFromRequest('phone_model');
 
             if (empty ($idcode) || empty ($pwd) || empty ($repwd) || empty ($phone)) {
                 $result ['ret_num'] = 2009;
@@ -934,7 +936,9 @@ class UserController extends PublicController
                 //写登录记录
                 $member_login = new MemberLogin();
                 $member_login->member_id = $user->id;
-                $member_login->phone_model = $this->getmodel($phone_model);;
+                if($phone_model) {
+                    $member_login->phone_model = $this->getmodel($phone_model);
+                }
                 $member_login->created_time = time();
                 $member_login->save();
                 //省市
@@ -1508,7 +1512,7 @@ class UserController extends PublicController
             "id"=>$res2[0]['contact_info_id'] ? $res2[0]['contact_info_id'] : 0,
             "poster" => $userinfo->poster ? URL . $userinfo->poster : "",
             "is_benben" => $userinfo->benben_id,
-            "is_baixing" => $is_baixing,
+            "is_baixing" => $is_baixing?$is_baixing:0,
             "huanxin_username" => $userinfo->huanxin_username,
             "phone" => $phone,
             "is_friend" => $is_friend
