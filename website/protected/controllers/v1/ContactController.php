@@ -1348,9 +1348,13 @@ class ContactController extends PublicController
             $hasGo[$v['contact_info_id']]=0;
         }
 
-        $sqlTrain="select a.id as train_id,b.benben_id,b.nick_name,b.poster,b.huanxin_username from member as b
-            left join number_train as a on a.member_id=b.id where b.benben_id in (".implode(",",$benbenArr).")";
-        $resultTrain=$connection->createCommand($sqlTrain)->queryAll();
+        if($benbenArr) {
+            $sqlTrain = "select a.id as train_id,b.benben_id,b.nick_name,b.poster,b.huanxin_username from member as b
+            left join number_train as a on a.member_id=b.id where b.benben_id in (" . implode(",", $benbenArr) . ")";
+            $resultTrain = $connection->createCommand($sqlTrain)->queryAll();
+        }else{
+            $resultTrain=array();
+        }
         foreach($resultTrain as $kt=>$vt){
             $userTrainInfo[$vt['benben_id']]=$vt;
         }
