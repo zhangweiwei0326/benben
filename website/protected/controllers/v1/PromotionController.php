@@ -129,6 +129,7 @@ class PromotionController extends PublicController
             $result['valid_left'] = $promotion['valid_left'];
             $result['valid_right'] = $promotion['valid_right'];
             $result['description'] = $promotion['description'];
+            $result['model'] = $promotion['model'];
             $result['is_close'] = $promotion['is_close'];
         }else{
             $result['ret_num'] = 1000;
@@ -186,6 +187,7 @@ class PromotionController extends PublicController
             $result['promotion_price'] = $promotion['promotion_price'];
             $result['valid_left'] = $promotion['valid_left'];
             $result['valid_right'] = $promotion['valid_right'];
+            $result['model'] = $promotion['model']?$promotion['model']:"";
             $result['description'] = nl2br($promotion['description']);
             $result['is_close'] = $promotion['is_close'];
             $result['huanxin_username'] = $ownerInfo ? $ownerInfo['huanxin_username'] : "";//商家消息
@@ -219,6 +221,7 @@ class PromotionController extends PublicController
         $valid_left = Frame::getIntFromRequest('valid_left');
         $valid_right = Frame::getIntFromRequest('valid_right');
         $description = Frame::getStringFromRequest('description');
+        $model = Frame::getStringFromRequest('model');
         $poster_st = Frame::saveThumb('poster_st', 1);
         $poster_nd = Frame::saveThumb('poster_nd', 1);
         $poster_rd = Frame::saveThumb('poster_rd', 1);
@@ -287,6 +290,7 @@ class PromotionController extends PublicController
         $promotion_add->valid_left = $valid_left;
         $promotion_add->valid_right = $valid_right;
         $promotion_add->description = $description;
+        $promotion_add->model = $model;
         $promotion_add->poster_st = $poster_st;
         $promotion_add->poster_nd = $poster_nd;
         $promotion_add->poster_rd = $poster_rd;
@@ -323,6 +327,7 @@ class PromotionController extends PublicController
         $valid_left = Frame::getIntFromRequest('valid_left');
         $valid_right = Frame::getIntFromRequest('valid_right');
         $description = Frame::getStringFromRequest('description');
+        $model = Frame::getStringFromRequest('model');
         $ids = Frame::getStringFromRequest('ids');//促销图片id，以逗号分割，st=1,nd=2,rd=3,用于删除
         $poster_st = Frame::saveThumb('poster_st', 1);
         $poster_nd = Frame::saveThumb('poster_nd', 1);
@@ -356,6 +361,9 @@ class PromotionController extends PublicController
             }
             if ($description) {
                 $pinfo->description = $description;
+            }
+            if($model){
+                $pinfo->model=$model;
             }
 
             //有type才可以删除
