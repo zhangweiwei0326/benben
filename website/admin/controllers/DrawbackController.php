@@ -49,8 +49,7 @@ class DrawbackController extends BaseController
         //数据查询
         $cri->select = "t.*,member.name as name,member.phone as phone,number_train.short_name as shop_name,pay_log.buyer_email as account";
         $cri->join = "left join member on member.id = t.apply_id left join pay_log on pay_log.order_id = t.order_id left join number_train on number_train.id=t.train_id";
-        //$cri->order = "apply_time desc";
-        $cri->order = "back_id";
+        $cri->order = "apply_time desc";
         $pages = new CPagination();
         $pages->itemCount = $model->count($cri);
         $pages->pageSize = 10;
@@ -66,9 +65,9 @@ class DrawbackController extends BaseController
         $deal_time = Frame::getIntFromRequest('deal_time');
         //访问数据库操作
         $ret = DrawBack::model()->updateAll (array (
-                                        'status' =>3,
-                                        'deal_time' =>$deal_time,
-                                ), "back_id=" . $back_id);
+            'status' =>3,
+            'deal_time' =>$deal_time,
+        ), "back_id=" . $back_id);
         if($ret){
             $result['status']=1;
             $result['deal_time']=$deal_time;

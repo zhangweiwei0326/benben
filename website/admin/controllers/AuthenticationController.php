@@ -121,6 +121,7 @@ class AuthenticationController extends BaseController
     public function actionDetail(){
         $this->insert_log(93);
         $model = Authentication::model();
+        $result = array();
         $cri = new CDbCriteria();
         //获取参数
         $id = intval($_GET['id']);
