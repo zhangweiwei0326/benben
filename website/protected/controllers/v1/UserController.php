@@ -1313,18 +1313,22 @@ class UserController extends PublicController
 
             //数据处理
             $benbenArray=array();
+            $ids=array();
+            $userid2benben=array();
             foreach($res3 as $kr=>$vr){
                 if(!in_array($vr['is_benben'],$benbenArray)) {
                     $benbenArray[] = $vr['is_benben'];
                 }
             }
             if($benbenArray) {
-                $sqlmember = "select nick_name,poster,huanxin_username,benben_id from member where benben_id!=0 and benben_id in (" . implode(",", $benbenArray) . ")";
+                $sqlmember = "select nick_name,poster,huanxin_username,benben_id,id from member where benben_id!=0 and benben_id in (" . implode(",", $benbenArray) . ")";
                 $command = $connection->createCommand($sqlmember);
                 $resmember = $command->queryAll();
                 $contactsInfo=array();
                 foreach($resmember as $km=>$vm){
                     $contactsInfo[$vm['benben_id']]=$vm;
+                    $userid2benben[$vm['id']]=$vm['benben_id'];
+                    $ids[]=$vm['id'];
                 }
                 foreach($res3 as $krr=>$vrr){
                     $res3[$krr]['nick_name']=$contactsInfo[$vrr['is_benben']]['nick_name']?$contactsInfo[$vrr['is_benben']]['nick_name']:"";
@@ -1334,12 +1338,24 @@ class UserController extends PublicController
             }
 
             //查询该用户的号码直通车
-            $traininfo=NumberTrain::model()->find("member_id={$userinfo['id']} and status=0 and is_close=0");
+            $trainArr=array();
+            $traininfo=NumberTrain::model()->findAll("member_id in (".implode(",",$ids).") and status=0 and is_close=0");
+            foreach($traininfo as $k=>$v){
+                if($userid2benben[$v['member_id']]) {
+                    $trainArr[$userid2benben[$v['member_id']]] = $v;
+                }
+            }
 
             //查询该用户的好友联盟
-            $friendinfo=FriendLeague::model()->find("member_id={$userinfo['id']} and status=0 and is_delete=0");
-            $districtinfo=$this->ProCity(array(0=>$friendinfo));
-            $district=$districtinfo[$friendinfo['city']]." ".$districtinfo[$friendinfo['area']];
+            $friendArr=array();
+            $friendinfo=FriendLeague::model()->findAll("member_id in (".implode(",",$ids).") and status=0 and is_delete=0");
+            $districtinfo=$this->ProCity($friendinfo);
+            foreach($friendinfo as $kk=>$vv){
+                if($userid2benben[$vv['member_id']]) {
+                    $friendArr[$userid2benben[$v['member_id']]] = $vv;
+                    $districtArr[$userid2benben[$vv['member_id']]] = $districtinfo[$friendinfo['city']] . " " . $districtinfo[$friendinfo['area']];
+                }
+            }
         } else {
             $is_friend = 0;
 
@@ -1372,15 +1388,15 @@ class UserController extends PublicController
                     "phone" => $v['phone'] ? $v['phone'] : "",
                     "huanxin_username" => $v['huanxin_username'] ? $v['huanxin_username'] : "",
                     "is_active"=>$v['is_active']?$v['is_active']:"0",
-                    "train_id"=>$traininfo ? $traininfo['id'] : "",
-                    "pic"=>$traininfo['poster'] ? URL.$traininfo['poster'] : "",
-                    "short_name"=> $traininfo['short_name'] ? $traininfo['short_name'] : "",
-                    "tag"=>$traininfo['tag'] ? $traininfo['tag'] : "",
-                    "legid"=>$friendinfo ? $friendinfo['id'] : "",
-                    "leg_district"=>$district ? $district : "",
-                    "leg_poster"=> $friendinfo['poster'] ? URL.$friendinfo['poster'] : "",
-                    "leg_name"=>$friendinfo['name']?$friendinfo['name']:"",
-                    "type"=>$friendinfo ? ($friendinfo['type']==1 ? '工作联盟' : '英雄联盟') : ""
+                    "train_id"=>$trainArr[$v['is_benben']]['id'] ? $trainArr[$v['is_benben']]['id'] : "",
+                    "pic"=>$trainArr[$v['is_benben']]['poster'] ? URL.$trainArr[$v['is_benben']]['poster'] : "",
+                    "short_name"=> $trainArr[$v['is_benben']]['short_name'] ? $trainArr[$v['is_benben']]['short_name'] : "",
+                    "tag"=>$trainArr[$v['is_benben']]['tag'] ? $trainArr[$v['is_benben']]['tag'] : "",
+                    "legid"=>$friendArr[$v['is_benben']]['id'] ? $friendArr[$v['is_benben']]['id'] : "",
+                    "leg_district"=>$districtArr[$v['is_benben']] ? $districtArr[$v['is_benben']] : "",
+                    "leg_poster"=> $friendArr[$v['is_benben']]['poster'] ? URL.$friendArr[$v['is_benben']]['poster'] : "",
+                    "leg_name"=>$friendArr[$v['is_benben']]['name']?$friendArr[$v['is_benben']]['name']:"",
+                    "type"=>$friendArr ? ($friendArr[$v['is_benben']]['type']==1 ? '工作联盟' : '英雄联盟') : ""
                 );
             }
         }
@@ -1391,7 +1407,7 @@ class UserController extends PublicController
                 "short_name"=> $traininfo['short_name'] ? $traininfo['short_name'] : "",
                 "tag"=>$traininfo['tag'] ? $traininfo['tag'] : "",
                 "legid"=>$friendinfo ? $friendinfo['id'] : "",
-                "leg_district"=>$district ? $district : "",
+                "leg_district"=>$districtArr ? $district : "",
                 "leg_poster"=> $friendinfo['poster'] ? URL.$friendinfo['poster'] : "",
                 "leg_name"=>$friendinfo['name']?$friendinfo['name']:"",
                 "type"=>$friendinfo ? ($friendinfo['type']==1 ? '工作联盟' : '英雄联盟') : ""
