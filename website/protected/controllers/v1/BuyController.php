@@ -387,7 +387,7 @@ class BuyController extends PublicController
 			$creation_info->amount = $amount;
 			$creation_info->deadline = $deadline;
 			$creation_info->description = $description;
-			$creation_info->description = $industry;
+			$creation_info->industry = $industry;
 			$creation_info->created_time = time();
 			$creation_info->save();
 
