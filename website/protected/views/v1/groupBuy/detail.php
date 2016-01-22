@@ -43,8 +43,11 @@
                     <a href=<?php if($result['shownext']){echo("http://s.amazeui.org/media/i/demos/bing-1.jpg");}else{echo("javascript:void(0);");} ?>>
                         <img src="<?php echo $v['small_img'];?>" alt="<?php echo $result['name'];?>" data-rel="<?php echo $v['img_url'];?>" />
                         <h3 class="am-gallery-title am-slider-desc">
-                            <div><?php echo $result['name'];?><?php if($result['shownext']) echo('<b style="float: right">下一组团购</b>');?></div>
-                            <?php if($result['model']){echo ("<div>".$result['model']."</div>");}?>
+                            <div>
+                                <span style="font-size:18px; "><?php echo $result['name'];?></span>
+                                <?php echo $result['name'];?><?php if($result['shownext']) echo('<b style="float: right">下一组团购</b>');?>
+                            </div>
+                            <?php if($result['model']){echo ("<div style='font-size:12px;font-weight: 300;'>".$result['model']."</div>");}?>
                         </h3>
                     </a>
                 </div>

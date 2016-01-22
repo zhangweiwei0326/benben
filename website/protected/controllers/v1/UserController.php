@@ -2465,6 +2465,10 @@ class UserController extends PublicController
                 $own_phone->is_active = 0;
                 $own_phone->save();
 
+                $m = new Memcached();
+                $m->addServer('localhost', 11211);
+                $snapshot = $m->get("addrsversion:" . $user['id']);
+                $m->set("addrsversion:" . $user['id'],($snapshot+1));
 
                 $result['ret_num'] = 0;
                 $result['ret_msg'] = '操作成功';

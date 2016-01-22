@@ -416,22 +416,6 @@ class BuyController extends PublicController
 		echo json_encode( $result );
 	}
 
-	/*
-	 * 我要买删除图片
-	 */
-	public function actionDelpic(){
-		$this->check_key();
-		$user = $this->check_user();
-		$picid = Frame::getIntFromRequest('picid');
-		if(!$picid){
-			$result['ret_num'] = 2016;
-			$result['ret_msg'] = '缺少参数';
-			echo json_encode( $result );
-			die();
-		}
-
-	}
-	
 	/**
 	 * 我要买报价
 	 */
