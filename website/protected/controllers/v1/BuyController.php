@@ -592,7 +592,18 @@ class BuyController extends PublicController
 		$command = $connection->createCommand($sql);
 		$result1 = $command->queryAll();
 		foreach ($result1 as $key => $value){
+			//查询报价时的附件图片
+			$quoteinfo=QuoteAttachment::model()->findAll("quote_id={$value['id']}");
+			if($quoteinfo) {
+				foreach($quoteinfo as $vq){
+					$quotePoster[]=array(
+						"quote_id"=>$vq['quote_id'],
+						"poster"=>$vq['poster']?URL.$vq['poster']:"",
+					);
+				}
+			}
 			$result1[$key]['poster'] = $value['poster'] ? URL.$value['poster']:""; 
+			$result1[$key]['quote_pic'] = $quotePoster ? $quotePoster:array();
 			//$result1[$key]['created_time'] = date("Y-m-d H:i:s",$value['created_time']);
 		}
 		//查询每张商品图片
