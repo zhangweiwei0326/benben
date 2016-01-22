@@ -302,8 +302,8 @@ class ContactController extends PublicController
                 echo json_encode($return);
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
-                $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $snapshot = $m->get("addrsversion:" . $user['id']) ? $m->get("addrsversion:" . $user['id']) : 1;
+                $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
             }
         }
     }
@@ -783,8 +783,8 @@ class ContactController extends PublicController
         echo json_encode($return);
         $m = new Memcached();
         $m->addServer('localhost', 11211);
-        $snapshot = $m->get("addrsversion:" . $user['id']);
-        $m->set("addrsversion:" . $user['id'],($snapshot+1));
+        $snapshot = $m->get("addrsversion:" . $user['id']) ? $m->get("addrsversion:" . $user['id']) : 1;
+        $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
 
     }
 
@@ -792,7 +792,8 @@ class ContactController extends PublicController
      * 更新联系人电话
      * 可能涉及电话会含奔犇用户，百姓网用户，会追加显示号码直通车、好友联盟
      */
-    public function actionUpdatematch(){
+    public function actionUpdatematch()
+    {
         $this->check_key();
         $user = $this->check_user();
         $phone = Frame::getStringFromRequest('phone');
@@ -804,115 +805,115 @@ class ContactController extends PublicController
         // $phone = "18966053050#56321::犇犇|13816958641::李冰璠|13571212186::李朝月|15229228844::李冰瑶|15256978325::李朝阳|18919558873::李冰璠”
 
         $connection = Yii::app()->db;
-        $sql1="select a.id,a.name,b.phone from group_contact_info as a left join group_contact_phone as b on a.id=b.contact_info_id where a.member_id={$user['id']}";
+        $sql1 = "select a.id,a.name,b.phone from group_contact_info as a left join group_contact_phone as b on a.id=b.contact_info_id where a.member_id={$user['id']}";
         $command = $connection->createCommand($sql1);
         $result1 = $command->queryAll();
         //获取该名字下的phone数组,用contact_info_id索引
-        $infoid=array();
-        foreach($result1 as $kr=>$vr){
-            $infoid[$vr['id']][]=$vr['phone'];
+        $infoid = array();
+        foreach ($result1 as $kr => $vr) {
+            $infoid[$vr['id']][] = $vr['phone'];
         }
 
         $currentDetail = explode("|", $phone);
         //取出名字和号码存2个数组
-        $allphone=array();
-        $allname=array();
-        $insert_arr=array();
+        $allphone = array();
+        $allname = array();
+        $insert_arr = array();
         foreach ($currentDetail as $v1) {
             $person_info1 = explode("::", $v1);
             $allname[] = $person_info1[1];
             $allphone[] = $person_info1[0];
         }
-        foreach ($allphone as $k2=>$v2) {
+        foreach ($allphone as $k2 => $v2) {
             //单号码必是更新，因为只传相同号码的数组
 //            if(strstr($v2,"#")) {
-                $aphone = explode("#", $v2);
-                foreach ($aphone as $v3) {
-                    $tpl_v3 = trim($v3);
-                    if (strstr($tpl_v3, "+86")) {
-                        $tpl_v3 = trim(substr($tpl_v3, 3, strlen($v3)));
-                    }
-                    foreach ($result1 as $kk => $vv) {
-                    	$flag=0;
-                        //名字相同
-                        if ($allname[$k2] == $vv['name']) {
-                        	//有号码相同的
-                        	foreach ($aphone as $ka => $va) {
-                        		$tpl_va = trim($va);
-			                    if (strstr($tpl_va, "+86")) {
-			                        $tpl_va = trim(substr($tpl_va, 3, strlen($va)));
-			                    }
-                        		if (in_array($tpl_va, $infoid[$vv['id']])) {
-                        			$flag=1;
-                        		}
-                        	}
-                        	if($flag==1){
-                            	//号码不同
-	                            if (!in_array($tpl_v3, $infoid[$vv['id']])) {
-	                                $is_benben = 0;
-	                                $is_baixing = 0;
-	                                $meminfo = Member::model()->find("phone={$tpl_v3} and id_enable=1");
-	                                if ($meminfo) {
-	                                    $is_benben = $meminfo['benben_id'] ? $meminfo['benben_id'] : 0;
-	                                    $huanxin=$meminfo['huanxin_username'] ? $meminfo['huanxin_username'] : "";
-	                                    $poster=$meminfo['poster'] ? URL.$meminfo['poster'] : "";
-	                                    //自己百姓号存在才能查询其他人
-	                                    $ownbaixing = Bxapply::model()->find("member_id={$user['id']} and status=3");
-	                                    if ($ownbaixing) {
-	                                        $baixinginfo = Bxapply::model()->find("member_id={$meminfo['id']} and status=3");
-	                                        if ($baixinginfo) {
-	                                            $is_baixing = $baixinginfo['short_phone'];
-	                                        } else {
-	                                            $is_baixing = 0;
-	                                        }
-	                                    }
-	                                }
-	                                $tpl_in= "(" . $vv['id'] . ",'" . $tpl_v3 . "'," . $is_benben . "," . $is_baixing . ",0)";
-	                                if(!in_array($tpl_in,$insert_arr)){
-	                                    $insert_arr[] = "(" . $vv['id'] . ",'" . $tpl_v3 . "'," . $is_benben . "," . $is_baixing . ",0)";
-	                                    $insert[]=array(
-	                                        "contact_info_id"=>$vv['id'],
-	                                        "phone"=>$tpl_v3,
-	                                        "is_benben"=>$is_benben,
-	                                        "is_baixing"=>$is_baixing,
-	                                        "nick_name"=>$vv['name'],
-	                                        "huanxin_username"=>$huanxin ? $huanxin : "",
-	                                        "poster"=>$poster ? $poster : "",
-	                                        "is_active"=>0
-	                                    );
-	                                }
-	                            }
-							}
-
+            $aphone = explode("#", $v2);
+            foreach ($aphone as $v3) {
+                $tpl_v3 = trim($v3);
+                if (strstr($tpl_v3, "+86")) {
+                    $tpl_v3 = trim(substr($tpl_v3, 3, strlen($v3)));
+                }
+                foreach ($result1 as $kk => $vv) {
+                    $flag = 0;
+                    //名字相同
+                    if ($allname[$k2] == $vv['name']) {
+                        //有号码相同的
+                        foreach ($aphone as $ka => $va) {
+                            $tpl_va = trim($va);
+                            if (strstr($tpl_va, "+86")) {
+                                $tpl_va = trim(substr($tpl_va, 3, strlen($va)));
+                            }
+                            if (in_array($tpl_va, $infoid[$vv['id']])) {
+                                $flag = 1;
+                            }
                         }
+                        if ($flag == 1) {
+                            //号码不同
+                            if (!in_array($tpl_v3, $infoid[$vv['id']])) {
+                                $is_benben = 0;
+                                $is_baixing = 0;
+                                $meminfo = Member::model()->find("phone={$tpl_v3} and id_enable=1");
+                                if ($meminfo) {
+                                    $is_benben = $meminfo['benben_id'] ? $meminfo['benben_id'] : 0;
+                                    $huanxin = $meminfo['huanxin_username'] ? $meminfo['huanxin_username'] : "";
+                                    $poster = $meminfo['poster'] ? URL . $meminfo['poster'] : "";
+                                    //自己百姓号存在才能查询其他人
+                                    $ownbaixing = Bxapply::model()->find("member_id={$user['id']} and status=3");
+                                    if ($ownbaixing) {
+                                        $baixinginfo = Bxapply::model()->find("member_id={$meminfo['id']} and status=3");
+                                        if ($baixinginfo) {
+                                            $is_baixing = $baixinginfo['short_phone'];
+                                        } else {
+                                            $is_baixing = 0;
+                                        }
+                                    }
+                                }
+                                $tpl_in = "(" . $vv['id'] . ",'" . $tpl_v3 . "'," . $is_benben . "," . $is_baixing . ",0)";
+                                if (!in_array($tpl_in, $insert_arr)) {
+                                    $insert_arr[] = "(" . $vv['id'] . ",'" . $tpl_v3 . "'," . $is_benben . "," . $is_baixing . ",0)";
+                                    $insert[] = array(
+                                        "contact_info_id" => $vv['id'],
+                                        "phone" => $tpl_v3,
+                                        "is_benben" => $is_benben,
+                                        "is_baixing" => $is_baixing,
+                                        "nick_name" => $vv['name'],
+                                        "huanxin_username" => $huanxin ? $huanxin : "",
+                                        "poster" => $poster ? $poster : "",
+                                        "is_active" => 0
+                                    );
+                                }
+                            }
+                        }
+
                     }
                 }
+            }
 //            }
         }
-        if($insert_arr) {
+        if ($insert_arr) {
             $sql_in = "insert into group_contact_phone (contact_info_id,phone,is_benben,is_baixing,is_active) VALUES " . implode(",", $insert_arr);
             $command = $connection->createCommand($sql_in);
             $result_in = $command->execute();
 
             foreach ($insert as $ki => $vi) {
-                $gci=GroupContactInfo::model()->count("id={$vi['contact_info_id']} and benben_id=0");
-                if($gci){
-                    GroupContactInfo::model()->updateAll(array("benben_id"=>$vi['is_benben']),"id={$vi['contact_info_id']}");
-                    $tpl_benben=$vi['is_benben'];
-                    $tpl_baixing=$vi['is_baixing'];
-                    $tpl_hx=$vi['huanxin_username'];
-                    $tpl_poster=$vi['poster'];
+                $gci = GroupContactInfo::model()->count("id={$vi['contact_info_id']} and benben_id=0");
+                if ($gci) {
+                    GroupContactInfo::model()->updateAll(array("benben_id" => $vi['is_benben']), "id={$vi['contact_info_id']}");
+                    $tpl_benben = $vi['is_benben'];
+                    $tpl_baixing = $vi['is_baixing'];
+                    $tpl_hx = $vi['huanxin_username'];
+                    $tpl_poster = $vi['poster'];
                 }
                 $phoneinfo = GroupContactPhone::model()->find("contact_info_id={$vi['contact_info_id']} and phone={$vi['phone']}");
                 $insert[$ki]['id'] = $phoneinfo['id'];
                 $insert[$ki] = array_merge($insert[$ki], $this->getowninfo($vi['is_benben'], ""));
-                $contact[]=array(
-                    "phone"=>$insert[$ki],
-                    "is_benben"=>$tpl_benben?$tpl_benben:"",
-                    "is_baixing"=>$tpl_baixing?$tpl_baixing:"",
-                    "huanxin_username"=>$tpl_hx?$tpl_hx:"",
-                    "poster"=>$tpl_poster?$tpl_poster:""
-            );
+                $contact[] = array(
+                    "phone" => $insert[$ki],
+                    "is_benben" => $tpl_benben ? $tpl_benben : "",
+                    "is_baixing" => $tpl_baixing ? $tpl_baixing : "",
+                    "huanxin_username" => $tpl_hx ? $tpl_hx : "",
+                    "poster" => $tpl_poster ? $tpl_poster : ""
+                );
             }
 
             $result ['ret_num'] = 0;
@@ -922,8 +923,8 @@ class ContactController extends PublicController
             $m = new Memcached();
             $m->addServer('localhost', 11211);
             $snapshot = $m->get("addrsversion:" . $user['id']);
-            $m->set("addrsversion:" . $user['id'],($snapshot+1));
-        }else{
+            $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
+        } else {
             $result ['ret_num'] = 1000;
             $result ['ret_msg'] = '通讯录不存在该用户';
             echo json_encode($result);
@@ -932,6 +933,7 @@ class ContactController extends PublicController
 
 
     }
+
     /**
      * 返回通讯录（舍弃）
      */
@@ -1026,19 +1028,19 @@ class ContactController extends PublicController
                     $contact_phone[$k2][$k]['nick_name'] = $ue['nick_name'] ? $ue['nick_name'] : $info_name[$k2];
 
                     //商家简情
-                    if($ue['num_close']==0&&$ue['num_status']==0) {
+                    if ($ue['num_close'] == 0 && $ue['num_status'] == 0) {
                         $contact_phone[$k2][$k]['train_id'] = $contact_phone[$k2][$k]['train_id'] ? $contact_phone[$k2][$k]['train_id'] : 0;
                         $contact_phone[$k2][$k]['pic'] = $contact_phone[$k2][$k]['pic'] ? URL . $contact_phone[$k2][$k]['pic'] : "";
                         $contact_phone[$k2][$k]['short_name'] = $contact_phone[$k2][$k]['short_name'] ? $contact_phone[$k2][$k]['short_name'] : "";
                         $contact_phone[$k2][$k]['tag'] = $contact_phone[$k2][$k]['tag'] ? $contact_phone[$k2][$k]['tag'] : "";
-                    }else{
-                        $contact_phone[$k2][$k]['train_id'] ="";
-                        $contact_phone[$k2][$k]['pic'] ="";
-                        $contact_phone[$k2][$k]['short_name'] ="";
-                        $contact_phone[$k2][$k]['tag'] ="";
+                    } else {
+                        $contact_phone[$k2][$k]['train_id'] = "";
+                        $contact_phone[$k2][$k]['pic'] = "";
+                        $contact_phone[$k2][$k]['short_name'] = "";
+                        $contact_phone[$k2][$k]['tag'] = "";
                     }
-                    unset( $contact_phone[$k2][$k]['num_close']);
-                    unset( $contact_phone[$k2][$k]['num_status']);
+                    unset($contact_phone[$k2][$k]['num_close']);
+                    unset($contact_phone[$k2][$k]['num_status']);
 
                     //未删除，未被禁用的，切为盟主的好友联盟显示
                     $contact_phone[$k2][$k]['type'] = $ue['type'] == 1 ? '工作联盟' : '英雄联盟';
@@ -1172,11 +1174,12 @@ class ContactController extends PublicController
     /*
      * 通讯录查询
      */
-    public function actionAddressBook(){
+    public function actionAddressBook()
+    {
         $this->check_key();
         $user = $this->check_user();
         $snapshot = Frame::getStringFromRequest('snapshot');//快照版本
-        if(empty($snapshot)){
+        if (empty($snapshot)) {
             $result ['ret_num'] = 200;
             $result ['ret_msg'] = '用户不安全访问！';
             echo json_encode($result);
@@ -1188,15 +1191,15 @@ class ContactController extends PublicController
 
         //用户百姓网状态变化情况
         $ownbx = Bxapply::model()->count("phone = '{$user->phone}' and status = 3");//自己是否是百姓用户
-        if($m->get("bxapply:".$user['id'])!=$ownbx){
-            $m->set("bxapply:".$user['id'],$ownbx);
-            $old=$m->get("addrsverion:" . $user['id']);
-            $m->set("addrsverion:" . $user['id'],($old+1));
+        if ($m->get("bxapply:" . $user['id']) != $ownbx) {
+            $m->set("bxapply:" . $user['id'], $ownbx);
+            $old = $m->get("addrsverion:" . $user['id']);
+            $m->set("addrsverion:" . $user['id'], ($old + 1));
         }
         /*
          * 判断快照版本是否一致，一致则返回成功
          */
-        if($this->hasSnapShot("addrsversion:".$user['id'],$snapshot,$m)){
+        if ($this->hasSnapShot("addrsversion:" . $user['id'], $snapshot, $m)) {
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
             $result ['delete'] = (object)array();
@@ -1212,93 +1215,81 @@ class ContactController extends PublicController
          * 如果初始快照版本则输出缓存，输出版本号
          * 否则，取数据库数据，对比缓存数据，给予更新数据，输出版本号
          */
-        $contactsCache=Yii::app()->filecache ->get("contacts:".$user['id']);
-        $connection=Yii::app()->db;
-        if(!$contactsCache){
+        $contactsCache = Yii::app()->filecache->get("contacts:" . $user['id']);
+        $connection = Yii::app()->db;
+        if (!$contactsCache || $snapshot == 1) {
             //取通讯录分组表中的分组名和编号
-            $dbContacts=$this->searchAddressBook($user,$ownbx,$connection);
+            $dbContacts = $this->searchAddressBook($user, $ownbx, $connection);
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
-            $result['delete']=(object)array();
-            $result['add']=$dbContacts;
-            if($m->get("addrsversion:" . $user['id'])) {
-                $result['snapshot']=$m->get("addrsversion:" . $user['id']);
-            }else{
+            $result['delete'] = (object)array();
+            $result['add'] = $dbContacts;
+            if ($m->get("addrsversion:" . $user['id'])) {
+                $result['snapshot'] = $m->get("addrsversion:" . $user['id']);
+            } else {
                 $m->set("addrsversion:" . $user['id'], 2);
-                $result['snapshot']=2;
+                $result['snapshot'] = 2;
             }
-            $jsonResult=json_encode($result);
-            Yii::app()->filecache ->set("contacts:".$user['id'],json_encode($dbContacts));
+            $jsonResult = json_encode($result);
+            Yii::app()->filecache->set("contacts:" . $user['id'], json_encode($dbContacts));
             echo($jsonResult);
             die();
-        }else{
-            if($snapshot==1){
+        } else {
+            $resultCache = json_decode($contactsCache, true);
+            $resultDb = $this->searchAddressBook($user, $ownbx, $connection);
+            //查找group不一致的地方
+            $differentGroup = $this->dirtyCheck($resultCache['group'], $resultDb['group']);
+
+            //查找contact不一致的地方
+            $differentContact = $this->dirtyCheck($resultCache['contact'], $resultDb['contact']);
+
+            //无差别
+            if (!$differentGroup['add'] && !$differentGroup['delete'] && !$differentContact['add'] && !$differentContact['delete']) {
                 $result ['ret_num'] = 0;
                 $result ['ret_msg'] = '操作成功';
-                $result['delete']=(object)array();
-                $result['add']=json_decode($contactsCache,true);
-                if($m->get("addrsversion:" . $user['id'])) {
-                    $result['snapshot']=$m->get("addrsversion:" . $user['id']);
-                }else{
-                    $m->set("addrsversion:" . $user['id'], 2);
-                    $result['snapshot']=2;
-                }
+                $result ['delete'] = (object)array();
+                $result ['add'] = (object)array();
+                $result ['snapshot'] = $snapshot;
                 echo json_encode($result);
-                die();
-            }else{
-                $resultCache=json_decode($contactsCache,true);
-                $resultDb=$this->searchAddressBook($user,$ownbx,$connection);
-                //查找group不一致的地方
-                $differentGroup=$this->dirtyCheck($resultCache['group'],$resultDb['group']);
-
-                //查找contact不一致的地方
-                $differentContact=$this->dirtyCheck($resultCache['contact'],$resultDb['contact']);
-
-                //无差别
-                if(!$differentGroup['add']&&!$differentGroup['delete']&&!$differentContact['add']&&!$differentContact['delete']){
-                    $result ['ret_num'] = 0;
-                    $result ['ret_msg'] = '操作成功';
-                    $result ['delete'] = (object)array();
-                    $result ['add'] = (object)array();
-                    $result ['snapshot'] = $snapshot;
-                    echo json_encode($result);
-                    die();
-                }
-
-                $result ['ret_num'] = 0;
-                $result ['ret_msg'] = '操作成功';
-                $result ['delete'] = array(
-                    "group"=>$differentGroup['delete']?$differentGroup['delete']:array(),
-                    "contact"=>$differentContact['delete']?$differentContact['delete']:array()
-                );
-                $result ['add'] = array(
-                    "group"=>$differentGroup['add']?$differentGroup['add']:array(),
-                    "contact"=>$differentContact['add']?$differentContact['add']:array()
-                );
-                $result ['snapshot'] = $m->get("addrsversion:" . $user['id']);
-                echo json_encode($result);
-                Yii::app()->filecache ->set("contacts:".$user['id'],json_encode($resultDb));
                 die();
             }
+
+            $result ['ret_num'] = 0;
+            $result ['ret_msg'] = '操作成功';
+            $result ['delete'] = array(
+                "group" => $differentGroup['delete'] ? $differentGroup['delete'] : array(),
+                "contact" => $differentContact['delete'] ? $differentContact['delete'] : array()
+            );
+            $result ['add'] = array(
+                "group" => $differentGroup['add'] ? $differentGroup['add'] : array(),
+                "contact" => $differentContact['add'] ? $differentContact['add'] : array()
+            );
+            $result ['snapshot'] = $m->get("addrsversion:" . $user['id']);
+            echo json_encode($result);
+            Yii::app()->filecache->set("contacts:" . $user['id'], json_encode($resultDb));
+            die();
         }
     }
+
 
     /*
      * 用户通讯录快照版本一致否
      */
-    private function hasSnapShot($key,$version,$m){
+    private function hasSnapShot($key, $version, $m)
+    {
         //判断该用户contacts过期否
-        if($m->get($key)==$version){
-           return 1;
-        }else{
-           return 0;
+        if ($m->get($key) == $version) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 
     /*
      * 数据库通讯录查询
      */
-    private function searchAddressBook($user,$ownbx,$connection){
+    private function searchAddressBook($user, $ownbx, $connection)
+    {
         //取通讯录分组表中的分组名和编号
         $sqlGroup = "select id,sort,group_name name from group_contact where member_id = {$user->id} order by sort asc";
         $command = $connection->createCommand($sqlGroup);
@@ -1319,80 +1310,80 @@ class ContactController extends PublicController
         $result_group = $resultGroup;//分组编号=》组名，额外10000=》常用号码直通车
 
         //通讯录数据查询
-        $benbenArr=array();
-        $contactArr=array();
-        $activeContact=array();
-        $userTrainInfo=array();
-        $contactRelateBenben=array();
-        $hasGo=array();
-        $sqlAddress="select a.group_id,a.name,a.pinyin,a.created_time,b.id,b.contact_info_id,b.phone,b.is_benben,b.is_baixing,b.is_active from group_contact_info as a
+        $benbenArr = array();
+        $contactArr = array();
+        $activeContact = array();
+        $userTrainInfo = array();
+        $contactRelateBenben = array();
+        $hasGo = array();
+        $sqlAddress = "select a.group_id,a.name,a.pinyin,a.created_time,b.id,b.contact_info_id,b.phone,b.is_benben,b.is_baixing,b.is_active from group_contact_info as a
             left join group_contact_phone as b on a.id=b.contact_info_id where a.member_id={$user['id']}";
-        $resultAddress=$connection->createCommand($sqlAddress)->queryAll();
-        foreach($resultAddress as $k=>$v){
-            if($v['is_benben']){
-                if(!in_array($v['is_benben'],$benbenArr)){
-                    $benbenArr[]=$v['is_benben'];
+        $resultAddress = $connection->createCommand($sqlAddress)->queryAll();
+        foreach ($resultAddress as $k => $v) {
+            if ($v['is_benben']) {
+                if (!in_array($v['is_benben'], $benbenArr)) {
+                    $benbenArr[] = $v['is_benben'];
                 }
             }
-            if($v['contact_info_id']) {
+            if ($v['contact_info_id']) {
                 if (!in_array($v['contact_info_id'], $contactArr)) {
                     $contactArr[] = $v['contact_info_id'];
                 }
             }
-            if($v['is_active']==1) {
+            if ($v['is_active'] == 1) {
                 $activeContact[$v['contact_info_id']] = $v['is_active'];
             }
-            if(!$contactRelateBenben[$v['contact_info_id']]) {
+            if (!$contactRelateBenben[$v['contact_info_id']]) {
                 $contactRelateBenben[$v['contact_info_id']] = $v['is_benben'];
             }
-            $hasGo[$v['contact_info_id']]=0;
+            $hasGo[$v['contact_info_id']] = 0;
         }
 
-        if($benbenArr) {
+        if ($benbenArr) {
             $sqlTrain = "select a.id as train_id,b.benben_id,b.nick_name,b.poster,b.huanxin_username from member as b
             left join number_train as a on a.member_id=b.id where b.benben_id in (" . implode(",", $benbenArr) . ")";
             $resultTrain = $connection->createCommand($sqlTrain)->queryAll();
-        }else{
-            $resultTrain=array();
+        } else {
+            $resultTrain = array();
         }
-        foreach($resultTrain as $kt=>$vt){
-            $userTrainInfo[$vt['benben_id']]=$vt;
+        foreach ($resultTrain as $kt => $vt) {
+            $userTrainInfo[$vt['benben_id']] = $vt;
         }
         //数据组织
-        $phone=array();
-        $contactTemple=array();
-        foreach($resultAddress as $ka=>$va){
-            if(in_array($va['contact_info_id'],$contactArr)) {
-                $go=0;//标识能否执行通讯录数组插入
+        $phone = array();
+        $contactTemple = array();
+        foreach ($resultAddress as $ka => $va) {
+            if (in_array($va['contact_info_id'], $contactArr)) {
+                $go = 0;//标识能否执行通讯录数组插入
                 /*
                  * 有active插入active的，没有判断phone中有is_benben，有取第一次，没有则取首个号码
                  */
-                if($activeContact[$va['contact_info_id']]){
-                    if($activeContact[$va['contact_info_id']]==$va['is_active']) {
-                        $go=1;
-                        $hasGo[$va['contact_info_id']]=1;
+                if ($activeContact[$va['contact_info_id']]) {
+                    if ($activeContact[$va['contact_info_id']] == $va['is_active']) {
+                        $go = 1;
+                        $hasGo[$va['contact_info_id']] = 1;
                     }
-                }else{
-                    if($contactRelateBenben[$va['contact_info_id']]){
-                        if($contactRelateBenben[$va['contact_info_id']]==$va['is_benben']) {
+                } else {
+                    if ($contactRelateBenben[$va['contact_info_id']]) {
+                        if ($contactRelateBenben[$va['contact_info_id']] == $va['is_benben']) {
                             $go = 1;
-                            $hasGo[$va['contact_info_id']]=1;
+                            $hasGo[$va['contact_info_id']] = 1;
                         }
-                    }elseif($hasGo[$va['contact_info_id']]==0){
-                        $go=1;
-                        $hasGo[$va['contact_info_id']]=1;
+                    } elseif ($hasGo[$va['contact_info_id']] == 0) {
+                        $go = 1;
+                        $hasGo[$va['contact_info_id']] = 1;
                     }
                 }
-                if($go==1){
+                if ($go == 1) {
                     $contactTemple[] = array(
                         "id" => $va['contact_info_id'],
                         "group_id" => $va['group_id'],
                         "name" => $va['name'],
                         "pinyin" => $va['pinyin'],
-                        "is_benben"=>$va['is_benben'],
+                        "is_benben" => $va['is_benben'],
                         "created_time" => $va['created_time'],
-                        "nick_name" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['nick_name']?$userTrainInfo[$va['is_benben']]['nick_name']:$va['name']) : $va['name'],
-                        "huanxin_username" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['huanxin_username']?$userTrainInfo[$va['is_benben']]['huanxin_username']:"") : "",
+                        "nick_name" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['nick_name'] ? $userTrainInfo[$va['is_benben']]['nick_name'] : $va['name']) : $va['name'],
+                        "huanxin_username" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['huanxin_username'] ? $userTrainInfo[$va['is_benben']]['huanxin_username'] : "") : "",
                         "poster" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['poster'] ? URL . $userTrainInfo[$va['is_benben']]['poster'] : "") : "",
                         "is_active" => $va['is_active'],
                     );
@@ -1400,16 +1391,16 @@ class ContactController extends PublicController
                     unset($contactArr[$tplKey]);
                 }
             }
-            $phone[$va['contact_info_id']][]=array(
-                "id"=>$va['id'],
-                "phone"=>$va['phone'],
-                "is_baixing"=>$ownbx?$va['is_baixing']:0,
-                "train_id"=>$va['is_benben']?($userTrainInfo[$va['is_benben']]['train_id']?$userTrainInfo[$va['is_benben']]['train_id']:""):"",
+            $phone[$va['contact_info_id']][] = array(
+                "id" => $va['id'],
+                "phone" => $va['phone'],
+                "is_baixing" => $ownbx ? $va['is_baixing'] : 0,
+                "train_id" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['train_id'] ? $userTrainInfo[$va['is_benben']]['train_id'] : "") : "",
             );
         }
         //二次组织数据
-        foreach($contactTemple as $kc=>$vc){
-            $contactTemple[$kc]['phone']=$phone[$vc['id']];
+        foreach ($contactTemple as $kc => $vc) {
+            $contactTemple[$kc]['phone'] = $phone[$vc['id']];
         }
 
         //获取收藏的号码直通车
@@ -1423,23 +1414,23 @@ class ContactController extends PublicController
                 "contact_info_id" => $v1['id'] + 1000000,
                 "phone" => $v1['phone'],
                 "is_baixing" => 0,
-                "train_id"=>"",
+                "train_id" => "",
             );
             $short_phone = array(
                 "id" => "",
                 "contact_info_id" => $v1['id'] + 1000000,
                 "phone" => $v1['telephone'],
                 "is_baixing" => 0,
-                "train_id"=>"",
+                "train_id" => "",
             );
             $collect = array(
                 "id" => $v1['id'] + 1000000,
                 "group_id" => 10000,
                 "name" => $v1['short_name'] ? $v1['short_name'] : ($v1['name'] ? $v1['name'] : ""),
                 "pinyin" => "",
-                "is_benben"=>"",
+                "is_benben" => "",
                 "created_time" => "",
-                "nick_name"=>$v1['name']?$v1['name']:"",
+                "nick_name" => $v1['name'] ? $v1['name'] : "",
                 "huanxin_username" => "",
                 "poster" => $v1['poster'] ? URL . $v1['poster'] : "",
                 "is_active" => 0,
@@ -1448,8 +1439,8 @@ class ContactController extends PublicController
             $contactTemple[] = $collect;
         }
 
-        $result['group']=$result_group;
-        $result['contact']=$contactTemple;
+        $result['group'] = $result_group;
+        $result['contact'] = $contactTemple;
         return $result;
     }
 
@@ -1457,17 +1448,19 @@ class ContactController extends PublicController
      * 数组脏检查，针对2维数组
      * 返回需要删除的delete和新增add数组
      */
-    private function dirtyCheck($origion,$new,$primaryKey="id"){
-        $delete=array();
-        $add=array();
-        foreach($origion as $kc=>$vc){
-            foreach($new as $kd=>$vd){
-                $flag=0;
-                foreach($vd as $key=>$value){
-                    if($vc[$primaryKey]==$vd[$primaryKey]){
-                        if($vc[$key]==$value){
+    private
+    function dirtyCheck($origion, $new, $primaryKey = "id")
+    {
+        $delete = array();
+        $add = array();
+        foreach ($origion as $kc => $vc) {
+            foreach ($new as $kd => $vd) {
+                $flag = 0;
+                foreach ($vd as $key => $value) {
+                    if ($vc[$primaryKey] == $vd[$primaryKey]) {
+                        if ($vc[$key] == $value) {
                             $flag++;
-                            if($flag==count($vd)){
+                            if ($flag == count($vd)) {
                                 unset($new[$kd]);
                                 unset($origion[$kc]);
                             }
@@ -1476,22 +1469,23 @@ class ContactController extends PublicController
                 }
             }
         }
-        $new=array_values($new);
-        $origion=array_values($origion);
-        $add=$new;
-        foreach($origion as $value){
-            $delete[]=$value[$primaryKey];
+        $new = array_values($new);
+        $origion = array_values($origion);
+        $add = $new;
+        foreach ($origion as $value) {
+            $delete[] = $value[$primaryKey];
         }
-        $result["add"]=$add;
-        $result["delete"]=$delete;
+        $result["add"] = $add;
+        $result["delete"] = $delete;
         return $result;
     }
 
     /*
-	 * 设置默认犇犇号
-	 * 需要更新到group_contact_info=>benben_id,和group_contact_phone=>is_active
-	 * */
-    public function actionSetactive()
+     * 设置默认犇犇号
+     * 需要更新到group_contact_info=>benben_id,和group_contact_phone=>is_active
+     * */
+    public
+    function actionSetactive()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1525,7 +1519,7 @@ class ContactController extends PublicController
             $m = new Memcached();
             $m->addServer('localhost', 11211);
             $snapshot = $m->get("addrsversion:" . $user['id']);
-            $m->set("addrsversion:" . $user['id'],($snapshot+1));
+            $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
 //			if ($result3) {
 //				$result ['ret_num'] = 0;
 //				$result ['ret_msg'] = '操作成功';
@@ -1543,7 +1537,8 @@ class ContactController extends PublicController
     /**
      * 添加分组
      */
-    public function actionAddgroup()
+    public
+    function actionAddgroup()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1575,14 +1570,14 @@ class ContactController extends PublicController
         $group->created_time = time();
         $group->sort = $group_num;
         if ($group->save()) {
-            GroupContact::model()->updateAll(array("sort"=>$group_num+1),"group_name='未分组'");
+            GroupContact::model()->updateAll(array("sort" => $group_num + 1), "group_name='未分组'");
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
             $result['group_id'] = $group->id;
             $m = new Memcached();
             $m->addServer('localhost', 11211);
             $snapshot = $m->get("addrsversion:" . $user['id']);
-            $m->set("addrsversion:" . $user['id'],($snapshot+1));
+            $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
         } else {
             $result ['ret_num'] = 116;
             $result ['ret_msg'] = '分组添加失败';
@@ -1593,7 +1588,8 @@ class ContactController extends PublicController
     /**
      * 编辑分组
      */
-    public function actionEditgroup()
+    public
+    function actionEditgroup()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1637,7 +1633,7 @@ class ContactController extends PublicController
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
                 $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
             } else {
                 $result ['ret_num'] = 104;
                 $result ['ret_msg'] = '分组修改失败';
@@ -1649,7 +1645,8 @@ class ContactController extends PublicController
     /**
      * 删除分组
      */
-    public function actionDeletegroup()
+    public
+    function actionDeletegroup()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1694,7 +1691,7 @@ class ContactController extends PublicController
                     $m = new Memcached();
                     $m->addServer('localhost', 11211);
                     $snapshot = $m->get("addrsversion:" . $user['id']);
-                    $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                    $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                     $result ['ret_num'] = 0;
                     $result ['ret_msg'] = '操作成功';
                 }
@@ -1723,7 +1720,7 @@ class ContactController extends PublicController
                         $m = new Memcached();
                         $m->addServer('localhost', 11211);
                         $snapshot = $m->get("addrsversion:" . $user['id']);
-                        $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                        $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                         $result ['ret_num'] = 0;
                         $result ['ret_msg'] = '操作成功';
                     }
@@ -1741,7 +1738,7 @@ class ContactController extends PublicController
                     $m = new Memcached();
                     $m->addServer('localhost', 11211);
                     $snapshot = $m->get("addrsversion:" . $user['id']);
-                    $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                    $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                     $result ['ret_num'] = 0;
                     $result ['ret_msg'] = '操作成功';
                 }
@@ -1751,12 +1748,13 @@ class ContactController extends PublicController
     }
 
     /*
-	 * 分组排序
-	 * 根据group_contact的sort重新排序
-	 * sort值：id;index|id;index
+     * 分组排序
+     * 根据group_contact的sort重新排序
+     * sort值：id;index|id;index
      * type=2,为了解决未分组不参与排序
-	 * */
-    public function actionSortgroup()
+     * */
+    public
+    function actionSortgroup()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1770,23 +1768,23 @@ class ContactController extends PublicController
                 GroupContact::model()->updateAll(array("sort" => $tpl[1]), "id={$tpl[0]}");
             }
 //            if($type==2){
-                $memberinfo=GroupContact::model()->findAll("member_id={$user['id']} order by sort asc");
-                $flag=0;
-                foreach($memberinfo as $kk=>$vv){
-                    if($vv['group_name']=='未分组'){
-                        GroupContact::model()->updateAll(array("sort"=>count($memberinfo)),"id={$vv['id']}");
-                    }else{
-                        $flag++;
-                        GroupContact::model()->updateAll(array("sort"=>$flag),"id={$vv['id']}");
-                    }
+            $memberinfo = GroupContact::model()->findAll("member_id={$user['id']} order by sort asc");
+            $flag = 0;
+            foreach ($memberinfo as $kk => $vv) {
+                if ($vv['group_name'] == '未分组') {
+                    GroupContact::model()->updateAll(array("sort" => count($memberinfo)), "id={$vv['id']}");
+                } else {
+                    $flag++;
+                    GroupContact::model()->updateAll(array("sort" => $flag), "id={$vv['id']}");
                 }
+            }
 //            }
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
             $m = new Memcached();
             $m->addServer('localhost', 11211);
             $snapshot = $m->get("addrsversion:" . $user['id']);
-            $m->set("addrsversion:" . $user['id'],($snapshot+1));
+            $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
         } else {
             $result ['ret_num'] = 100;
             $result ['ret_msg'] = '缺少参数';
@@ -1798,7 +1796,8 @@ class ContactController extends PublicController
     /**
      * 编辑分组成员
      */
-    public function actionEditmember()
+    public
+    function actionEditmember()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1833,14 +1832,15 @@ class ContactController extends PublicController
         $m = new Memcached();
         $m->addServer('localhost', 11211);
         $snapshot = $m->get("addrsversion:" . $user['id']);
-        $m->set("addrsversion:" . $user['id'],($snapshot+1));
+        $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
         echo json_encode($result);
     }
 
     /**
      *  单个移动分组
      **/
-    public function actionChangegroup()
+    public
+    function actionChangegroup()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1857,7 +1857,7 @@ class ContactController extends PublicController
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
                 $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
             } else {
                 $result ['ret_num'] = 106;
                 $result ['ret_msg'] = '编辑分组成员失败';
@@ -1873,7 +1873,8 @@ class ContactController extends PublicController
     /**
      * 定时匹配
      */
-    public function actionIntervalmatch()
+    public
+    function actionIntervalmatch()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1936,7 +1937,8 @@ class ContactController extends PublicController
     /**
      * 修改通讯录联系人姓名
      */
-    public function actionEditname()
+    public
+    function actionEditname()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -1969,7 +1971,7 @@ class ContactController extends PublicController
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
                 $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
             }
         } else {
             $result ['ret_num'] = 1803;
@@ -1982,7 +1984,8 @@ class ContactController extends PublicController
      * 添加联系人到通讯录
      */
 
-    public function actionAddcontact()
+    public
+    function actionAddcontact()
     {
 
         $this->check_key();
@@ -2060,7 +2063,7 @@ class ContactController extends PublicController
                 $leg_poster = $leagueinfo['poster'] ? URL . $leagueinfo['poster'] : "";
                 $leg_type = $leagueinfo['type'] ? ($leagueinfo['type'] == 1 ? '工作联盟' : '英雄联盟') : "";
                 $leg_name = $leagueinfo['name'] ? $leagueinfo['name'] : "";
-                $districtinfo = $this->ProCity(array(0=>$leagueinfo));
+                $districtinfo = $this->ProCity(array(0 => $leagueinfo));
                 $leg_district = $districtinfo[$leagueinfo['city']] . " " . $districtinfo[$leagueinfo['area']];
             } else {
                 $leg_id = "";
@@ -2156,7 +2159,7 @@ class ContactController extends PublicController
             $m = new Memcached();
             $m->addServer('localhost', 11211);
             $snapshot = $m->get("addrsversion:" . $user['id']);
-            $m->set("addrsversion:" . $user['id'],($snapshot+1));
+            $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
         } else {
             $result ['ret_num'] = 1694;
             $result ['ret_msg'] = '添加失败';
@@ -2169,7 +2172,8 @@ class ContactController extends PublicController
     /**
      * 添加通讯录联系人手机号
      */
-    public function actionAddphone()
+    public
+    function actionAddphone()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -2184,7 +2188,7 @@ class ContactController extends PublicController
         }
         //自己是否是百姓网用户
         $owninfo = Bxapply::model()->find("member_id = {$user['id']} and status = 3");
-        if($owninfo){
+        if ($owninfo) {
             //该号码是否是百姓网用户
             $binfo = Bxapply::model()->find("phone = '{$phone}' and status = 3");
             if ($binfo) {
@@ -2192,7 +2196,7 @@ class ContactController extends PublicController
             } else {
                 $is_baixing = 0;
             }
-        }else{
+        } else {
             $is_baixing = 0;
         }
 
@@ -2279,7 +2283,7 @@ class ContactController extends PublicController
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
                 $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                 $result['phone_info'] = array(
                     "id" => $contactphone->id ? $contactphone->id : $phoneid,
                     "contact_info_id" => $contactphone->contact_info_id ? $contactphone->contact_info_id : $id,
@@ -2311,12 +2315,12 @@ class ContactController extends PublicController
                     "poster" => $or_info ? ($or_info->poster ? URL . $or_info->poster : "") : $poster,
                     "huanxin_username" => $or_info ? $or_info->huanxin_username : $huanxin_username,
                     /*"phone"=>array(
-							"phone"=>$phone,
-							"is_benben"=>$is_benben,
-							"is_baixing"=> $is_baixing,
-							"poster"=>$poster,
-							"nick_name"=>$nick_name
-					)*/
+                            "phone"=>$phone,
+                            "is_benben"=>$is_benben,
+                            "is_baixing"=> $is_baixing,
+                            "poster"=>$poster,
+                            "nick_name"=>$nick_name
+                    )*/
                 );
             } else {
                 $result ['ret_num'] = 1803;
@@ -2333,7 +2337,8 @@ class ContactController extends PublicController
      * 删除通讯录联系人手机号
      * 有犇犇号只删除手机号，没有如果只有1个号码，全清，否则删除该记录
      */
-    public function actionDelphone()
+    public
+    function actionDelphone()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -2359,7 +2364,7 @@ class ContactController extends PublicController
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
                 $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
             } else {
                 $num_phone = GroupContactPhone::model()->count("contact_info_id={$phoneinfo['contact_info_id']}");
                 if ($num_phone <= 1) {
@@ -2371,14 +2376,14 @@ class ContactController extends PublicController
                     $m = new Memcached();
                     $m->addServer('localhost', 11211);
                     $snapshot = $m->get("addrsversion:" . $user['id']);
-                    $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                    $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                 } else {
                     $result2 = GroupContactPhone::model()->deleteAll("id={$id}");
                     if ($result2) {
                         $m = new Memcached();
                         $m->addServer('localhost', 11211);
                         $snapshot = $m->get("addrsversion:" . $user['id']);
-                        $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                        $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                         $result ['ret_num'] = 0;
                         $result ['ret_msg'] = '操作成功';
                         $data['is_del'] = 1;
@@ -2411,49 +2416,49 @@ class ContactController extends PublicController
 
         //删除好友关系暂时没用，不代表以后没用
         /*					if($is_benben){
-						$sql = "select c.contact_info_id,c.phone from
-									(select a.contact_info_id,a.phone from benben.group_contact_phone a
-									left join benben.group_contact_info b
-									on a.contact_info_id=b.id
-									where b.member_id={$user->id} and
-									is_benben>0 order by a.id asc
-									) c group by c.contact_info_id;";
-						$command = $connection->createCommand($sql);
-						$result1 = $command->queryAll();
-						$flag = 1;
-						if($result1[0]){
-							foreach ($result1 as $va){
-								if($va['phone'] == $phone){
-									$flag = 0;
-									break;
-								}
-							}
-						}
-						if($flag){
-							$friend1 = Member::model()->find("benben_id = {$is_benben}");
-							$id1 = $friend1->id;
-							$id2 = $contact->member_id;
-							$re = FriendRelate::model()->find("(friend_id1 = {$id1} and friend_id2 = {$id2}) or (friend_id1 = {$id2} and friend_id2 = {$id1})");
-							if($re){
-								$re->delete();
-							}
-						}
-						
-					}*/
+                        $sql = "select c.contact_info_id,c.phone from
+                                    (select a.contact_info_id,a.phone from benben.group_contact_phone a
+                                    left join benben.group_contact_info b
+                                    on a.contact_info_id=b.id
+                                    where b.member_id={$user->id} and
+                                    is_benben>0 order by a.id asc
+                                    ) c group by c.contact_info_id;";
+                        $command = $connection->createCommand($sql);
+                        $result1 = $command->queryAll();
+                        $flag = 1;
+                        if($result1[0]){
+                            foreach ($result1 as $va){
+                                if($va['phone'] == $phone){
+                                    $flag = 0;
+                                    break;
+                                }
+                            }
+                        }
+                        if($flag){
+                            $friend1 = Member::model()->find("benben_id = {$is_benben}");
+                            $id1 = $friend1->id;
+                            $id2 = $contact->member_id;
+                            $re = FriendRelate::model()->find("(friend_id1 = {$id1} and friend_id2 = {$id2}) or (friend_id1 = {$id2} and friend_id2 = {$id1})");
+                            if($re){
+                                $re->delete();
+                            }
+                        }
+
+                    }*/
         //看是否有第二个号码
         /*	    if($result1[0]){
-							foreach ($result1 as $val){
-								if(($val['contact_info_id'] == $id) && $val['phone']){
-									//添加好友关系
-									$f1 = Member::model()->find("benben_id = {$contactphone->is_benben}");
-									$t = time();									
-									$sql = "insert into friend_relate (friend_id1,friend_id2,created_time) values ({$contact->member_id},{$f1->id},{$t})";
-									$command = $connection->createCommand($sql);
-									$result2 = $command->execute();
-									break;
-								}
-							}
-					}*/
+                            foreach ($result1 as $val){
+                                if(($val['contact_info_id'] == $id) && $val['phone']){
+                                    //添加好友关系
+                                    $f1 = Member::model()->find("benben_id = {$contactphone->is_benben}");
+                                    $t = time();
+                                    $sql = "insert into friend_relate (friend_id1,friend_id2,created_time) values ({$contact->member_id},{$f1->id},{$t})";
+                                    $command = $connection->createCommand($sql);
+                                    $result2 = $command->execute();
+                                    break;
+                                }
+                            }
+                    }*/
 //				}
 //				$result ['ret_num'] = 0;
 //				$result ['ret_msg'] = '操作成功';
@@ -2469,12 +2474,13 @@ class ContactController extends PublicController
     }
 
     /*
-	 * 删除通讯录犇犇号
-	 * 如果该账户只有唯一犇犇号，则删除通讯录group_contact_info和group_contact_phone
-	 * 否则删除通讯录该手机号记录group_contact_phone中记录
-	 * 检查group_contact_info中的犇犇号需要更新
-	 * */
-    public function actionDelbenben()
+     * 删除通讯录犇犇号
+     * 如果该账户只有唯一犇犇号，则删除通讯录group_contact_info和group_contact_phone
+     * 否则删除通讯录该手机号记录group_contact_phone中记录
+     * 检查group_contact_info中的犇犇号需要更新
+     * */
+    public
+    function actionDelbenben()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -2512,7 +2518,7 @@ class ContactController extends PublicController
                     $m = new Memcached();
                     $m->addServer('localhost', 11211);
                     $snapshot = $m->get("addrsversion:" . $user['id']);
-                    $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                    $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                 } else {
                     GroupContactPhone::model()->deleteAll("contact_info_id={$infoid}");
                     GroupContactInfo::model()->deleteAll("id={$infoid}");
@@ -2522,7 +2528,7 @@ class ContactController extends PublicController
                     $m = new Memcached();
                     $m->addServer('localhost', 11211);
                     $snapshot = $m->get("addrsversion:" . $user['id']);
-                    $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                    $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
                 }
             } else {
                 $result ['ret_num'] = 1803;
@@ -2539,7 +2545,8 @@ class ContactController extends PublicController
     /**
      * 删除通讯录联系人
      */
-    public function actionDelcontact()
+    public
+    function actionDelcontact()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -2557,7 +2564,7 @@ class ContactController extends PublicController
             $command = $connection->createCommand($sql1);
             $result1 = $command->queryAll();
 
-            $sql2 = "select a.id,a.contact_info_id 
+            $sql2 = "select a.id,a.contact_info_id
 			from group_contact_phone a inner join group_contact_info b on a.contact_info_id = b.id
 			inner join group_contact d on d.id = b.group_id inner join member c on a.phone = c.phone
 			where d.member_id = {$userid->id} and c.phone = '{$userid->phone}' limit 1";
@@ -2565,7 +2572,7 @@ class ContactController extends PublicController
             $result2 = $command->queryAll();
         }
 
-        $sql = "select a.id from group_contact_info a inner join group_contact b on a.group_id = b.id 
+        $sql = "select a.id from group_contact_info a inner join group_contact b on a.group_id = b.id
 		where a.id in ({$ids}) and b.member_id = {$user->id}";
         $command = $connection->createCommand($sql);
         $r1 = $command->queryAll();//var_dump($r1);exit();
@@ -2616,14 +2623,15 @@ class ContactController extends PublicController
         $m = new Memcached();
         $m->addServer('localhost', 11211);
         $snapshot = $m->get("addrsversion:" . $user['id']);
-        $m->set("addrsversion:" . $user['id'],($snapshot+1));
+        $m->set("addrsversion:" . $user['id'], ($snapshot + 1));
         echo json_encode($result);
     }
 
     /**
      * 用户查找
      */
-    public function actionSearch()
+    public
+    function actionSearch()
     {
         $this->check_key();
         $user = $this->check_user();
@@ -2646,6 +2654,150 @@ class ContactController extends PublicController
         $result ['ret_num'] = 0;
         $result ['ret_msg'] = '操作成功';
         $result ['member_info'] = $result0;
+        echo json_encode($result);
+    }
+
+    /*
+     * 用户详情
+     */
+    public
+    function actionAddressDetail()
+    {
+        $this->check_key();
+        $user = $this->check_user();
+        $infoid = Frame::getStringFromRequest('infoid');
+        if (!$infoid) {
+            $result['ret_num'] = 410;
+            $result['ret_msg'] = '用户不能为空';
+            echo json_encode($result);
+            die();
+        }
+        $connection = Yii::app()->db;
+        //用户百姓网状态变化情况
+        $ownbx = Bxapply::model()->count("phone = '{$user->phone}' and status = 3");//自己是否是百姓用户
+        //查出好友在自己通讯录里的名字
+        $sql2 = "select a.id as phoneid,a.phone,a.is_benben,a.is_baixing,a.contact_info_id,a.is_active,b.name,b.pinyin,b.id,b.allpinyin,b.group_id from group_contact_phone a left join group_contact_info b on a.contact_info_id = b.id
+		where b.member_id = {$user->id} and a.contact_info_id={$infoid}";
+        $command = $connection->createCommand($sql2);
+        $res2 = $command->queryAll();
+        if ($res2 && count($res2) > 0) {
+            $activeArr = array();
+            //数据处理
+            $benbenArray = array();
+            $ids = array();
+            $userid2benben = array();
+            foreach ($res2 as $kr => $vr) {
+                if (!in_array($vr['is_benben'], $benbenArray)) {
+                    $benbenArray[] = $vr['is_benben'];
+                }
+            }
+            if ($benbenArray) {
+                $sqlmember = "select nick_name,poster,huanxin_username,benben_id,id from member where benben_id!=0 and benben_id in (" . implode(",", $benbenArray) . ")";
+                $command = $connection->createCommand($sqlmember);
+                $resmember = $command->queryAll();
+                $contactsInfo = array();
+                foreach ($resmember as $km => $vm) {
+                    $contactsInfo[$vm['benben_id']] = $vm;
+                    $userid2benben[$vm['id']] = $vm['benben_id'];
+                    $ids[] = $vm['id'];
+                }
+                $flagIn = 0;
+                foreach ($res2 as $krr => $vrr) {
+                    $res2[$krr]['nick_name'] = $contactsInfo[$vrr['is_benben']]['nick_name'] ? $contactsInfo[$vrr['is_benben']]['nick_name'] : "";
+                    $res2[$krr]['poster'] = $contactsInfo[$vrr['is_benben']]['poster'] ? $contactsInfo[$vrr['is_benben']]['poster'] : "";
+                    $res2[$krr]['huanxin_username'] = $contactsInfo[$vrr['is_benben']]['huanxin_username'] ? $contactsInfo[$vrr['is_benben']]['huanxin_username'] : "";
+                    $res2[$krr]['member_id'] = $contactsInfo[$vrr['is_benben']]['id'] ? $contactsInfo[$vrr['is_benben']]['id'] : "";
+                    //找出激活项，没有则取第一个奔犇号
+                    if ($flagIn != 1) {
+                        if ($vr['is_active']) {
+                            $activeArr['name'] = $vrr['name'];
+                            $activeArr['nick_name'] = $res2[$krr]['nick_name'];
+                            $activeArr['poster'] = $res2[$krr]['poster'];
+                            $activeArr['is_benben'] = $vrr['benben_id'];
+                            $activeArr['is_baixing'] = $ownbx ? $vrr['is_baixing'] : "0";
+                            $activeArr['huanxin_username'] = $res2[$krr]['huanxin_username'];
+                            $flagIn = 1;
+                        } elseif ($vrr['benben_id']) {
+                            $activeArr['name'] = $vrr['name'];
+                            $activeArr['nick_name'] = $res2[$krr]['nick_name'];
+                            $activeArr['poster'] = $res2[$krr]['poster'];
+                            $activeArr['is_benben'] = $vrr['benben_id'];
+                            $activeArr['is_baixing'] = $ownbx ? $vrr['is_baixing'] : "0";
+                            $activeArr['huanxin_username'] = $res2[$krr]['huanxin_username'];
+                            $flagIn = 1;
+                        }
+                    }
+                }
+            }
+
+            if ($ids) {
+                //查询该用户的号码直通车
+                $trainArr = array();
+                $traininfo = NumberTrain::model()->findAll("member_id in (" . implode(",", $ids) . ") and status=0 and is_close=0");
+                foreach ($traininfo as $ktr => $vtr) {
+                    if ($userid2benben[$vtr['member_id']]) {
+                        $trainArr[$userid2benben[$vtr['member_id']]] = $vtr;
+                    }
+                }
+
+                //查询该用户的好友联盟
+                $friendArr = array();
+                $friendinfo = FriendLeague::model()->findAll("member_id in (" . implode(",", $ids) . ") and status=0 and is_delete=0");
+                $districtinfo = $this->ProCity($friendinfo);
+                foreach ($friendinfo as $kk => $vv) {
+                    if ($userid2benben[$vv['member_id']]) {
+                        $friendArr[$userid2benben[$vv['member_id']]] = $vv;
+                        $districtArr[$userid2benben[$vv['member_id']]] = $districtinfo[$friendinfo['city']] . " " . $districtinfo[$friendinfo['area']];
+                    }
+                }
+            }
+        }
+
+        $phone = array();
+        if (count($res2)) {
+            foreach ($res2 as $v) {
+                $phone[] = array(
+                    "infoid" => $v['id'],
+                    "id" => $v['phoneid'],
+                    "nick_name" => $v['nick_name'] ? $v['nick_name'] : "",
+                    "poster" => $v['poster'] ? URL . $v['poster'] : "",
+                    "is_benben" => $v['is_benben'] ? $v['is_benben'] : "0",
+                    "is_baixing" => $v['is_baixing'] ? $v['is_baixing'] : "0",
+                    "phone" => $v['phone'] ? $v['phone'] : "",
+                    "huanxin_username" => $v['huanxin_username'] ? $v['huanxin_username'] : "",
+                    "is_active" => $v['is_active'] ? $v['is_active'] : "0",
+                    "train_id" => $trainArr[$v['is_benben']]['id'] ? $trainArr[$v['is_benben']]['id'] : "",
+                    "pic" => $trainArr[$v['is_benben']]['poster'] ? URL . $trainArr[$v['is_benben']]['poster'] : "",
+                    "short_name" => $trainArr[$v['is_benben']]['short_name'] ? $trainArr[$v['is_benben']]['short_name'] : "",
+                    "tag" => $trainArr[$v['is_benben']]['tag'] ? $trainArr[$v['is_benben']]['tag'] : "",
+                    "legid" => $friendArr[$v['is_benben']]['id'] ? $friendArr[$v['is_benben']]['id'] : "",
+                    "leg_district" => $districtArr[$v['is_benben']] ? $districtArr[$v['is_benben']] : "",
+                    "leg_poster" => $friendArr[$v['is_benben']]['poster'] ? URL . $friendArr[$v['is_benben']]['poster'] : "",
+                    "leg_name" => $friendArr[$v['is_benben']]['name'] ? $friendArr[$v['is_benben']]['name'] : "",
+                    "type" => $friendArr ? ($friendArr[$v['is_benben']]['type'] == 1 ? '工作联盟' : '英雄联盟') : ""
+                );
+            }
+        }
+
+        $result ['ret_num'] = 0;
+        $result ['ret_msg'] = '操作成功';
+        $result['user'] = array(
+            "member_id" => $res2[0]['member_id'],
+            "infoid" => $res2[0]['contact_info_id'] ? $res2[0]['contact_info_id'] : ($res2[0]['id'] ? $res2[0]['id'] : ""),
+            "name" => $res2[0]['name'] ? $res2[0]['name'] : "",//
+            "nick_name" => $res2[0]['nick_name'] ? $res2[0]['nick_name'] : $res2[0]['name'],//
+            "group_id" => $res2[0]['group_id'] ? $res2[0]['group_id'] : "",
+            "poster" => $res2[0]['poster'] ? URL . $res2[0]['poster'] : "",//
+            "is_benben" => $res2[0]['benben_id'] ? $res2[0]['benben_id'] : "0",//
+            "is_baixing" => $res2[0]['is_baixing'] ? $res2[0]['is_baixing'] : "0",//
+            "huanxin_username" => $res2[0]['huanxin_username'],//
+            "phone" => $phone,
+            "is_friend" => 1,
+            "created_time" => date("Y-m-d", $user->created_time),
+            "pinyin" => $res2[0]['pinyin'] ? $res2[0]['pinyin'] : "",
+            "allpinyin" => $res2[0]['allpinyin'] ? $res2[0]['allpinyin'] : "",
+        );
+
         echo json_encode($result);
     }
 

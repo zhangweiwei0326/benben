@@ -75,6 +75,8 @@ class PromotionController extends PublicController
                 "is_close" => $pinfo[$kp]['is_close'],
                 "valid_left" => $pinfo[$kp]['valid_left'],
                 "valid_right" => $pinfo[$kp]['valid_right'],
+                "origin_price" => $pinfo[$kp]['origion_price']?$pinfo[$kp]['origion_price']:"0",
+                "promotion_price" => $pinfo[$kp]['promotion_price']?$pinfo[$kp]['promotion_price']:"0",
                 "name" => $pinfo[$kp]['name'],
                 "poster_st" => $this->getThumb($pinfo[$kp]['poster_st']),
                 "pm_id" => $pinfo[$kp]['pm_id'],
@@ -129,7 +131,7 @@ class PromotionController extends PublicController
             $result['valid_left'] = $promotion['valid_left'];
             $result['valid_right'] = $promotion['valid_right'];
             $result['description'] = $promotion['description'];
-            $result['model'] = $promotion['model'];
+            $result['model'] = $promotion['model']?$promotion['model']:"";
             $result['is_close'] = $promotion['is_close'];
         }else{
             $result['ret_num'] = 1000;
