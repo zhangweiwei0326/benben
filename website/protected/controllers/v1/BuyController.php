@@ -545,6 +545,7 @@ class BuyController extends PublicController
 				$other_arr = array("t1" => 1, "t2" => 0, "t3" => 0, "t4" => 4, "buyid" => $buyid, "time" => $t);
 				$this->sendHXMessage(array(0 => $buyuser['huanxin_username']), $content, $other_arr);
 			}
+			$transaction->commit(); //提交事务
 			echo json_encode( $result );
 			die();
 		}catch(Exception $e){
