@@ -1381,6 +1381,7 @@ class ContactController extends PublicController
                         "name" => $va['name'],
                         "pinyin" => $va['pinyin'],
                         "is_benben" => $va['is_benben'],
+                        "is_baixing"=> $va['is_baixing'],
                         "created_time" => $va['created_time'],
                         "nick_name" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['nick_name'] ? $userTrainInfo[$va['is_benben']]['nick_name'] : $va['name']) : $va['name'],
                         "huanxin_username" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['huanxin_username'] ? $userTrainInfo[$va['is_benben']]['huanxin_username'] : "") : "",
@@ -1429,6 +1430,7 @@ class ContactController extends PublicController
                 "name" => $v1['short_name'] ? $v1['short_name'] : ($v1['name'] ? $v1['name'] : ""),
                 "pinyin" => "",
                 "is_benben" => "",
+                "is_baixing" => "",
                 "created_time" => "",
                 "nick_name" => $v1['name'] ? $v1['name'] : "",
                 "huanxin_username" => "",
@@ -2709,19 +2711,19 @@ class ContactController extends PublicController
                     $res2[$krr]['member_id'] = $contactsInfo[$vrr['is_benben']]['id'] ? $contactsInfo[$vrr['is_benben']]['id'] : "";
                     //找出激活项，没有则取第一个奔犇号
                     if ($flagIn != 1) {
-                        if ($vr['is_active']) {
+                        if ($vrr['is_active']) {
                             $activeArr['name'] = $vrr['name'];
                             $activeArr['nick_name'] = $res2[$krr]['nick_name'];
                             $activeArr['poster'] = $res2[$krr]['poster'];
-                            $activeArr['is_benben'] = $vrr['benben_id'];
+                            $activeArr['is_benben'] = $vrr['is_benben'];
                             $activeArr['is_baixing'] = $ownbx ? $vrr['is_baixing'] : "0";
                             $activeArr['huanxin_username'] = $res2[$krr]['huanxin_username'];
                             $flagIn = 1;
-                        } elseif ($vrr['benben_id']) {
+                        } elseif ($vrr['is_benben']) {
                             $activeArr['name'] = $vrr['name'];
                             $activeArr['nick_name'] = $res2[$krr]['nick_name'];
                             $activeArr['poster'] = $res2[$krr]['poster'];
-                            $activeArr['is_benben'] = $vrr['benben_id'];
+                            $activeArr['is_benben'] = $vrr['is_benben'];
                             $activeArr['is_baixing'] = $ownbx ? $vrr['is_baixing'] : "0";
                             $activeArr['huanxin_username'] = $res2[$krr]['huanxin_username'];
                             $flagIn = 1;
@@ -2784,13 +2786,13 @@ class ContactController extends PublicController
         $result['user'] = array(
             "member_id" => $res2[0]['member_id'],
             "infoid" => $res2[0]['contact_info_id'] ? $res2[0]['contact_info_id'] : ($res2[0]['id'] ? $res2[0]['id'] : ""),
-            "name" => $res2[0]['name'] ? $res2[0]['name'] : "",//
-            "nick_name" => $res2[0]['nick_name'] ? $res2[0]['nick_name'] : $res2[0]['name'],//
+            "name" => $activeArr['name'] ? $activeArr['name'] : "",
+            "nick_name" => $activeArr['nick_name'] ? $activeArr['nick_name'] : $activeArr['name'],
             "group_id" => $res2[0]['group_id'] ? $res2[0]['group_id'] : "",
-            "poster" => $res2[0]['poster'] ? URL . $res2[0]['poster'] : "",//
-            "is_benben" => $res2[0]['benben_id'] ? $res2[0]['benben_id'] : "0",//
-            "is_baixing" => $res2[0]['is_baixing'] ? $res2[0]['is_baixing'] : "0",//
-            "huanxin_username" => $res2[0]['huanxin_username'],//
+            "poster" => $activeArr['poster'] ? URL . $activeArr['poster'] : "",
+            "is_benben" => $activeArr['is_benben'] ? $activeArr['is_benben'] : "0",
+            "is_baixing" => $activeArr['is_baixing'] ? $activeArr['is_baixing'] : "0",
+            "huanxin_username" => $activeArr['huanxin_username']?$activeArr['huanxin_username']:"",
             "phone" => $phone,
             "is_friend" => 1,
             "created_time" => date("Y-m-d", $user->created_time),
