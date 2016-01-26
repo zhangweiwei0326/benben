@@ -2786,8 +2786,8 @@ class ContactController extends PublicController
         $result['user'] = array(
             "member_id" => $res2[0]['member_id'],
             "infoid" => $res2[0]['contact_info_id'] ? $res2[0]['contact_info_id'] : ($res2[0]['id'] ? $res2[0]['id'] : ""),
-            "name" => $activeArr['name'] ? $activeArr['name'] : "",
-            "nick_name" => $activeArr['nick_name'] ? $activeArr['nick_name'] : $activeArr['name'],
+            "name" => $activeArr['name'] ? $activeArr['name'] : ($res2[0]['name']?$res2[0]['name']:""),
+            "nick_name" => $activeArr['nick_name'] ? $activeArr['nick_name'] :($res2[0]['nick_name']?$res2[0]['nick_name']:$res2[0]['name']),
             "group_id" => $res2[0]['group_id'] ? $res2[0]['group_id'] : "",
             "poster" => $activeArr['poster'] ? URL . $activeArr['poster'] : "",
             "is_benben" => $activeArr['is_benben'] ? $activeArr['is_benben'] : "0",
