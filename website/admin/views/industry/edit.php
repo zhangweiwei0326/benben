@@ -1,7 +1,7 @@
 <div class="main_right_content">
 	<ol class="breadcrumb main_right_content_breadcrumb">
 		<li><a href="<?php echo Yii::app()->createUrl('industry/index')?>">行业字典管理</a></li>
-		<li><a href="javascript:void"><?php echo '增加行业字典';?></a></li>
+		<li><a href="javascript:void"><?php echo '修改行业名';?></a></li>
 		<div class="main_right_content_content_block_action_add">
 			<a class="btn btn-success backurl" href="javascript:void(0)" goback=" <?php echo $goback ? $goback : -1;?>">返回</a>
 		</div>
@@ -31,16 +31,14 @@
 	};
  $(".btn-lg").click(function(){
 	     var name = $("#Industry_name").val().trim();
-	     var parent_id = GetQueryString("parent_id");
-	     var level = GetQueryString("level");			
+	     var id = GetQueryString("id");		
 		 if(name == ""){
 		      alert("请输入名称");	
 		      return false;
 	     }else{
-     		var url="<?php echo Yii::app()->createUrl("industry/save")?>";//json输出
+     		var url="<?php echo Yii::app()->createUrl("industry/update")?>";//json输出
      		$.post(url,{name:name, 
-     					parent_id:parent_id,
-     					level:level,   					
+     					id:id,					
                 },function(data){
              if (data.status==1) {
                  alert("操作成功!");

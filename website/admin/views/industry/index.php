@@ -1,82 +1,125 @@
 <?php
 /* @var $this IndustryController */
 /* @var $dataProvider CActiveDataProvider */
-Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl."/themes/css/global.css");
+// Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/themes/css/global.css" );
+$create_url=Yii::app()->createUrl('industry/create');
 ?>
 
-		<div class="main_right_content">
-		<div class="main_right_content_title">
-			<div class="main_right_content_title_font">行业字典管理</div>
-			<div class="main_right_content_content_block_action_add">
-				<?php if($_GET['children']){?>
-				<a class="btn btn-success" href="<?php echo Yii::app()->createUrl("industry/create?add=add&parent_id=".$_REQUEST['id']);?>">增加</a>
-				<a class="btn btn-primary" href="<?php echo Yii::app()->createUrl("industry/index");?>">返回</a>
-				<?php }else{?>
-				<a class="btn btn-success" href="<?php echo Yii::app()->createUrl("industry/create?add=add");?>">增加</a>
-				<?php }?>
-			</div>
-		</div>
-		<div class="main_right_content_content">
-			<table cellspacing=1 border="0" class="table table-hover">
-				<thead>
-					<tr class="main_right_content_content_title">
-						<td width="15%">行业名称</td><td width="15%">创建时间</td><td width="20%">操作</td>
-					</tr>
-				</thead>
-				<tbody>
-					<?php					$i=0;
-					foreach ( $items as $item ) {
-					$edit_url = Yii::app()->createUrl('industry/update',array('id'=>$item->id,'page'=>$_REQUEST['page'], 'parent_id' => $_REQUEST['id']));
-					$child_url = Yii::app()->createUrl('industry/index',array('id'=>$item->id,'children'=>'children'));
-					?>
-						<tr class="main_right_content_content_body">
-											<td><?php echo $item->name ?></td>
-									
-										<td><?php echo date('Y-m-d H:i:s', $item->created_time) ?></td>
-							
-										<td>
-						<?php if(!$_GET['children']){?>
-						<a class="btn btn-primary btn-sm" href="<?php echo $edit_url?>">编辑</a>
-						<!-- <a class="btn btn-success btn-sm" href="<?php echo $child_url ?>">查看子行业</a> -->
-						<a class="btn btn-danger btn-sm action_del" data="<?php echo $item->id?>" parent_id="<?php echo $item->id?>">删除</a>
-						<?php } else{?>
-							<a class="btn btn-primary btn-sm" href="<?php echo $edit_url ?>">编辑</a>
-							<a class="btn btn-danger btn-sm action_del" data="<?php echo $item->id?>">删除</a>
-						<?php }?>
-						
-						
-						
-					</td>
-				</tr>
-				<?php } ?>				</tbody>
-			</table>
 
+<div class="main_right_content">
+	<div class="main_right_content_title">
+			<div class="main_right_content_title_font">行业字典管理</div>
+	</div>
+	<span>
+	</span> 
+	<div id="main" style="margin:50px 0 0 50px;font-size: larger;">
+		<div id="sidetree">
+		  <div id="sidetreecontrol"> <a class="btn btn-success" style="font-size: x-large" href="#">收起所有行业</a> | <a class="btn btn-primary" style="font-size:x-large" href="#">展开所有行业</a> </div>
+			 <ul class="treeview" id="tree">
+			 	<?php 
+			 		 foreach ($firstIndustry as $first) { ?>
+				<!-- 一级行业-->
+				<li class="expandable"><div class="hitarea expandable-hitarea"></div>
+				<input type="checkbox" class="selectOne" id="<?php echo $first->id; ?>" name="<?php echo $first->level;?>" />
+				<span><strong><?php echo $first->name;?></strong></span>
+				<ul style="display: none;">
+					<?php foreach ($secondIndustry as $second){ 
+						if($second->parent_id == $first->id && $second->last==0){ 
+							?>
+							<!-- 二级行业-->
+							<li class="expandable"><div class="hitarea expandable-hitarea"></div>
+							<input type="checkbox" class="selectOne" id="<?php echo $second->id; ?>" name="<?php echo $second->level;?>"/> 
+							<a ><?php echo $second->name ?> </a>
+							<ul style="display: none;">
+								<?php foreach ($thirdIndustry as $third){ 
+									if($third->parent_id == $second->id){ 
+									?>
+										<!--三级行业-->
+										<li>
+										<input type="checkbox" class="selectOne" id="<?php echo $third->id; ?>" name="<?php echo $third->level;?>"/>
+										<a ><?php echo $third->name ?></a></li>
+										<!--三级行业end-->
+									<?php } ?>
+								<?php } ?>
+							</ul>
+							</li>
+							<!-- 二级行业end-->
+						<?php } ?>					
+						<?php  if($second->parent_id == $first->id && $second->last==1){ ?>
+							<li>
+							<input type="checkbox" class="selectOne" name="<?php echo $second->id; ?>" level="<?php echo $second->level;?>"/> 
+							<a ><?php echo $second->name ?></a></li>
+						<?php } ?>
+					<?php } ?>
+				</ul>
+				</li>
+				<!-- 一级行业end-->
+			 	<?php } ?>
+			</ul>
 		</div>
 	</div>
-	
-	<input id="del_baseurl" type="hidden" value="<?php echo Yii::app()->createUrl("industry/delete",array('page'=>$pages->currentPage +1));?>" />
-	<div class="main_footer <?php if($pages->pageCount <= 1) echo 'main_footer_hidden';?>">
-		<div class="main_footer_page">
-			<?php 
-				$path = substr(dirname(__FILE__), 0, -8)."layouts/searchPages.php";
-				require_once($path);  
-			?>
-			<?php		
-			$page = intval($_GET['page']) ?  intval($_GET['page']) : 1;
-			$url = explode("?", Yii::app()->request->getUrl());
-	$link = Yii::app()->request->hostInfo.$url[0]."?";
-			echo '<ul class="yiiPager" id="yw0">'.$this->textPage($pages->pageCount , $page, $link).'</ul>';
-// 			$this->widget ( 'CLinkPager', array (
-// 					'header' => '',
-// 					'firstPageLabel' => '«首页',
-// 					'lastPageLabel' => '尾页»',
-// 					'prevPageLabel' => '«',
-// 					'nextPageLabel' => '»',
-// 					'maxButtonCount' => 6,
-// 					'pages' => $pages
-// 			) );
-			?>
-		</div>
-	</div>
+	<div class="main_right_content" style="margin: 50px 0 50px 200px;">
+		<a class="btn btn-primary" style="margin-left: 50px;height: 35px;" href="<?php echo $create_url ?>">添加主行业</a>
+		<button class="btn btn-primary addChilen" style="margin-left: 50px;height: 35px;">添加子行业</button>
+		<button class="btn btn-primary modifyIndu" style="margin-left: 50px;height: 35px;">修改行业名</button>
+		<button class="btn btn-danger deleteIndu" style="margin-left: 50px;height: 35px;">删除该行业</button>
+	</div>	
 </div>
-	
+<script type="text/javascript">
+	$(function() {
+		$("#tree").treeview({
+			collapsed: true,
+			animated: "medium",
+			control:"#sidetreecontrol",
+			prerendered: true,
+			persist: "location"
+		});
+		//增加子
+		$(".addChilen").on('click',function(){
+			if($(":checked").length!=1){
+				alert("请选择一个父行业");
+			}else{
+				var parent_id=$(":checked")[0].id;
+				var level=$(":checked")[0].name;
+				if(level==3){
+					alert("此为行业分支，不可再分!");
+				}else{
+					var url="<?php echo Yii::app()->createUrl('industry/create') ?>"+"?parent_id="+parent_id+"&level="+level;
+					window.location.href=url;
+				}
+				
+			}
+			
+		});	
+		//修改	
+		$(".modifyIndu").on('click',function(){
+			if($(":checked").length!=1){
+				alert("请选择一个行业");
+			}else{
+				var id=$(":checked")[0].id;
+				var url="<?php echo Yii::app()->createUrl('industry/edit') ?>"+"?id="+id;
+				window.location.href=url;
+			}
+			
+		});	
+		//删除
+		$(".deleteIndu").on('click',function(){
+			 $(".selectOne").each(function(){
+			 	if(this.checked){ 
+			 		var url="<?php echo Yii::app()->createUrl("industry/delete")?>";
+			 		$.post(url,{id:this.id,
+			 					level:this.name,
+			                },function(data){
+			             if (data.status==1) {
+			                 alert("操作成功!");
+			                 location.reload();
+			             }else{
+			                 alert("网络错误！");
+			             }
+			         },'json');
+			 	}
+			 });
+		});
+	})	
+</script>
+
