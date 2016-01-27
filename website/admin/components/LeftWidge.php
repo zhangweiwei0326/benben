@@ -158,7 +158,6 @@ class LeftWidge extends CWidget {
 			$subMenu['9']['1']['role'] =1;
 			$subMenu['9']['2']['role'] =1;
 			$subMenu['9']['3']['role'] =1;
-			$subMenu['9']['4']['role'] =1;
 		}
 
 	
