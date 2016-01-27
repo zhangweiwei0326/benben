@@ -28,12 +28,12 @@ class Industry extends CActiveRecord
 		// will receive user inputs.
 		//	array('name, created_time', 'required'),
 		return array(
-		
+
 			array('parent_id, created_time', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, parent_id, created_time', 'safe', 'on'=>'search'),
+			array('id, name, parent_id, created_time,level', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,6 +58,7 @@ class Industry extends CActiveRecord
 			'name' => '行业名称',
 			'parent_id' => '父级ID',
 			'created_time' => '操作时间',
+			'level' => '行业等级',
 		);
 	}
 
@@ -83,6 +84,7 @@ class Industry extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('parent_id',$this->parent_id);
 		$criteria->compare('created_time',$this->created_time);
+		$criteria->compare('level',$this->level);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
