@@ -39,7 +39,7 @@ class PromotionController extends PublicController
         $on = 0;//上线模版数量
         $out_tpl = array();
         foreach ($pinfo as $kp => $vp) {
-            $pinfo[$kp]['poster_st'] = $vp['poster_st'] ? URL . $vp['poster_st'] : "";
+            $pinfo[$kp]['poster_st'] = $vp['poster_st'] ? $vp['poster_st'] : "";
             //下线模版为被手动下线，或者超有效期
             if ($vp['is_close'] == 0) {
                 if ($vp['valid_left'] > $now) {
@@ -78,7 +78,7 @@ class PromotionController extends PublicController
                 "origin_price" => $pinfo[$kp]['origion_price']?$pinfo[$kp]['origion_price']:"0",
                 "promotion_price" => $pinfo[$kp]['promotion_price']?$pinfo[$kp]['promotion_price']:"0",
                 "name" => $pinfo[$kp]['name'],
-                "poster_st" => $this->getThumb($pinfo[$kp]['poster_st']),
+                "poster_st" => file_exists(ROOT.$this->getSmall($pinfo[$kp]['poster_st']))? URL .$this->getSmall($pinfo[$kp]['poster_st']) : URL .$this->getThumb($pinfo[$kp]['poster_st']),
                 "pm_id" => $pinfo[$kp]['pm_id'],
                 "promotionid" => $pinfo[$kp]['id'],
                 "vip_time"=>$pinfo[$kp]['vip_time'],
@@ -120,11 +120,11 @@ class PromotionController extends PublicController
             $result['ret_num'] = 0;
             $result['ret_msg'] = "操作成功";
             $result['poster_st'] = $promotion['poster_st'] ? URL . $promotion['poster_st'] : "";
-            $result['small_poster_st'] = $promotion['poster_st'] ? URL . $this->getThumb($promotion['poster_st']) : "";
+            $result['small_poster_st'] = $promotion['poster_st'] ? (file_exists(ROOT.$this->getSmall($promotion['poster_st']))?URL.$this->getSmall($promotion['poster_st']):URL . $this->getThumb($promotion['poster_st'])) : "";
             $result['poster_nd'] = $promotion['poster_nd'] ? URL . $promotion['poster_nd'] : "";
-            $result['small_poster_nd'] = $promotion['poster_nd'] ? URL . $this->getThumb($promotion['poster_nd']) : "";
+            $result['small_poster_nd'] = $promotion['poster_nd'] ? (file_exists(ROOT.$this->getSmall($promotion['poster_nd']))?URL.$this->getSmall($promotion['poster_nd']):URL . $this->getThumb($promotion['poster_nd'])) : "";
             $result['poster_rd'] = $promotion['poster_rd'] ? URL . $promotion['poster_rd'] : "";
-            $result['small_poster_rd'] = $promotion['poster_rd'] ? URL . $this->getThumb($promotion['poster_rd']) : "";
+            $result['small_poster_rd'] = $promotion['poster_rd'] ? (file_exists(ROOT.$this->getSmall($promotion['poster_rd']))?URL.$this->getSmall($promotion['poster_rd']):URL . $this->getThumb($promotion['poster_rd'])) : "";
             $result['name'] = $promotion['name'];
             $result['origion_price'] = $promotion['origion_price'];
             $result['promotion_price'] = $promotion['promotion_price'];
@@ -227,6 +227,25 @@ class PromotionController extends PublicController
         $poster_st = Frame::saveThumb('poster_st', 1);
         $poster_nd = Frame::saveThumb('poster_nd', 1);
         $poster_rd = Frame::saveThumb('poster_rd', 1);
+
+        //产生缩略图保存
+        if($poster_st){
+            $images = new ImageController($poster_st,1);
+            $images->thumb(200,200);
+            $images->out();
+        }
+
+        if($poster_nd) {
+            $images = new ImageController($poster_nd, 1);
+            $images->thumb(200,200);
+            $images->out();
+        }
+
+        if($poster_rd) {
+            $images = new ImageController($poster_rd, 1);
+            $images->thumb(200,200);
+            $images->out();
+        }
 
         if (empty($name) || empty($origion_price) || empty($promotion_price) || empty($valid_left) || empty($valid_right) || empty($description) || (empty($poster_st) && empty($poster_nd) && empty($poster_rd))) {
             $result['ret_num'] = 2015;
@@ -335,6 +354,25 @@ class PromotionController extends PublicController
         $poster_nd = Frame::saveThumb('poster_nd', 1);
         $poster_rd = Frame::saveThumb('poster_rd', 1);
 
+        //产生缩略图保存
+        if($poster_st){
+            $images = new ImageController($poster_st,1);
+            $images->thumb(200,200);
+            $thumb=$images->out();
+        }
+
+        if($poster_nd) {
+            $images = new ImageController($poster_nd, 1);
+            $images->thumb(200,200);
+            $thumb=$images->out();
+        }
+
+        if($poster_rd) {
+            $images = new ImageController($poster_rd, 1);
+            $images->thumb(200,200);
+            $thumb=$images->out();
+        }
+
         if (empty($promotionid)) {
             $result['ret_num'] = 2015;
             $result['ret_msg'] = "缺少参数";
@@ -374,6 +412,9 @@ class PromotionController extends PublicController
                     if(file_exists(ROOT.$pinfo->poster_st)&&$pinfo->poster_st) {
                         unlink(ROOT . $pinfo->poster_st);
                         unlink(ROOT . $this->getThumb($pinfo->poster_st));
+                        if(file_exists(ROOT.$this->getSmall($pinfo->poster_st))) {
+                            unlink(ROOT.$this->getSmall($pinfo->poster_st));
+                        }
                     }
                     $pinfo->poster_st = "";
                 }
@@ -381,6 +422,9 @@ class PromotionController extends PublicController
                     if(file_exists(ROOT.$pinfo->poster_nd)&&$pinfo->poster_nd) {
                         unlink(ROOT . $pinfo->poster_nd);
                         unlink(ROOT . $this->getThumb($pinfo->poster_nd));
+                        if(file_exists(ROOT . $this->getSmall($pinfo->poster_nd))) {
+                            unlink(ROOT . $this->getSmall($pinfo->poster_nd));
+                        }
                     }
                     $pinfo->poster_nd = "";
                 }
@@ -388,6 +432,9 @@ class PromotionController extends PublicController
                     if(file_exists(ROOT.$pinfo->poster_rd)&&$pinfo->poster_rd) {
                         unlink(ROOT . $pinfo->poster_rd);
                         unlink(ROOT . $this->getThumb($pinfo->poster_rd));
+                        if(file_exists(ROOT . $this->getSmall($pinfo->poster_rd))) {
+                            unlink(ROOT . $this->getSmall($pinfo->poster_rd));
+                        }
                     }
                     $pinfo->poster_rd = "";
                 }
@@ -443,11 +490,17 @@ class PromotionController extends PublicController
                 if(file_exists(ROOT.$this->getThumb($pinfo['poster_nd']))) {
                     unlink(ROOT . $this->getThumb($pinfo['poster_nd']));
                 }
+                if(file_exists(ROOT.$this->getSmall($pinfo['poster_nd']))) {
+                    unlink(ROOT . $this->getSmall($pinfo['poster_nd']));
+                }
             }
             if(file_exists(ROOT.$pinfo['poster_rd'])&&$pinfo['poster_rd']){
                 unlink(ROOT.$pinfo['poster_rd']);
                 if(file_exists(ROOT.$this->getThumb($pinfo['poster_rd']))) {
                     unlink(ROOT . $this->getThumb($pinfo['poster_rd']));
+                }
+                if(file_exists(ROOT.$this->getSmall($pinfo['poster_rd']))) {
+                    unlink(ROOT . $this->getSmall($pinfo['poster_rd']));
                 }
             }
             $pinfo->delete();

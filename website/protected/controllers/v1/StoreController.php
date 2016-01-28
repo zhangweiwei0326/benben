@@ -712,7 +712,7 @@ class StoreController extends PublicController
                     $promotion[] = array(
                         "promotionid" => $vp['id'] ? $vp['id'] : "",
                         "poster" => $vp['poster_st'] ? URL.$vp['poster_st'] :($goodsinfo['img_url'] ? URL . $goodsinfo['img_url'] : ""),
-                        "small_poster" => $vp['poster_st'] ? URL.$this->getThumb($vp['poster_st']) :($goodsinfo['img_url'] ? URL . $this->getThumb($goodsinfo['img_url']) : ""),
+                        "small_poster" => $vp['poster_st'] ? (file_exists(ROOT.$this->getSmall($vp['poster_st']))?URL.$this->getSmall($vp['poster_st']):URL.$this->getThumb($vp['poster_st'])):URL . $goodsinfo['img_url'],
                         "vip_time" => $vp['vip_time'] ? $vp['vip_time'] : "",
                         "name" => $vp['name'] ? $vp['name'] : "",
                         "description" => $vp['description'] ? $vp['description'] : "",
@@ -879,7 +879,7 @@ class StoreController extends PublicController
                         $promotion[] = array(
                             "promotionid" => $vp['id'] ? $vp['id'] : "",
                             "poster" => $vp['poster_st'] ? URL.$vp['poster_st'] :($goodsinfo['img_url'] ? URL . $goodsinfo['img_url'] : ""),
-                            "small_poster" =>$vp['poster_st'] ? URL.$this->getThumb($vp['poster_st']) : ($goodsinfo['img_url'] ? URL . $this->getThumb($goodsinfo['img_url']) : ""),
+                            "small_poster" =>$vp['poster_st'] ? (file_exists(ROOT.$this->getSmall($vp['poster_st']))?URL.$this->getSmall($vp['poster_st']) :  URL . $this->getThumb($vp['poster_st'])):URL . $goodsinfo['img_url'],
                             "vip_time" => $vp['vip_time'] ? $vp['vip_time'] : "",
                             "name" => $vp['name'] ? $vp['name'] : "",
                             "description" => $vp['description'] ? $vp['description'] : "",

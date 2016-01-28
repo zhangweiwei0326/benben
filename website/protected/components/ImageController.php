@@ -11,15 +11,15 @@ class ImageController extends Controller {
 	private $pathName; //新图片存储路径和名称
 
 	//构造方法，初始化
-	public function __construct($_file) {
+	public function __construct($_file,$imgPath=0) {
 		$this->file = Yii::app()->request->getHostInfo().$_file;
 		$this->filename = $_file;
 		list($this->width, $this->height, $this->type) = getimagesize($this->file);
 		$this->img = $this->getFromImg($this->file, $this->type);
-		$this->pathName = $this->newPath($this->type);
+		$this->pathName = $this->newPath($this->type,$imgPath);
 	}
 
-	public function newPath($type){
+	public function newPath($type,$imgPath){
 
 		$str = date('Ym', time()).'/';
 		$path= Yii::getPathOfAlias('webroot').'/uploads/images/'.$str;
@@ -27,7 +27,11 @@ class ImageController extends Controller {
 			mkdir($path, 0777, TRUE);
 		}
 		$file = explode("/", $this->filename);
-		return $path."small".$file[4];
+		if($imgPath==1){
+			return $path . "square" . $file[4];
+		}else {
+			return $path . "small" . $file[4];
+		}
 
 	}
 
@@ -115,7 +119,7 @@ class ImageController extends Controller {
 			$new_height *= $r; //扩展填充后的高度
 			$_cut_width = ($new_width - $_n_w) / 2; //求出裁剪点的长度
 		}
-			
+
 
 		$this->new = imagecreatetruecolor($_n_w,$_n_h);
 		imagecopyresampled($this->new,$this->img,0,0,$_cut_width,$_cut_height,$new_width,$new_height,$this->width,$this->height);
