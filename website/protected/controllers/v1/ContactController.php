@@ -264,9 +264,9 @@ class ContactController extends PublicController
                                 }
                                 if (isset($benben_phone_id[$each_phone])) {
                                     $is_benben = $benben_phone_id[$each_phone]['benben_id'];
-                                    $return_phone_info[] = array('phone' => $each_phone, 'is_benben' => $is_benben, 'is_baixing' => $is_baixing, 'poster' => $benben_phone_id[$each_phone]['poster'], 'nick_name' => $benben_phone_id[$each_phone]['nick_name']);
+                                    $return_phone_info[] = array('phone' => $each_phone, 'is_benben' => $is_benben?$is_benben:"0", 'is_baixing' => $is_baixing, 'poster' => $benben_phone_id[$each_phone]['poster'], 'nick_name' => $benben_phone_id[$each_phone]['nick_name']);
                                 } else {
-                                    $return_phone_info[] = array('phone' => $each_phone, 'is_benben' => $is_benben, 'is_baixing' => $is_baixing, 'poster' => '', 'nick_name' => '');
+                                    $return_phone_info[] = array('phone' => $each_phone, 'is_benben' => $is_benben?$is_benben:"0", 'is_baixing' => $is_baixing, 'poster' => '', 'nick_name' => '');
                                 }
 
                                 $insert_contact_phone[] = '(' . $insert_info_id . ', "' . $each_phone . '", ' . $is_benben . ', ' . $is_baixing . ')';
@@ -283,7 +283,7 @@ class ContactController extends PublicController
 //						if(!(preg_match($reg, $py,$c) and $py==$c[0])){
 //							$py = "#";
 //						}
-                        $return_person_info[] = array('id' => $insert_info_id, 'group_id' => $val, 'name' => $person_name, 'pinyin' => $py, 'is_benben' => $benben, 'is_baixing' => $baixing, 'huanxin_username' => $hxn, 'poster' => $po, 'phone' => $return_phone_info, 'allpinyin' => $allpy);
+                        $return_person_info[] = array('id' => $insert_info_id, 'group_id' => $val, 'name' => $person_name, 'pinyin' => $py, 'is_benben' => $benben?$benben:"0", 'is_baixing' => $baixing, 'huanxin_username' => $hxn?$hxn:"", 'poster' => $po, 'phone' => $return_phone_info, 'allpinyin' => $allpy);
                     }
                 }
                 //将手机号码插入到数据库
@@ -711,11 +711,11 @@ class ContactController extends PublicController
                             "tag" => $tag,
                             "short_name" => $short_name,
                             'phone' => $each_phone,
-                            'is_benben' => $is_benben,
+                            'is_benben' => $is_benben?$is_benben:"0",
                             'is_baixing' => $is_baixing,
                             'poster' => $benben_phone_id[$each_phone]['poster'],
                             'nick_name' => $benben_phone_id[$each_phone]['nick_name'],
-                            'huanxin_username' => $hxn
+                            'huanxin_username' => $hxn?$hxn:""
                         );
                     } else {
                         $return_phone_info[] = array(
@@ -731,11 +731,11 @@ class ContactController extends PublicController
                             "tag" => $tag,
                             "short_name" => $short_name,
                             'phone' => $each_phone,
-                            'is_benben' => $is_benben,
+                            'is_benben' => $is_benben?$is_benben:"0",
                             'is_baixing' => $is_baixing,
                             'poster' => '',
                             'nick_name' => $person_name,
-                            'huanxin_username' => $hxn
+                            'huanxin_username' => $hxn?$hxn:""
                         );
                     }
 
@@ -762,9 +762,9 @@ class ContactController extends PublicController
                     'name' => $person_name,
                     'pinyin' => $py,
                     'allpinyin' => $allpy,
-                    'is_benben' => $benben,
+                    'is_benben' => $benben?$benben:"0",
                     'is_baixing' => $baixing,
-                    'huanxin_username' => $hxn,
+                    'huanxin_username' => $hxn?$hxn:"",
                     'poster' => $po,
                     'phone' => $return_phone_info
                 );

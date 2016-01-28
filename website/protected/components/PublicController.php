@@ -952,6 +952,20 @@ class PublicController extends Controller
         return $outtpl;
     }
 
+
+    /*
+     * 取缩略图
+     */
+    public function getSmall($url){
+        $tpl=explode("/",$url);
+        $num=count($tpl);
+        if($num>1){
+            $tpl[$num-1]="square".$tpl[$num-1];
+        }
+        $outtpl=implode("/",$tpl);
+        return $outtpl;
+    }
+
     /*
      * 发起post请求
      */

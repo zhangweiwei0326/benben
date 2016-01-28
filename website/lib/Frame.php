@@ -316,6 +316,28 @@ class Frame {
 		$result_str = substr($str,0,$substr_len );
 		return $result_str;
 	}
+
+	/*
+ *系统推送消息
+ * 传入$username=array ; $content=string; $arr额外信息(t1为是否显示在聊天栏中0no/1yes；t2为是否进入通知界面0no/1yes；t3为处理进度0wait/1ok/2no；t4为消息类型:1好友联盟，2群组消息，3好友请求,4.我要买,5.群组转让)
+ * 返回array,其中data有用
+ * */
+	public function sendHXMessage($username, $content, $arr = array(), $from_user = "admin")
+	{
+		$target_type = "users";
+		$ext = array("em_apns_ext" => array("em_push_title" => "{$content}"));
+		$ext = array_merge($ext, $arr);
+		$options = array(
+				"client_id" => CLIENT_ID,
+				"client_secret" => CLIENT_SECRET,
+				"org_name" => ORG_NAME,
+				"app_name" => APP_NAME
+		);
+		$huanxin = new Easemob($options);
+		$re = $huanxin->yy_hxSend($from_user, $username, $content, $target_type, $ext);
+		$re = json_decode($re, true);
+		return $re;
+	}
 	
 }
 
