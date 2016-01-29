@@ -25,7 +25,7 @@
     .price .origion-price>span{font-size: 32px;color: #ffae00;}
     .price .promotion-price{color:#b4b4b4;padding-top: 1.3rem;}
     .valid .valid-time{color: #b4b4b4;}
-    .description{padding-top: 10px;color: #b4b4b4;font-size: 14px;}
+    .description{padding-top: 10px;color: #000000;font-size: 14px;}
     .am-gallery-bordered>li,.am-gallery-default>li,.am-gallery-imgbordered>li,.am-gallery-overlay>li {padding: 0px;}
     </style>
     <div data-am-widget="slider" class="am-slider am-slider-c1" data-am-slider='{"directionNav":false}'>
