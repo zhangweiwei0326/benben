@@ -1218,6 +1218,47 @@ class ContactController extends PublicController
         $contactsCache = Yii::app()->filecache->get("contacts:" . $user['id']);
         $connection = Yii::app()->db;
         if (!$contactsCache || $snapshot == 1) {
+            //为了弥补通讯录分组不存在
+            $num=GroupContact::model()->count("member_id={$user['id']}");
+            if(!$num){
+                $connection=Yii::app()->db;
+                $transaction=$connection->beginTransaction();
+                try
+                {
+                    $gp1=new GroupContact();
+                    $gp1->group_name="朋友";
+                    $gp1->created_time=time();
+                    $gp1->member_id=$user['id'];
+                    $gp1->sort=1;
+                    $gp1->save();
+
+                    $gp2=new GroupContact();
+                    $gp2->group_name="家人";
+                    $gp2->created_time=time();
+                    $gp2->member_id=$user['id'];
+                    $gp2->sort=2;
+                    $gp2->save();
+
+                    $gp3=new GroupContact();
+                    $gp3->group_name="同事";
+                    $gp3->created_time=time();
+                    $gp3->member_id=$user['id'];
+                    $gp3->sort=3;
+                    $gp3->save();
+
+                    $gp4=new GroupContact();
+                    $gp4->group_name="未分组";
+                    $gp4->created_time=time();
+                    $gp4->member_id=$user['id'];
+                    $gp4->sort=4;
+                    $gp4->save();
+                    $transaction->commit();
+                }
+                catch(Exception $e) // 如果有一条查询失败，则会抛出异常
+                {
+                    $transaction->rollBack();
+                }
+            }
             //取通讯录分组表中的分组名和编号
             $dbContacts = $this->searchAddressBook($user, $ownbx, $connection);
             $result ['ret_num'] = 0;
