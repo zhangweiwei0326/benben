@@ -1,0 +1,26 @@
+/*
+墨绿风格
+*/
+/* 选择器格式为：html #layui_layer_skin文件夹名stylecss，这一点非常重要 */
+html #layui_layer_skinlanstylecss{display:none; position: absolute; width:1989px;}
+
+/*2. 继续书写务必遵循这种格式：*/
+body .layer-ext-lan{} 
+body .layer-ext-lan .layui-layer-title{ background: #4476a7 none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;}
+body .layer-ext-lan .layui-layer-content{}
+body .layui-ext-lan .layui-layer-btn{}
+body .layui-ext-lan .layui-layer-btn a{ background: #bbb5b5 none repeat scroll 0 0;
+    border: medium none;}
+/*  你可以通过调试工具重置更多样式 */
+
+/*
+【第四步】：调试
+通过全局配置看看你的皮肤定义的如何：
+layer.config({
+    extend: ['skin/lan/style.css'], //加载您的扩展样式
+    skin: 'layer-ext-lan'
+});
+layer.alert('layer皮肤-lan');
+*/

@@ -1,0 +1,30 @@
+/*
+【第一步】：命名文件夹
+在layer的skin目录建立一个文件夹，假设您将该文件夹命名为：yourskin
+
+【第二步】：创建样式等文件
+在yourskin文件夹下建立一个单独的样式文件，务必命名为：style.css。并且你可能用到的图片也要存放在该文件夹下
+
+【第三步】：书写样式
+1. 务必在第一行加上这句：
+*/
+/* 选择器格式为：html #layui_layer_skin文件夹名stylecss，这一点非常重要 */
+html #layui_layer_skinyourskinstylecss{display:none; position: absolute; width:1989px;}
+
+/*2. 继续书写务必遵循这种格式：*/
+body .layer-ext-yourskin{} 
+body .layer-ext-yourskin .layui-layer-title{color:red;}
+body .layer-ext-yourskin .layui-layer-content{color:orange;}
+body .layui-ext-yourskin .layui-layer-btn{}
+body .layui-ext-yourskin .layui-layer-btn a{}
+/*  你可以通过调试工具重置更多样式 */
+
+/*
+【第四步】：调试
+通过全局配置看看你的皮肤定义的如何：
+layer.config({
+    extend: ['skin/myskin/style.css'], //加载您的扩展样式
+    skin: 'layer-ext-yourskin'
+});
+layer.alert('layer皮肤-Yourskin');
+*/

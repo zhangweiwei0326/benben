@@ -1,0 +1,25 @@
+/*
+墨绿风格
+*/
+/* 选择器格式为：html #layui_layer_skin文件夹名stylecss，这一点非常重要 */
+html #layui_layer_skinmolvstylecss{display:none; position: absolute; width:1989px;}
+
+/*2. 继续书写务必遵循这种格式：*/
+body .layer-ext-molv{} 
+body .layer-ext-molv .layui-layer-title{background: #009f95 none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;}
+body .layer-ext-molv .layui-layer-content{}
+body .layui-ext-molv .layui-layer-btn{}
+body .layui-ext-molv .layui-layer-btn a{background: #009f95 none repeat scroll 0 0;}
+/*  你可以通过调试工具重置更多样式 */
+
+/*
+【第四步】：调试
+通过全局配置看看你的皮肤定义的如何：
+layer.config({
+    extend: ['skin/molv/style.css'], //加载您的扩展样式
+    skin: 'layer-ext-molv'
+});
+layer.alert('layer皮肤-molv');
+*/

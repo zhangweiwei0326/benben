@@ -40,6 +40,8 @@ class LeftWidge extends CWidget {
 		$doleague = $roles->doleague;
 		$dofind = $roles->dofind;
 		$doother = $roles->doother;
+		$dopay = $roles->dopay;
+		$doservice = $roles->doservice;
 		$role_arr = array(
 				"domember"=>$domember,
 				"dobaixing"=>$dobaixing,
@@ -160,6 +162,15 @@ class LeftWidge extends CWidget {
 			$subMenu['9']['3']['role'] =1;
 		}
 
+		if($dopay){
+			$menu['8']['role'] = 1;
+			$subMenu['8']['1']['role'] = 1;
+		}
+		if($doservice){
+			$menu['7']['role'] = 1;
+			$subMenu['7']['1']['role'] = 1;
+			$subMenu['7']['2']['role'] = 1;
+		}
 	
 		$this->render ( 'leftView', array (
 				"index" => $this->index,
