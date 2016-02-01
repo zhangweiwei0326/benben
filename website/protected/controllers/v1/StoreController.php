@@ -57,8 +57,8 @@ class StoreController extends PublicController
                     $tplArea = Area::model()->find("area_name='{$cityName}'");
                     if ($tplArea) {
                         $city_top = $tplArea['bid'];
-                    } elseif ($province) {
-                        $tplArea = Area::model()->find("parent_bid='{$province}'");
+                    } elseif ($province_top) {
+                        $tplArea = Area::model()->find("parent_bid='{$province_top}'");
                         $city_top = $tplArea['bid'];
                     }
                 }
@@ -67,8 +67,8 @@ class StoreController extends PublicController
                     $tplArea = Area::model()->find("area_name='{$areaName}'");
                     if ($tplArea) {
                         $area_top = $tplArea['bid'];
-                    } elseif ($city) {
-                        $tplArea = Area::model()->find("parent_bid='{$city}'");
+                    } elseif ($city_top) {
+                        $tplArea = Area::model()->find("parent_bid='{$city_top}'");
                         $area_top = $tplArea['bid'];
                     }
                 }
@@ -78,17 +78,20 @@ class StoreController extends PublicController
             $distance_order = "distance desc,";
         }
 
-        //搜索省市位置
+        //搜索省市位置/置顶行业
         if ($province) {
             $asql .= "province = {$province} and ";
+            $province_top=$province;
         }
 
         if ($city) {
             $asql .= "city = {$city} and ";
+            $city_top=$city;
         }
 
         if ($area) {
             $asql .= "area = {$area} and ";
+            $area_top=$area;
         }
 
         if ($street) {
@@ -96,27 +99,46 @@ class StoreController extends PublicController
         }
 
         //置顶查询
-        if((!$province&&!$city&&!$area)&&($province_top&&$city_top&&$area_top)){
+        if($province_top&&$city_top&&$area_top){
             $auctionSqlAddr.="province = {$province_top} and city = {$city_top} and area = {$area_top} and ";
         }else{
             $auctionSqlAddr.="province = 0 and city = 0 and area = 0 and ";
         }
-        //行业处理，获取所有主行业所属最后一层行业
+        //行业处理，获取所有主行业所属最后一层行业，置顶需要倒推第一层
         if($industry){
             $industryLastLevel=array();
             $levelTwo=Industry::model()->findAll("parent_id={$industry}");
-            foreach($levelTwo as $k=>$v){
-                if($v['last']!=1){
-                    $levelThree=Industry::model()->findAll("parent_id={$v['id']}");
-                    foreach($levelThree as $kk=>$vv){
-                        $industryLastLevel[]=$vv['id'];
+            if($levelTwo) {
+                foreach ($levelTwo as $k => $v) {
+                    if ($v['last'] != 1) {
+                        $levelThree = Industry::model()->findAll("parent_id={$v['id']}");
+                        foreach ($levelThree as $kk => $vv) {
+                            $industryLastLevel[] = $vv['id'];
+                        }
+                    } else {
+                        $industryLastLevel[] = $v['id'];
                     }
-                }else{
-                    $industryLastLevel[]=$v['id'];
                 }
+            }else{
+                $industryLastLevel[]=$industry;
             }
             $asql.="industry in (".implode(",",$industryLastLevel).") and ";
-            $auctionSqlAddr.="industry=".$industry." and ";
+
+            //置顶需要倒推第一层
+            $industry_pre=Industry::model()->find("id={$industry}");
+            if($industry_pre['level']!=1){
+                $industry_two=Industry::model()->find("id={$industry_pre['parent_id']}");
+                if($industry_two['level']==1){
+                    $auctionSqlAddr.="industry=".$industry." and ";
+                }else{
+                    $industry_three=Industry::model()->find("id={$industry_two['parent_id']}");
+                    if($industry_three['level']==1){
+                        $auctionSqlAddr.="industry=".$industry." and ";
+                    }
+                }
+            }else{
+                $auctionSqlAddr.="industry=".$industry." and ";
+            }
         }
         $auctionSqlAddr.= "pid!=0";
         $asql .= "is_close = 0 and status = 0 and ";
