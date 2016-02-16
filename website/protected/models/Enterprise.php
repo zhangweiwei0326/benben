@@ -38,12 +38,12 @@ class Enterprise extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, created_time', 'required'),
-			array('type, province, city, area, street, member_id, number, status, created_time, short_length, origin', 'numerical', 'integerOnly'=>true),
+			array('type, province, city, area, street, member_id, number, status, created_time, short_length, origin，out_num', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, type, province, city, area, street, description, member_id, number, status, created_time, short_length, origin', 'safe', 'on'=>'search'),
+			array('id, name, type, province, city, area, street, description, member_id, number, status, created_time, short_length, origin，out_num', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,6 +78,7 @@ class Enterprise extends CActiveRecord
 			'created_time' => 'Created Time',
 			'short_length' => 'Short Length',
 			'origin' => 'Origin',
+			'out_num'=>'Out Num',
 		);
 	}
 
@@ -113,6 +114,7 @@ class Enterprise extends CActiveRecord
 		$criteria->compare('created_time',$this->created_time);
 		$criteria->compare('short_length',$this->short_length);
 		$criteria->compare('origin',$this->origin);
+		$criteria->compare('out_num',$this->out_num);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
