@@ -9,19 +9,19 @@ class LeftWidge extends CWidget {
 		// 加载主菜单
 		$this->loadMenu ();
 	}
-	
+
 	// 加载主菜单
 	function loadMenu() {
 		$menu = getMenu ();
 		$subMenu = getSubMenu ();
-	//	var_dump($subMenu);
+		//	var_dump($subMenu);
 		$role = new Role();
 		$user_id = Yii::app ()->user->getState('userInfo')->id;
 		$user = new User();
 		$sql = "select role from user where id = ".$user_id;
 		$user_role = $user->findBySql($sql);
-		
-		
+
+
 		$sql = "SELECT * FROM role where id = ".$user_role->role;
 		$roles = $role->findBySql($sql);
 		$domember = $roles->domember;
@@ -40,25 +40,24 @@ class LeftWidge extends CWidget {
 		$doleague = $roles->doleague;
 		$dofind = $roles->dofind;
 		$doother = $roles->doother;
-		$dopay = $roles->dopay;
-		$doservice = $roles->doservice;
 		$role_arr = array(
-				"domember"=>$domember,
-				"dobaixing"=>$dobaixing,
-				"doenterprise"=>$doenterprise,
-				"dogroup"=>$dogroup,
-				"dostore"=>$dostore,
-				"doshop"=>$doshop,
-				"docreation"=>$docreation,
-				"dorelease"=>$dorelease,
-				"dofriend"=>$dofriend,
-				"dohappy"=>$dohappy,
-				"dosystem"=>$dosystem,
-				"dowebsite"=>$dowebsite,
-				"donews"=>$donews,
-				"doleague"=>$doleague,
-				"dofind"=>$dofind,
-				"doother"=>$doother
+			"domember"=>$domember,
+			"dobaixing"=>$dobaixing,
+			"doenterprise"=>$doenterprise,
+			"dogroup"=>$dogroup,
+			"dostore"=>$dostore,
+			"doshop"=>$doshop,
+			"dolottery"=>$dolottery,
+			"docreation"=>$docreation,
+			"dorelease"=>$dorelease,
+			"dofriend"=>$dofriend,
+			"dohappy"=>$dohappy,
+			"dosystem"=>$dosystem,
+			"dowebsite"=>$dowebsite,
+			"donews"=>$donews,
+			"doleague"=>$doleague,
+			"dofind"=>$dofind,
+			"doother"=>$doother
 		);
 		session_start();
 		session_regenerate_id(true);
@@ -67,7 +66,7 @@ class LeftWidge extends CWidget {
 		if($domember){
 			$menu['1']['role'] = 1;
 			if($domember & 3) $subMenu['1']['1']['role'] =1;
-			if($domember & 4) $subMenu['1']['2']['role'] =1;								
+			if($domember & 4) $subMenu['1']['2']['role'] =1;
 		}
 		//百姓网
 		if($dobaixing){
@@ -90,7 +89,7 @@ class LeftWidge extends CWidget {
 			$menu['8']['role'] = 1;
 			$subMenu['8']['3']['role'] = 1;
 		}
-		
+
 		//其它网站管理
 		if($doother){
 			if($doother & 1) $subMenu['7']['1']['role'] = 1;
@@ -101,7 +100,7 @@ class LeftWidge extends CWidget {
 			$menu['7']['role'] = 1;
 			//if($doother & 3) $subMenu['6']['1']['role'] = 1;
 		}
-		
+
 		//消息管理
 		if($donews){
 			$menu['6']['role'] = 1;
@@ -148,7 +147,7 @@ class LeftWidge extends CWidget {
 			if($dofind){
 				$subMenu['4']['5']['role'] =1;
 			}
-			
+
 		}
 		if($doleague){
 			$menu['5']['role'] = 1;
@@ -161,21 +160,16 @@ class LeftWidge extends CWidget {
 			$subMenu['9']['2']['role'] =1;
 			$subMenu['9']['3']['role'] =1;
 		}
-
-		if($dopay){
-			$menu['8']['role'] = 1;
-			$subMenu['8']['1']['role'] = 1;
+		//抽奖管理
+		if($doshop){
+			$menu['10']['role'] = 1;
+			$subMenu['10']['1']['role'] =1;
+			$subMenu['10']['2']['role'] =1;
 		}
-		if($doservice){
-			$menu['7']['role'] = 1;
-			$subMenu['7']['1']['role'] = 1;
-			$subMenu['7']['2']['role'] = 1;
-		}
-	
 		$this->render ( 'leftView', array (
-				"index" => $this->index,
-				"menu" => $menu,
-				"subMenu" => $subMenu 
+			"index" => $this->index,
+			"menu" => $menu,
+			"subMenu" => $subMenu
 		) );
 	}
 }
