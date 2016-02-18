@@ -2649,6 +2649,8 @@ class EnterpriseController extends PublicController
             }
             $result['ret_num'] = 0;
             $result['ret_msg'] = '操作成功';
+            $enterprise->out_num=$enterprise->out_num+1;
+            $enterprise->update();
         } else {
             $result['ret_num'] = 5238;
             $result['ret_msg'] = '退出通讯录失败';
@@ -3154,6 +3156,7 @@ class EnterpriseController extends PublicController
             $enterpriseidInfo = Enterprise::model()->findByPk($enterpriseid);
             if ($enterpriseidInfo) {
                 $enterpriseidInfo->number = max($enterpriseidInfo->number - 1, 1);
+                $enterpriseidInfo->out_num=$enterpriseidInfo->out_num+1;
                 $enterpriseidInfo->update();
             }
             // $sql = "select id from  enterprise_member where id = ".$id." and contact_id = ".$enterpriseid;
@@ -3214,8 +3217,20 @@ class EnterpriseController extends PublicController
         }
         $info=EnterpriseDisplayMember::model()->find("user_id={$user['id']} and member_id={$enterprise_member_id}");
         if($info){
-            $info->tel_num=$info['tel_num']+1;
-            $info->update();
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                $dial_log = new EnterpriseDialLog();
+                $dial_log->user_id = $user['id'];
+                $dial_log->display_id = $info['id'];
+                $dial_log->enterprise_id = $info['enterprise_id'];
+                $dial_log->dial_time = time();
+                $dial_log->save();
+                $info->tel_num = $info['tel_num'] + 1;
+                $info->update();
+                $transaction->commit(); //提交事务会真正的执行数据库操作
+            }catch (Exception $e) {
+                $transaction->rollback(); //如果操作失败, 数据回滚
+            }
         }
         $result['ret_num'] = 0;
         $result['ret_msg'] = '操作成功';

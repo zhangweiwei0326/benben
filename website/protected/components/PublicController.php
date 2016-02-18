@@ -629,6 +629,29 @@ class PublicController extends Controller
     }
 
     /*
+     * 查询所有好友
+     */
+    public function allfriend($user_id){
+        $connection = Yii::app()->db;
+        $sql="select b.is_benben as benben_id,a.name,a.group_id from group_contact_info as a left join group_contact_phone as b
+        on a.id=b.contact_info_id where a.member_id={$user_id} and b.is_benben > 0";
+        $command = $connection->createCommand($sql);
+        $result1 = $command->queryAll();
+
+        foreach($result1 as $k=>$v){
+            $minfo=Member::model()->find("benben_id={$v['benben_id']} and benben_id>0");
+            $result1[$k]['id']=$minfo['id'];
+        }
+        $arr_id = array();
+        foreach ($result1 as $value) {
+            if ($value['id']) {
+                $arr_id[$value['id']] = array($value['name'], $value['group_id']);
+            }
+        }
+        return $arr_id;
+    }
+
+    /*
      * 根据奔犇号或者用户id获取好友联盟信息和号码直通车信息
      * leg_id/leg_poster/leg_name/leg_district;train_id/pic/tag/short_name
      */

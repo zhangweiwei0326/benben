@@ -8,7 +8,7 @@ class LeagueController extends PublicController
 	public function actionMyleague(){
 		$this->check_key();
 		$user = $this->check_user();
-	
+		$keyword=Frame::getStringFromRequest("keyword");
 		$connection = Yii::app()->db;
 		if($keyword){
 			$sql = "select id,name,poster,number,created_time  from friend_league where member_id = {$user->id} and name like '%{$keyword}%'  order by created_time desc limit 50";
@@ -1474,77 +1474,57 @@ class LeagueController extends PublicController
 			$groupId[] = $wfz_group['id'];
 			$result_group[$wfz_group['id']] = $wfz_group['name'];
 		}
-		$sql1 = "select a.name,a.benben_id,b.phone, a.group_id, b.is_benben from group_contact_info as a left join group_contact_phone as b on a.id = b.contact_info_id where a.group_id in (".implode(",", $groupId).") group by a.id";//b.is_benben > 0 and
-		$command = $connection->createCommand($sql1);
-		$info = $command->queryAll();
-		$searchPhone = array();
-		$groupPhone = array();
-		if ($info) {
-			foreach ($info as $key => $value) {
-// 				if ($value['phone']) {
-// 				// ?$searchPhone[] = "'".$value['phone']."'";
-// 					$groupPhone[$value['group_id']][] = $value['phone'];
-// 				}
-// 				if ($value['is_benben']) {
-// 					$benbenName[$value['is_benben']] = $value['name'];
-// 					$searchPhone[] = $value['is_benben'];
-// 				}
-				if ($value['benben_id']) {
-					$groupPhone[$value['group_id']][] = $value['benben_id'];
-					$benbenName[$value['benben_id']] = $value['name'];
-					$searchPhone[] = $value['benben_id'];
-				}
-			}
-		}
-		$searchPhone = array_unique($searchPhone);
-		//根据手机号查找犇犇用户
-		$searchMemberInfo = array();
-		if (count($searchPhone) > 0) {
-			$sql1 = "select id, name, poster, nick_name, phone, benben_id  from member where benben_id in (".implode(",", $searchPhone).")";
-			$command = $connection->createCommand($sql1);
-			$mInfo = $command->queryAll();
-			if ($mInfo) {
-				$PinYin = new PYInitials('utf8');
-				foreach ($mInfo as $key => $value) {
-					if (!in_array($value['id'], $allMemberInfo)) {
-						$name = $value['name']?$value['name']:$value['nick_name'];
-						if (isset($benbenName[$value['benben_id']])) {
-							$name = $benbenName[$value['benben_id']];
-						}
-						//$searchMemberInfo[$value['phone']] = array(
-						$searchMemberInfo[$value['benben_id']] = array(
-							'id'=>$value['id'], 
-							'phone'=>$value['phone'], 
-							'is_benben'=>$value['benben_id'], 
-							'name'=>$name, 
-							'pinyin'=>substr($PinYin->getInitials($name), 0, 1),
-							'poster'=>$value['poster'] ? URL.$value['poster'] : ""
-							);		
-					}
-					
+
+		$benbenName = $this->allfriend($user->id,1);
+		$fri = array();
+		if (count($benbenName) > 0) {
+			foreach($benbenName as $k => $e){
+				if (!in_array($k, $allMemberInfo) && $k) {
+					$fri[] = $k;
 				}
 			}
 		}
 
+		//根据手机号查找犇犇用户
+		$PinYin = new PYInitials('utf8');
 		$member_list = array();
-		foreach ($result_group as $key => $value) {
-			$currentGroupPhone = array();
-			$currentMember = array();
-			if (isset($groupPhone[$key])) {
-				$currentGroupPhone = $groupPhone[$key];
-			}
-			if (count($currentGroupPhone)) {
-				foreach($currentGroupPhone as $p){
-					if(isset($searchMemberInfo[$p])){
-						$currentMember[] = $searchMemberInfo[$p];
+		if (count($fri)) {
+			$sql = "select id, name, poster, nick_name, phone, benben_id from member where id in (".implode(",", $fri).")";
+			$command = $connection->createCommand($sql);
+			$info = $command->queryAll();
+			if($info) {
+				foreach ($info as $key => $value) {
+					$name = $value['name'] ? $value['name'] : $value['nick_name'];
+					if (isset($benbenName[$value['id']][0])) {
+						$name = $benbenName[$value['id']][0];
 					}
+					$member_list[] = array(
+							'id' => $value['id'],
+							'group_id'=>$benbenName[$value['id']][1],
+							'phone' => $value['phone'],
+							'is_benben' => $value['benben_id'],
+							'name' => $name,
+							'pinyin' => substr($PinYin->getInitials($name), 0, 1),
+							'poster' => $value['poster'] ? URL . $value['poster'] : ""
+					);
 				}
 			}
-			$member_list[] = array('id'=>$key, 'name'=>$value."(".count($currentMember)."人)", 'member'=>$currentMember);
+
+			$member_list1 = array();
+			foreach ($result_group as $key => $value) {
+				$currentMember = array();
+				foreach ($member_list as $va){
+					if($va['group_id'] == $key){
+						$currentMember[] = $va;
+					}
+				}
+				$member_list1[] = array('id'=>$key, 'name'=>$value."(".count($currentMember)."人)", 'member'=>$currentMember);
+			}
 		}
+
 		$result['ret_num'] = 0;
 		$result['ret_msg'] = '操作成功';
-		$result['member_list'] = $member_list;
+		$result['member_list'] = $member_list1;
 		echo json_encode( $result );
 
 	}

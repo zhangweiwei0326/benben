@@ -1365,8 +1365,7 @@ class GroupController extends PublicController
 			}
 		}
 
-		//$benbenName = $this->getContactIdName($user->id,1);
-		$benbenName = $this->myfriend($user->id,1);
+		$benbenName = $this->allfriend($user->id,1);
 		$fri = array();
 		if (count($benbenName) > 0) {
 			foreach($benbenName as $k => $e){
