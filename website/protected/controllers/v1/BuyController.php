@@ -589,13 +589,15 @@ class BuyController extends PublicController
 			die();
 		}
 		//查询报价信息
-		$sql = "select a.id,a.store_id,a.member_id,a.price,a.accept,a.description,a.created_time,b.nick_name,c.poster,b.huanxin_username,c.name,c.short_name from quote a inner join number_train c on a.store_id = c.id inner join member b on c.member_id = b.id where a.item_id = {$buyid} order by a.created_time desc";
+		$sql = "select a.id,a.store_id,a.member_id,a.price,a.accept,a.description,a.created_time,b.nick_name,c.poster,b.huanxin_username,c.name,c.short_name
+		from quote a inner join number_train c on a.store_id = c.id inner join member b on c.member_id = b.id where a.item_id = {$buyid} order by a.created_time desc";
 		$command = $connection->createCommand($sql);
 		$result1 = $command->queryAll();
 		foreach ($result1 as $key => $value){
 			//查询报价时的附件图片
 			$quoteinfo=QuoteAttachment::model()->findAll("quote_id={$value['id']}");
 			if($quoteinfo) {
+				$quotePoster=array();
 				foreach($quoteinfo as $vq){
 					$quotePoster[]=array(
 						"quote_id"=>$vq['quote_id'],

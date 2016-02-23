@@ -4,6 +4,10 @@ class StoreController extends PublicController
 {
     public $layout = false;
 
+    public function actionDeclaration(){
+        return $this->render();
+    }
+
     /**
      * 号码直通车搜索
      */
