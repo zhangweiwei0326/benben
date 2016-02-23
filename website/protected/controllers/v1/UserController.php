@@ -2575,5 +2575,16 @@ class UserController extends PublicController
         echo json_encode($result);
     }
 
+    /**
+     * 获取用户积分
+     */
+    public function actionGetIntegral(){
+        $this->check_key();
+        $user = $this->check_user();
+        $result['ret_num'] = 0;
+        $result['ret_msg'] = '操作成功';
+        $result['integral']=$user['integral'];
+        echo json_encode($result);
+    }
 
 }
