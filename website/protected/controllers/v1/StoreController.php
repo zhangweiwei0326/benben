@@ -5,7 +5,7 @@ class StoreController extends PublicController
     public $layout = false;
 
     public function actionDeclaration(){
-        return $this->render();
+        return $this->render('declaration');
     }
 
     /**
