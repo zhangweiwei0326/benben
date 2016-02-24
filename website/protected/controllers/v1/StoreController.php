@@ -1558,7 +1558,7 @@ class StoreController extends PublicController
                 $pcreate->online_restrict=5;
                 $pcreate->is_close=1;
                 $pcreate->time=time()+7*24*3600;
-                $pcreate->vip_time=1459353600;//有效期至2016年3月31日00:00:00
+                $pcreate->vip_time=1469894400;//有效期至2016年7月31日00:00:00
                 $pcreate->save();
             }
         }
@@ -1704,8 +1704,9 @@ class StoreController extends PublicController
                 "store_name"=>$apply_store['short_name'],
                 "transfer_id"=>$trans_apply['id'],
                 "content"=>$content,
-                "vip_account"=>3400.00//号码直通车会员剩余金钱，目前暂无
+                "vip_account"=>0.00//号码直通车会员剩余金钱，目前暂无
             );
+            //todo vip_account need to change to a real value
             $this->sendTextMessage($user['huanxin_username'],array(0=>$receive_info['huanxin_username']),$memo,$arr);
             $result['ret_num'] = 0;
             $result['ret_msg'] = "操作成功";

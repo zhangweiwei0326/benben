@@ -422,16 +422,30 @@ class UserController extends PublicController
         }
         include('lib/phpqrcode/phpqrcode.php');
         $re = Member::model()->findAll("benben_id={$benben_id}");
+        if(!$re){
+            $result ['ret_num'] = 211;
+            $result ['ret_msg'] = '用户不存在！';
+            echo json_encode($result);
+        }
         foreach ($re as $v) {
             //生成二维码
             $phone = $v->phone;
+            $oldOne=$v->qrcode;
             $pathinfo = "index.php/v1/user/getqrcode/qr_name/";
             $qrcodeinfo = URL . "/" . $pathinfo . substr(md5($phone), 0, 16) . base64_encode($v->id);
             $qrcodename = "uploads/images/qrcode/" . substr(md5($phone), 0, 16) . base64_encode($v->id) . ".png";
             $v->qrcode = "/" . $qrcodename;
             QRcode::png($qrcodeinfo, $qrcodename);
             $v->update();
+            //删除原始文件
+            if(file_exists($oldOne)){
+                unlink($oldOne);
+            }
         }
+        $result ['ret_num'] = 0;
+        $result ['ret_msg'] = '操作成功';
+        $result['UserQrcode']=URL.$re[0]['qrcode'];
+        echo json_encode($result);
     }
 
     /**
