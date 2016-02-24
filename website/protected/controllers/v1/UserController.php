@@ -414,8 +414,14 @@ class UserController extends PublicController
     //修改二维码
     public function actionQr12()
     {
+        $benben_id=Frame::getIntFromRequest('benben_id');
+        if(!$benben_id){
+            $result ['ret_num'] = 2016;
+            $result ['ret_msg'] = '缺少参数	';
+            echo json_encode($result);
+        }
         include('lib/phpqrcode/phpqrcode.php');
-        $re = Member::model()->findAll();
+        $re = Member::model()->findAll("benben_id={$benben_id}");
         foreach ($re as $v) {
             //生成二维码
             $phone = $v->phone;
