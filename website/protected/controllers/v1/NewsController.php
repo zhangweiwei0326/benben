@@ -519,9 +519,9 @@ class NewsController extends PublicController{
 //			}
 
 			if (count($insertNews) > 0) {
-				$sql = "insert into news (type, sender, member_id, content, status, created_time, identity1,display) values ".implode(",", $insertNews);
-				$command = $connection->createCommand($sql);
-				$result1 = $command->execute();
+//				$sql = "insert into news (type, sender, member_id, content, status, created_time, identity1,display) values ".implode(",", $insertNews);
+//				$command = $connection->createCommand($sql);
+//				$result1 = $command->execute();
 
 				$phoneMemberName = array();//broadcastingLog中的description
 				$phoneMemberId = array();
@@ -547,6 +547,7 @@ class NewsController extends PublicController{
 				}
 				$broadcastingLog->description = $description;
 				$broadcastingLog->created_time = time();
+
 				if($broadcastingLog->save()){
 					if($img1){
 						$tpl_attachment[]="(".$broadcastingLog['id'].",'".$img1."',1)";

@@ -13,6 +13,7 @@
  * @property integer $created_time
  * @property string $content
  * @property integer $is_del
+ * @property integer $type
  */
 class BroadcastingLog extends CActiveRecord
 {
@@ -32,12 +33,10 @@ class BroadcastingLog extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('member_id, league_id, receive_count, created_time, is_del', 'numerical', 'integerOnly'=>true),
-			array('description', 'length', 'max'=>255),
-			array('friend_id, content', 'safe'),
+			array('member_id, league_id, receive_count, created_time, is_del, type', 'numerical', 'integerOnly'=>true),
+			array('friend_id, content, description', 'safe'),
 			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, member_id, league_id, friend_id, receive_count, description, created_time, content, is_del', 'safe', 'on'=>'search'),
+			array('id, member_id, league_id, friend_id, receive_count, description, created_time, content, is_del, type', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +66,7 @@ class BroadcastingLog extends CActiveRecord
 			'created_time' => 'Created Time',
 			'content' => 'Content',
 			'is_del' => 'Is Del',
+			'type' => 'Type',
 		);
 	}
 
@@ -84,7 +84,6 @@ class BroadcastingLog extends CActiveRecord
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
@@ -97,6 +96,7 @@ class BroadcastingLog extends CActiveRecord
 		$criteria->compare('created_time',$this->created_time);
 		$criteria->compare('content',$this->content,true);
 		$criteria->compare('is_del',$this->is_del);
+		$criteria->compare('type',$this->type);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
