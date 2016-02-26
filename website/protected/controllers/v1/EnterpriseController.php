@@ -25,7 +25,7 @@ class EnterpriseController extends PublicController
         }
         $enterpriseall = array();
         if ($eid) {
-            $sql = "select a.id,a.name,a.member_id,a.number,a.type,a.status,a.created_time,a.origin, b.sort,b.id as enterprise_id from enterprise as a left join enterprise_member as b on a.id=b.contact_id where a.id in (" . implode(",", $eid) . ") and b.member_id = {$user->id} order by b.sort asc";//and status = 0
+            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.status,a.created_time,a.origin, b.sort,b.id as enterprise_id from enterprise as a left join enterprise_member as b on a.id=b.contact_id where a.id in (" . implode(",", $eid) . ") and b.member_id = {$user->id} order by b.sort asc";//and status = 0
             $command = $connection->createCommand($sql);
             $enterprise = $command->queryAll();
 
@@ -42,6 +42,7 @@ class EnterpriseController extends PublicController
                         "id" => $value['id'],
                         'enterprise_id' => $value['enterprise_id'],
                         "name" => $value['name'],
+                        "short_name" => $value['short_name'],
                         "member_id" => $value['member_id'],
                         "number" => $value['number'],
                         "type" => $value['type'],
@@ -155,10 +156,10 @@ class EnterpriseController extends PublicController
         $connection = Yii::app()->db;
 
         if ($keyword) {
-            $sql = "select a.id,a.name,a.member_id,a.number,a.type,a.created_time,a.origin,b.enterprise_apply from enterprise as a
+            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,b.enterprise_apply from enterprise as a
             left join enterprise_role as b on a.id=b.enterprise_id  where a.name like '%{$keyword}%' and a.status = 0 order by a.created_time desc limit 50";
         } else {
-            $sql = "select a.id,a.name,a.member_id,a.number,a.type,a.created_time,a.origin,b.enterprise_apply from enterprise as a
+            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,b.enterprise_apply from enterprise as a
             left join enterprise_role as b on a.id=b.enterprise_id  where a.status = 0 order by a.created_time desc limit 50";
         }
         $command = $connection->createCommand($sql);
@@ -190,6 +191,7 @@ class EnterpriseController extends PublicController
                 $enterp = array(
                     "id" => $value['id'],
                     "name" => $value['name'],
+                    "short_name" => $value['short_name'],
                     "member_id" => $value['member_id'],
                     "number" => $value['number'],
                     "in" => $in,
@@ -218,6 +220,7 @@ class EnterpriseController extends PublicController
     {
         $this->check_key();
         $name = Frame::getStringFromRequest('name');
+        $shortName = Frame::getStringFromRequest('short_name');
         $type = Frame::getIntFromRequest('type');
         $province = Frame::getIntFromRequest('province');
         $city = Frame::getIntFromRequest('city');
@@ -267,6 +270,7 @@ class EnterpriseController extends PublicController
         }
         $enterprise_info = new Enterprise();
         $enterprise_info->name = $name;
+        $enterprise_info->short_name = $shortName;
         $enterprise_info->member_id = $user->id;
         $enterprise_info->type = $type;
         $enterprise_info->province = $province;
@@ -302,6 +306,7 @@ class EnterpriseController extends PublicController
             $result['enterprise_info'] = array(
                 "id" => $enterprise_info->id,
                 "name" => $enterprise_info->name,
+                "short_name" => $enterprise_info->short_name,
                 "type" => $enterprise_info->type,
                 "province" => $enterprise_info->province,
                 "city" => $enterprise_info->city,
@@ -1443,6 +1448,27 @@ class EnterpriseController extends PublicController
             //$eid = $enterprise_info->member_id;
             $eid = $user->id;
             $re = EnterpriseMember::model()->find("contact_id = {$enterpriseid} and member_id = {$eid} ");
+            //判断是否有权限将其他好友加入
+            $addFriendAuth=EnterpriseRole::model()->find("enterprise_id={$enterpriseid}");
+            $is_guard=0;//1表示允许管理员添加成员，0表示所有成员都可以添加
+            $is_admin=0;//1表示是管理员，0表示不是管理员
+            if($addFriendAuth){
+                //查询是否是管理员
+                $adminAuth=EnterpriseMemberManage::model()->find("member_id={$re['id']}");
+                if($adminAuth){
+                    $is_admin=$adminAuth['is_manage'];
+                }else{
+                    $is_admin=0;
+                }
+
+                if($addFriendAuth['member_add_other']==1){
+                    $is_guard=1;
+                }else{
+                    $is_guard=0;
+                }
+            }else{
+                $is_guard=0;
+            }
             $phone = $user->phone;
             if ($re) {
                 $short_phone = $re->short_phone ? $re->short_phone : "";
@@ -1455,6 +1481,7 @@ class EnterpriseController extends PublicController
             $result['enterprise_info'] = array(
                 "id" => $enterprise_info->id,
                 "name" => $enterprise_info->name,
+                "short_name" => $enterprise_info->short_name,
                 "type" => $enterprise_info->type,
                 "province" => $enterprise_info->province,
                 "city" => $enterprise_info->city,
@@ -1470,7 +1497,9 @@ class EnterpriseController extends PublicController
                 "remark_name" => $remark_name,
                 "created_time" => $enterprise_info->created_time,
                 "short_length" => $enterprise_info->short_length,
-                "firstin" => $re['firstin']
+                "firstin" => $re['firstin'],
+                "is_guard"=>$is_guard,
+                "is_admin"=>$is_admin,
             );
             //保证第一次弹出内容
             if ($re->firstin == 1) {
@@ -1490,6 +1519,7 @@ class EnterpriseController extends PublicController
         $user = $this->check_user();
 
         $name = Frame::getStringFromRequest('name');
+        $shortName = Frame::getStringFromRequest('short_name');
         $type = Frame::getIntFromRequest('type');
         $province = Frame::getIntFromRequest('province');
         $city = Frame::getIntFromRequest('city');
@@ -1522,6 +1552,9 @@ class EnterpriseController extends PublicController
 
         if ($name) {
             $enterprise_info->name = $name;
+        }
+        if ($shortName) {
+            $enterprise_info->short_name = $shortName;
         }
         if ($type) {
             $enterprise_info->type = $type;
