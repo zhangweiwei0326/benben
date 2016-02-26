@@ -46,7 +46,7 @@ class BxapplyController extends PublicController
 		}
 		
 // 		$info = Bxapply::model()->find("phone = {$user->phone} and member_id = {$user->id}");
-		$info = Bxapply::model()->find(" phone = {$user->phone}");//不是已撤销的
+		$info = Bxapply::model()->find(" phone = {$user->phone} order by id desc");//不是已撤销的
 		$update_flag = false;
 		if($info){
 			if($info->status == 1){
