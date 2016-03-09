@@ -948,7 +948,11 @@ class PublicController extends Controller
             $pmids[]=$v['pm_id'];
             $goods[$v['id']]=$v['pm_id'];
         }
-        $ids=implode(",",$pmids);
+        if($pmids) {
+            $ids = implode(",", $pmids);
+        }else{
+            return array();
+        }
         $connection=Yii::app()->db;
         $sql="select a.poster,a.id,a.short_name,a.member_id,b.id as pm_id from number_train as a left join promotion_manage as b on a.id=b.store_id where b.id in ({$ids})";
         $command=$connection->createCommand($sql);

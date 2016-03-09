@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'enterprise':
  * @property integer $id
  * @property string $name
+ * @property string $short_name
  * @property integer $type
  * @property integer $province
  * @property integer $city
@@ -38,12 +39,12 @@ class Enterprise extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, created_time', 'required'),
-			array('type, province, city, area, street, member_id, number, status, created_time, short_length, origin，out_num', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>255),
+			array('type, province, city, area, street, member_id, number, status, created_time, short_length, origin, out_num', 'numerical', 'integerOnly'=>true),
+			array('name, short_name', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, type, province, city, area, street, description, member_id, number, status, created_time, short_length, origin，out_num', 'safe', 'on'=>'search'),
+			array('id, name, short_name, type, province, city, area, street, description, member_id, number, status, created_time, short_length, origin，out_num', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,6 +67,7 @@ class Enterprise extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
+			'short_name' => 'Short Name',
 			'type' => 'Type',
 			'province' => 'Province',
 			'city' => 'City',
@@ -102,6 +104,7 @@ class Enterprise extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
+		$criteria->compare('short_name',$this->short_name,true);
 		$criteria->compare('type',$this->type);
 		$criteria->compare('province',$this->province);
 		$criteria->compare('city',$this->city);

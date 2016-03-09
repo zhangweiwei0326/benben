@@ -312,16 +312,19 @@ class CrontabscriptController extends Controller
 		$connection = Yii::app()->db;
 		$now=time();
 		$sql1="select c.huanxin_username,a.vip_time from promotion_manage as a left join store_auth as b on a.member_id=b.member_id
-		left join member as c on a.member_id=c.id where b.status=2 and a.vip_time>".$now;
+		left join member as c on a.member_id=c.id where b.status=2 and a.vip_time>".$now." and a.vip_time<=".($now+864000);
 		$command=$connection->createCommand($sql1);
 		$result1=$command->queryAll();
+		$now_time=date("Y-m-d",$now);
 		foreach($result1 as $k=>$v){
-			if(date("Ym",$v['vip_time'])-date("Ym",$now)==10){
-				$this->sendHXMessage($v['huanxin_username'],"您的号码直通车套餐还剩余10天就到期了");
-			}elseif(date("Ym",$v['vip_time'])-date("Ym",$now)==3){
-				$this->sendHXMessage($v['huanxin_username'],"您的号码直通车套餐还剩余3天就到期了");
-			}elseif(date("Ym",$v['vip_time'])-date("Ym",$now)==1){
-				$this->sendHXMessage($v['huanxin_username'],"您的号码直通车套餐在1天内就到期了");
+			$vip=date("Y-m-d",$v['vip_time']);
+			$left=strtotime($vip." 0:0:0")-strtotime($now_time." 0:0:0");
+			if($left==864000){
+				$this->sendHXMessage([$v['huanxin_username']],"您的号码直通车套餐还剩余10天就到期了");
+			}elseif($left==259200){
+				$this->sendHXMessage([$v['huanxin_username']],"您的号码直通车套餐还剩余3天就到期了");
+			}elseif($left==86400){
+				$this->sendHXMessage([$v['huanxin_username']],"您的号码直通车套餐在1天内就到期了");
 			}
 		}
 	}
@@ -334,7 +337,7 @@ class CrontabscriptController extends Controller
 		$connection = Yii::app()->db;
 		$now=strtotime(date("Y-m-d",time())." 0:0:0");
 		$yestoday=$now-86400;
-		$sql="update store_order_info set order_status=5 ,shipping_status=2 where pay_status=2 and
+		$sql="update store_order_info set order_status=5 ,shipping_status=2 ,confirm_time=add_time where pay_status=2 and
 		shipping_time+extend_shipping_time*86400>".$yestoday." and shipping_time+extend_shipping_time*86400<=".$now;
 		$command=$connection->createCommand($sql);
 		$re=$command->execute();
@@ -386,10 +389,12 @@ class CrontabscriptController extends Controller
 			}
 		}
 
-		$sql1="insert into store_comment(comment_type,promotion_id,huanxin_username,user_name,content,comment_rank,add_time,parent_id,member_id,order_id,is_seller)
-		values ".implode(",",$insert_arr);
-		$command=$connection->createCommand($sql1);
-		$re=$command->execute();
+		if($insert_arr) {
+			$sql1 = "insert into store_comment(comment_type,promotion_id,huanxin_username,user_name,content,comment_rank,add_time,parent_id,member_id,order_id,is_seller)
+		values " . implode(",", $insert_arr);
+			$command = $connection->createCommand($sql1);
+			$re = $command->execute();
+		}
 	}
 	/*
 	 *系统推送消息
@@ -398,6 +403,7 @@ class CrontabscriptController extends Controller
  	 * */
 	public function sendHXMessage($username, $content, $arr = array(), $from_user = "admin")
 	{
+		include_once(dirname(__ROOT__)."/lib/Easemob.class.php");
 		$target_type = "users";
 		$ext = array("em_apns_ext" => array("em_push_title" => "{$content}"));
 		$ext = array_merge($ext, $arr);
@@ -408,9 +414,9 @@ class CrontabscriptController extends Controller
 				"app_name" => APP_NAME
 		);
 		$huanxin = new Easemob($options);
-		$re = $huanxin->yy_hxSend($from_user, $username, $content, $target_type, $ext);
-		$re = json_decode($re, true);
-		return $re;
+		$huanxin->yy_hxSend($from_user, $username, $content, $target_type, $ext);
+//		$re = json_decode($re, true);
+//		return $re;
 	}
 
 	/*

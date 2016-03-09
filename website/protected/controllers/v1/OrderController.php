@@ -228,19 +228,21 @@ class OrderController extends PublicController
             //具体状态数据,非取消的订单和退货的
             $where = " where a.member_id=" . $user['id'] . " and a.shipping_status=" . $status . " and a.order_status!=2 and a.order_status!=4";
         }
+        //除去未付款的电脑版订单
+        $where .=" and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
         $sql_num = "select count(1) as num from store_order_info as a " . $where;
         $command = $connection->createCommand($sql_num);
         $num_tpl = $command->queryAll();
         $num = $num_tpl[0]['num'];//总数据条数
         $allpage = ceil($num / $maxnum);//总页数
 
-        //全部订单
-        $sql_num00 = "select count(1) as num from store_order_info as a where a.member_id={$user['id']}";
+        //全部订单（除去未付款的电脑版订单）
+        $sql_num00 = "select count(1) as num from store_order_info as a where a.member_id={$user['id']} and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
         $command = $connection->createCommand($sql_num00);
         $num00_tpl = $command->queryAll();
 
         //获取已下单未发货的数量
-        $sql_num0 = "select count(1) as num from store_order_info as a where a.shipping_status=0 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4";
+        $sql_num0 = "select count(1) as num from store_order_info as a where a.shipping_status=0 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4 and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
         $command = $connection->createCommand($sql_num0);
         $num0_tpl = $command->queryAll();
 
@@ -262,7 +264,7 @@ class OrderController extends PublicController
         //取出每页数据
         if ($p <= $allpage) {
             $sql = "select a.order_id,a.order_sn,a.shipping_status,a.shipping_sn,a.pay_id,a.pay_name,a.goods_amount,a.shipping_fee,a.order_amount,a.pay_status,
-             a.extension_code,a.order_status,b.promotion_id,b.goods_name,b.goods_number,b.promotion_price
+             a.extension_code,a.order_status,b.promotion_id,b.goods_name,b.goods_number,b.promotion_price,b.extension_code as pc_code
             from store_order_info as a left join store_order_goods as b on a.order_id = b.order_id" . $where . " order by a.order_id Desc limit " . ($p - 1) * $maxnum . " ," . $maxnum;
             $command = $connection->createCommand($sql);
             $result0 = $command->queryAll();
@@ -273,7 +275,7 @@ class OrderController extends PublicController
             //获取订单的商品图片信息
             $poster_tpl = Promotion::model()->findAll("id in (" . implode(",", $promotionid_arr) . ")");
             foreach ($poster_tpl as $k => $v) {
-                $poster_tpl[$v['id']] = $v['poster_st'];
+                $pic_tpl[$v['id']] = $v['poster_st'];
                 $is_close[$v['id']] = $v['is_close'] ? $v['is_close'] : 0;
                 $is_out[$v['id']] = $v['valid_right'] > time() ? 0 : 1;
             }
@@ -287,17 +289,57 @@ class OrderController extends PublicController
             foreach ($result0 as $kk => $vv) {
                 $result0[$kk]['store_pic'] = $shopinfo[$vv['promotion_id']]['poster'] ? URL . $this->getThumb($shopinfo[$vv['promotion_id']]['poster']) : "";
                 $result0[$kk]['train_id'] = $shopinfo[$vv['promotion_id']]['id'];
-                if($vv['extension_code']==4||$vv['extension_code']==5){
+
+                //商城图额外展现
+                if($vv['extension_code']==3||$vv['extension_code']==4||$vv['extension_code']==5){
                     $result0[$kk]['short_name'] = "奔犇商城";
+                    $result0[$kk]['store_pic']="";
                 }else{
                     $result0[$kk]['short_name'] = $shopinfo[$vv['promotion_id']]['short_name'];
+                    $result0[$kk]['store_pic'] = $shopinfo[$vv['promotion_id']]['poster'] ? URL . $this->getThumb($shopinfo[$vv['promotion_id']]['poster']) : "";
                 }
-                $result0[$kk]['promotion_pic'] = $poster_tpl[$vv['promotion_id']] ? URL . $this->getThumb($poster_tpl[$vv['promotion_id']]) : "";
+
+                //非系统商店
+                if($vv['extension_code']==0||$vv['extension_code']==1||$vv['extension_code']==2) {
+                    $result0[$kk]['promotion_pic'] = $pic_tpl[$vv['promotion_id']] ? URL . $this->getThumb($pic_tpl[$vv['promotion_id']]) : "";
+                }
+                //系统商店
                 if(!$result0[$kk]['promotion_pic']){
                     if($vv['extension_code']==4){
                         $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/recharge.png";
                     }elseif($vv['extension_code']==5){
-                        $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/auction.png";;
+                        $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/auction.png";
+                    }
+
+                    //0：促销，1：团购，4.充值，11：会员号，10：我要开分店，14：好友联盟，13：大喇叭，12：小喇叭，15：政企
+                    switch($vv['pc_code']){
+                        case "0":
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/promotion.png";
+                            break;
+                        case 1:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/groupbuy.png";
+                            break;
+                        case 4:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/recharge.png";
+                            break;
+                        case 11:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/vip.png";
+                            break;
+                        case 10:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/dispatch.png";
+                            break;
+                        case 14:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/league.png";
+                            break;
+                        case 13:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/bigshut.png";
+                            break;
+                        case 12:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/smallshut.png";
+                            break;
+                        case 15:
+                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/peopleup.png";
+                            break;
                     }
                 }
                 $result0[$kk]['back_status'] = $back_tpl[$vv['order_id']]['status'] ? $back_tpl[$vv['order_id']]['status'] : 0;

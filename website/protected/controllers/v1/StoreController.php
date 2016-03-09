@@ -79,7 +79,7 @@ class StoreController extends PublicController
             }
 
             $distance_sql = ",round(6378.138*2*asin(sqrt(pow(sin( (lat*pi()/180-" . $latitude . "*pi()/180)/2),2)+cos(lat*pi()/180)*cos(" . $latitude . "*pi()/180)* pow(sin( (lng*pi()/180-" . $longitude . "*pi()/180)/2),2)))*1000) as distance";
-            $distance_order = "distance desc,";
+            $distance_order = "distance asc,";
         }
 
         //搜索省市位置/置顶行业
