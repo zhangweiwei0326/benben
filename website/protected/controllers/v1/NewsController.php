@@ -76,7 +76,7 @@ class NewsController extends PublicController{
 			if (isset($benbenName[$value->sender])) {
 				$senderName = $benbenName[$value->sender];
 			}
-
+			
 			
 			$temp = array("id" => $value->id,
 									  "type" => $value->type,

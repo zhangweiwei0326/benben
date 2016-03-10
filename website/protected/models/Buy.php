@@ -17,6 +17,8 @@
  * @property integer $city
  * @property integer $area
  * @property integer $street
+ * @property string $pay_ids
+ * @property float $shipping_fee
  * @property integer $is_close
  * @property integer $is_accept
  */
@@ -40,12 +42,13 @@ class Buy extends CActiveRecord
 		return array(
 			array('title, amount, created_time', 'required'),
 			array('member_id, status, deadline, quoted_number, created_time, province, city, area, street, is_close, is_accept', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>255),
+			array('title, pay_ids', 'length', 'max'=>255),
+			array('shipping_fee', 'numerical'),
 			array('amount', 'length', 'max'=>10),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, amount, description, member_id, status, deadline, quoted_number, created_time, province, city, area, street, is_close, is_accept', 'safe', 'on'=>'search'),
+			array('id, title, amount, description, shipping_fee, pay_ids, member_id, status, deadline, quoted_number, created_time, province, city, area, street, is_close, is_accept', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -81,6 +84,8 @@ class Buy extends CActiveRecord
 			'street' => 'Street',
 			'is_close' => 'Is Close',
 			'is_accept' => 'Is Accept',
+			'pay_ids'=>'Pay Ids',
+			'shipping_fee'=>'Shipping Fee'
 		);
 	}
 
@@ -117,6 +122,8 @@ class Buy extends CActiveRecord
 		$criteria->compare('street',$this->street);
 		$criteria->compare('is_close',$this->is_close);
 		$criteria->compare('is_accept',$this->is_accept);
+		$criteria->compare('pay_ids',$this->pay_ids);
+		$criteria->compare('shipping_fee',$this->shipping_fee);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

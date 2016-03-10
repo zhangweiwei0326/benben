@@ -366,6 +366,8 @@ class BuyController extends PublicController
 		$deadline = Frame::getIntFromRequest('deadline');
 		$description = Frame::getStringFromRequest('description');
 		$industry = Frame::getIntFromRequest('industry');
+		$pay_ids=Frame::getStringFromRequest('pay_ids');//支付方式以,隔开
+		$shipping_fee=Frame::getStringFromRequest('shipping_fee');//邮费
 		$pic[] = Frame::saveImage('pic1', 1);
 		$pic[] = Frame::saveImage('pic2', 1);
 		$pic[] = Frame::saveImage('pic3', 1);
@@ -389,6 +391,8 @@ class BuyController extends PublicController
 			$creation_info->description = $description;
 			$creation_info->industry = $industry;
 			$creation_info->created_time = time();
+			$creation_info->pay_ids = $pay_ids;
+			$creation_info->shipping_fee = $shipping_fee;
 			$creation_info->save();
 
 			//储存图片
@@ -424,6 +428,8 @@ class BuyController extends PublicController
 		$buyid = Frame::getIntFromRequest('buyid');
 		$price = Frame::getStringFromRequest('price');
 		$description = Frame::getStringFromRequest('description');
+		$pay_id = Frame::getStringFromRequest('pay_ids');
+		$shipping_fee = Frame::getStringFromRequest('shipping_fee');
 		$pic[] = Frame::saveImage('pic1', 1);
 		$pic[] = Frame::saveImage('pic2', 1);
 		$pic[] = Frame::saveImage('pic3', 1);
@@ -513,6 +519,8 @@ class BuyController extends PublicController
 			$quote_info->description = $description;
 			$quote_info->member_id = $user->id;
 			$quote_info->created_time = time();
+			$quote_info->shipping_fee = $shipping_fee;
+			$quote_info->pay_id = $pay_id;
 			if ($quote_info->save()) {
 				$buy->quoted_number = $buy->quoted_number + 1;
 				$buy->update();
@@ -574,7 +582,7 @@ class BuyController extends PublicController
 		//$pinfo = $this->pcinfo();
 		$connection = Yii::app()->db;
 		//查询发布人信息
-		$sqla = "select a.id,a.title,a.amount,a.description,a.deadline,a.province,a.city,a.area,a.quoted_number,a.created_time,a.is_close,b.id member_id,b.name,b.nick_name,b.poster,b.address from buy a inner join member b on a.member_id = b.id where a.id = {$buyid}";
+		$sqla = "select a.id,a.title,a.amount,a.description,a.deadline,a.province,a.city,a.area,a.quoted_number,a.created_time,a.is_close,a.pay_ids as pay_methods,a.shipping_fee,b.id member_id,b.name,b.nick_name,b.poster,b.address from buy a inner join member b on a.member_id = b.id where a.id = {$buyid}";
 		$command = $connection->createCommand($sqla);
 		$re = $command->queryAll();
 		//查询发布人直通车信息
@@ -588,8 +596,26 @@ class BuyController extends PublicController
 			echo json_encode( $result );
 			die();
 		}
+
+		//处理支持的报价方式
+		if($re[0]->pay_methods) {
+			$allPays = Payment::model()->findAll("pay_id in (" . $re[0]->pay_methods . ")");
+			$pays=array();//所有支付方式临时数组
+			$pay_arr=array();
+			foreach($allPays as $v){
+				$pay_arr[$v['pay_id']]=$v['pay_name'];
+				$pays[]=array(
+						"pay_id"=>$v['pay_id'],
+						"pay_name"=>$v['pay_name']
+				);
+			}
+			$re[0]['pay_methods']=$pays;
+		}else{
+			$re[0]['pay_methods']=array();
+		}
+
 		//查询报价信息
-		$sql = "select a.id,a.store_id,a.member_id,a.price,a.accept,a.description,a.created_time,b.nick_name,c.poster,b.huanxin_username,c.name,c.short_name
+		$sql = "select a.id,a.store_id,a.pay_id,a.shipping_fee,a.member_id,a.price,a.accept,a.description,a.created_time,b.nick_name,c.poster,b.huanxin_username,c.name,c.short_name
 		from quote a inner join number_train c on a.store_id = c.id inner join member b on c.member_id = b.id where a.item_id = {$buyid} order by a.created_time desc";
 		$command = $connection->createCommand($sql);
 		$result1 = $command->queryAll();
@@ -605,7 +631,8 @@ class BuyController extends PublicController
 					);
 				}
 			}
-			$result1[$key]['poster'] = $value['poster'] ? URL.$value['poster']:""; 
+			$result1[$key]['pay_name'] = $pay_arr ? $pay_arr[$value['pay_id']]:"";
+			$result1[$key]['poster'] = $value['poster'] ? URL.$value['poster']:"";
 			$result1[$key]['quote_pic'] = $quotePoster ? $quotePoster:array();
 			//$result1[$key]['created_time'] = date("Y-m-d H:i:s",$value['created_time']);
 		}

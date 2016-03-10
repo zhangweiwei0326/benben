@@ -171,6 +171,7 @@ class GroupBuyController extends PublicController
     public function actiongroupDetail()
     {
         $this->check_key();
+        $user = $this->check_user();
         $promotionid = Frame::getIntFromRequest('promotionid');
         $promotion = Promotion::model()->find("id={$promotionid} and is_del=0 and is_close=0");
 
@@ -222,6 +223,8 @@ class GroupBuyController extends PublicController
             $result['shipping_fee'] = $promotion['shipping_fee'];
             $result['poster'] = $pic ? $pic : array();
             $result['pay_methods'] = $payinfo ? $payinfo : array();
+            $result['coins'] = $user ? $user->coin : 0;
+            $result['fee'] = $user ? $user->fee : 0;
             $result['comment_num'] = 112;
         }else{
             $result['ret_num'] = 1000;

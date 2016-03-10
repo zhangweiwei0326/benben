@@ -312,7 +312,7 @@ class CrontabscriptController extends Controller
 		$connection = Yii::app()->db;
 		$now=time();
 		$sql1="select c.huanxin_username,a.vip_time from promotion_manage as a left join store_auth as b on a.member_id=b.member_id
-		left join member as c on a.member_id=c.id where b.status=2 and a.vip_time>".$now." and a.vip_time<=".($now+864000);
+		left join member as c on a.member_id=c.id where b.status=2 and a.vip_time>".$now." and a.vip_time<=".($now+950400);
 		$command=$connection->createCommand($sql1);
 		$result1=$command->queryAll();
 		$now_time=date("Y-m-d",$now);

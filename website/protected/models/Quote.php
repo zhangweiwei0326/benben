@@ -10,6 +10,8 @@
  * @property string $price
  * @property string $description
  * @property integer $accept
+ * @property integer $pay_id
+ * @property float $shipping_fee
  * @property integer $created_time
  */
 class Quote extends CActiveRecord
@@ -31,12 +33,13 @@ class Quote extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('price, created_time', 'required'),
-			array('item_id, store_id, accept, created_time', 'numerical', 'integerOnly'=>true),
+			array('item_id, pay_id, store_id, accept, created_time', 'numerical', 'integerOnly'=>true),
+			array('shipping_fee', 'numerical'),
 			array('price', 'length', 'max'=>20),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, item_id, store_id, price, description, accept, created_time', 'safe', 'on'=>'search'),
+			array('id, item_id, store_id, pay_id, shipping_fee, price, description, accept, created_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +66,8 @@ class Quote extends CActiveRecord
 			'price' => 'Price',
 			'description' => 'Description',
 			'accept' => 'Accept',
+			'pay_id' => 'Pay Id',
+			'shipping_fee' => 'Shipping Fee',
 			'created_time' => 'Created Time',
 		);
 	}
@@ -91,6 +96,8 @@ class Quote extends CActiveRecord
 		$criteria->compare('price',$this->price,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('accept',$this->accept);
+		$criteria->compare('pay_id',$this->pay_id);
+		$criteria->compare('shipping_fee',$this->shipping_fee);
 		$criteria->compare('created_time',$this->created_time);
 
 		return new CActiveDataProvider($this, array(

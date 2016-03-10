@@ -23,9 +23,8 @@ class OrderController extends PublicController
         $mobile = Frame::getStringFromRequest('mobile');
         $pay_id = Frame::getIntFromRequest('pay_id');
         $pay_name = Frame::getStringFromRequest('pay_name');
-        $goods_amount = Frame::getStringFromRequest('goods_amount');
-        $shipping_fee = Frame::getStringFromRequest('shipping_fee');
-        $order_amount = Frame::getStringFromRequest('order_amount');
+        $goods_amount = Frame::getStringFromRequest('goods_amount');//商品总金额
+        $shipping_fee = Frame::getStringFromRequest('shipping_fee');//邮费
         $goods_number = Frame::getIntFromRequest('goods_number');
         $extension_code = Frame::getIntFromRequest('extension_code');//活动类型，0促销，1团购，2.我要买,4.会员充值
         if (empty($promotion_id) || empty($pay_id)) {
@@ -34,6 +33,7 @@ class OrderController extends PublicController
             echo json_encode($result);
             die();
         }
+        $order_amount = floatval($goods_amount)+floatval($shipping_fee);//订单应付金额
         //保存订单信息
         $og = new StoreOrderInfo();
         //生成订单号

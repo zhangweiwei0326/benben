@@ -25,7 +25,7 @@ class EnterpriseController extends PublicController
         }
         $enterpriseall = array();
         if ($eid) {
-            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.status,a.created_time,a.origin, b.sort,b.id as enterprise_id from enterprise as a left join enterprise_member as b on a.id=b.contact_id where a.id in (" . implode(",", $eid) . ") and b.member_id = {$user->id} order by b.sort asc";//and status = 0
+            $sql = "select a.id,a.name,a.short_name,a.member_id,a.bulletin,a.number,a.type,a.status,a.created_time,a.origin, b.sort,b.id as enterprise_id from enterprise as a left join enterprise_member as b on a.id=b.contact_id where a.id in (" . implode(",", $eid) . ") and b.member_id = {$user->id} order by b.sort asc";//and status = 0
             $command = $connection->createCommand($sql);
             $enterprise = $command->queryAll();
 
@@ -50,6 +50,7 @@ class EnterpriseController extends PublicController
                         "status" => $value['status'],
                         "created_time" => $value['created_time'],
                         "sort" => $value['sort'],
+                        "origin" => $value['origin'],
                     );
                     $enterpriseall[] = $enterp;
                 }
@@ -156,10 +157,10 @@ class EnterpriseController extends PublicController
         $connection = Yii::app()->db;
 
         if ($keyword) {
-            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,b.enterprise_apply from enterprise as a
+            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,a.description,b.enterprise_apply from enterprise as a
             left join enterprise_role as b on a.id=b.enterprise_id  where a.name like '%{$keyword}%' and a.status = 0 order by a.created_time desc limit 50";
         } else {
-            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,b.enterprise_apply from enterprise as a
+            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,a.description,b.enterprise_apply from enterprise as a
             left join enterprise_role as b on a.id=b.enterprise_id  where a.status = 0 order by a.created_time desc limit 50";
         }
         $command = $connection->createCommand($sql);
@@ -200,6 +201,7 @@ class EnterpriseController extends PublicController
                     "created_time" => $value['created_time'],
                     "tag" => $tag,
                     "enterprise_apply" => $value['enterprise_apply']? $value['enterprise_apply']:1,
+                    "description" => $value['description']? $value['description']:"",
                 );
                 $enterpriseall[] = $enterp;
             }
@@ -1469,6 +1471,12 @@ class EnterpriseController extends PublicController
             }else{
                 $is_guard=0;
             }
+
+            //判断是否是后台创建，显示公告
+            $is_apply=ApplyRegister::model()->find("enterprise_id=".$enterpriseid);
+            if($is_apply){
+                $notice=EnterpriseNotice::model()->find("enterprise_id=".$enterpriseid." order by update_time Desc");
+            }
             $phone = $user->phone;
             if ($re) {
                 $short_phone = $re->short_phone ? $re->short_phone : "";
@@ -1488,6 +1496,8 @@ class EnterpriseController extends PublicController
                 "area" => $enterprise_info->area,
                 "street" => $enterprise_info->street,
                 "description" => $enterprise_info->description,
+                "bulletin" => $notice?$notice->content:"",
+                "update_time" => $notice?$notice->update_time:"",
                 "status" => $enterprise_info->status,
                 "number" => $enterprise_info->number,
                 "ProCity" => $pinfo[0][$enterprise_info->province] . " " . $pinfo[1][$enterprise_info->city] . " " . $pinfo[2][$enterprise_info->area],
@@ -1526,6 +1536,7 @@ class EnterpriseController extends PublicController
         $area = Frame::getIntFromRequest('area');
         $street = Frame::getIntFromRequest('street');
         $description = Frame::getStringFromRequest('description');
+        $bulletin = Frame::getStringFromRequest('bulletin');
         $enterpriseid = Frame::getIntFromRequest('enterpriseid');
         if ($type == 2) {
             $short_phone = Frame::getStringFromRequest('short_phone');
@@ -1574,12 +1585,22 @@ class EnterpriseController extends PublicController
         if ($description) {
             $enterprise_info->description = $description;
         }
-        if ($enterprise_info->update()) {
-            $result['ret_num'] = 0;
-            $result['ret_msg'] = '操作成功';
-            echo json_encode($result);
+        if ($bulletin) {
+            $applys=ApplyRegister::model()->find("enterprise_id=".$enterpriseid);
+            $notice=new EnterpriseNotice();
+            $notice->content=$bulletin;
+            $notice->enterprise_id=$enterpriseid;
+            $notice->update_time=time();
+            $notice->created_time=time();
+            if($applys) {
+                $notice->apply_id = $applys->id;
+            }
+            $notice->save();
         }
-
+        $enterprise_info->update();
+        $result['ret_num'] = 0;
+        $result['ret_msg'] = '操作成功';
+        echo json_encode($result);
     }
 
     /**
