@@ -1,22 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "promotion_manage".
+ * This is the model class for table "news".
  *
- * The followings are the available columns in table 'promotion_manage':
+ * The followings are the available columns in table 'news':
  * @property integer $id
- * @property string $name
- * @property string $image
- * @property integer $created_time
+ * @property integer $user_id
+ * @property integer $shopper_id
+ * @property integer $order_id
+ * @property string $order_sn
+ * @property integer $name
+ * @property integer $consume_time
  */
-class PromotionManage extends CActiveRecord
+class OrderOfflineLog extends CActiveRecord
 {
     /**
      * @return string the associated database table name
      */
     public function tableName()
     {
-        return 'promotion_manage';
+        return 'order_offline_log';
     }
 
     /**
@@ -27,11 +30,11 @@ class PromotionManage extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('member_id,store_id,time,offline_restrict,online_restrict,is_close,vip_time,vip_type,store_type', 'numerical', 'integerOnly'=>true),
-            array('guarantee','numerical'),
+            array('user_id, shopper_id, order_id, consume_time', 'numerical', 'integerOnly'=>true),
+            array('order_sn, name', 'length', 'max'=>45),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, member_id,store_id,guarantee, time,offline_restrict,online_restrict,is_close,vip_time,vip_type,store_type', 'safe', 'on'=>'search'),
+            array('id, user_id, shopper_id, order_id, consume_time, order_sn, name', 'safe', 'on'=>'search'),
         );
     }
 
@@ -53,16 +56,12 @@ class PromotionManage extends CActiveRecord
     {
         return array(
             'id' => 'ID',
-            'store_id' => 'Store Id',
-            'offline_restrict' => 'Offline Restrict',
-            'online_restrict' => 'Online Restrict',
-            'member_id'=>'Member Id',
-            'is_close'=>'Is Close',
-            'time'=>'Time',
-            'vip_time'=>'Vip Time',
-            'vip_type'=>'Vip Type',
-            'store_type'=>'Store Type',
-            'guarantee'=>'Guarantee',
+            'user_id' => 'User Id',
+            'shopper_id' => 'Shopper Id',
+            'order_id' => 'Order Id',
+            'order_sn' => 'Order Sn',
+            'name' => 'Name',
+            'consume_time' => 'Consume Time',
         );
     }
 
@@ -85,16 +84,12 @@ class PromotionManage extends CActiveRecord
         $criteria=new CDbCriteria;
 
         $criteria->compare('id',$this->id);
-        $criteria->compare('store_id',$this->store_id);
-        $criteria->compare('offline_restrict',$this->offline_restrict);
-        $criteria->compare('online_restrict',$this->online_restrict);
-        $criteria->compare('member_id',$this->member_id);
-        $criteria->compare('is_close',$this->is_close);
-        $criteria->compare('time',$this->time);
-        $criteria->compare('vip_time',$this->vip_time);
-        $criteria->compare('vip_type',$this->vip_type);
-        $criteria->compare('store_type',$this->store_type);
-        $criteria->compare('guarantee',$this->guarantee);
+        $criteria->compare('user_id',$this->user_id);
+        $criteria->compare('shopper_id',$this->shopper_id);
+        $criteria->compare('order_id',$this->order_id);
+        $criteria->compare('order_sn',$this->order_sn);
+        $criteria->compare('name',$this->name);
+        $criteria->compare('consume_time',$this->consume_time);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -105,7 +100,7 @@ class PromotionManage extends CActiveRecord
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Splash the static model class
+     * @return News the static model class
      */
     public static function model($className=__CLASS__)
     {

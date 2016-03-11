@@ -367,7 +367,6 @@ class BuyController extends PublicController
 		$description = Frame::getStringFromRequest('description');
 		$industry = Frame::getIntFromRequest('industry');
 		$pay_ids=Frame::getStringFromRequest('pay_ids');//支付方式以,隔开
-		$shipping_fee=Frame::getStringFromRequest('shipping_fee');//邮费
 		$pic[] = Frame::saveImage('pic1', 1);
 		$pic[] = Frame::saveImage('pic2', 1);
 		$pic[] = Frame::saveImage('pic3', 1);
@@ -392,7 +391,6 @@ class BuyController extends PublicController
 			$creation_info->industry = $industry;
 			$creation_info->created_time = time();
 			$creation_info->pay_ids = $pay_ids;
-			$creation_info->shipping_fee = $shipping_fee;
 			$creation_info->save();
 
 			//储存图片
@@ -582,7 +580,7 @@ class BuyController extends PublicController
 		//$pinfo = $this->pcinfo();
 		$connection = Yii::app()->db;
 		//查询发布人信息
-		$sqla = "select a.id,a.title,a.amount,a.description,a.deadline,a.province,a.city,a.area,a.quoted_number,a.created_time,a.is_close,a.pay_ids as pay_methods,a.shipping_fee,b.id member_id,b.name,b.nick_name,b.poster,b.address from buy a inner join member b on a.member_id = b.id where a.id = {$buyid}";
+		$sqla = "select a.id,a.title,a.amount,a.description,a.deadline,a.province,a.city,a.area,a.quoted_number,a.created_time,a.is_close,a.pay_ids as pay_methods,b.id member_id,b.name,b.nick_name,b.poster,b.address from buy a inner join member b on a.member_id = b.id where a.id = {$buyid}";
 		$command = $connection->createCommand($sqla);
 		$re = $command->queryAll();
 		//查询发布人直通车信息
@@ -598,8 +596,8 @@ class BuyController extends PublicController
 		}
 
 		//处理支持的报价方式
-		if($re[0]->pay_methods) {
-			$allPays = Payment::model()->findAll("pay_id in (" . $re[0]->pay_methods . ")");
+		if($re[0]['pay_methods']) {
+			$allPays = Payment::model()->findAll("pay_id in (" . $re[0]['pay_methods'] . ")");
 			$pays=array();//所有支付方式临时数组
 			$pay_arr=array();
 			foreach($allPays as $v){
@@ -932,5 +930,5 @@ class BuyController extends PublicController
 		}
 		echo json_encode( $result );
 	}
-	
+
 }

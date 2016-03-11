@@ -7,6 +7,9 @@
  * @property integer $id
  * @property string $name
  * @property integer $parent_id
+ * @property float $guarantee
+ * @property integer $last
+ * @property integer $level
  * @property integer $created_time
  */
 class Industry extends CActiveRecord
@@ -28,11 +31,12 @@ class Industry extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, created_time', 'required'),
-			array('parent_id, created_time', 'numerical', 'integerOnly'=>true),
+			array('parent_id, created_time,last,level', 'numerical', 'integerOnly'=>true),
+			array('guarantee', 'numerical'),
 			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, parent_id, created_time', 'safe', 'on'=>'search'),
+			array('id, name,last,level,guarantee, parent_id, created_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,6 +61,9 @@ class Industry extends CActiveRecord
 			'name' => 'Name',
 			'parent_id' => 'Parent',
 			'created_time' => 'Created Time',
+			'guarantee' => 'Guarantee',
+			'last' => 'Last',
+			'level' => 'Level',
 		);
 	}
 
@@ -82,6 +89,9 @@ class Industry extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('parent_id',$this->parent_id);
 		$criteria->compare('created_time',$this->created_time);
+		$criteria->compare('guarantee',$this->guarantee);
+		$criteria->compare('last',$this->last);
+		$criteria->compare('level',$this->level);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

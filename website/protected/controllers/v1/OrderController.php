@@ -33,7 +33,7 @@ class OrderController extends PublicController
             echo json_encode($result);
             die();
         }
-        $order_amount = floatval($goods_amount)+floatval($shipping_fee);//订单应付金额
+        $order_amount = floatval($goods_amount) + floatval($shipping_fee);//订单应付金额
         //保存订单信息
         $og = new StoreOrderInfo();
         //生成订单号
@@ -70,12 +70,23 @@ class OrderController extends PublicController
             $gg = new StoreOrderGoods();
             $gg->order_id = $og->order_id;
             $gg->promotion_id = $promotion_id;
-            $pinfo = Promotion::model()->find("id={$promotion_id}");
-            $gg->goods_name = $pinfo['name'];
-            $gg->goods_sn = $pinfo['goods_sn'];
+            if($extension_code==2){
+                $qinfo=Quote::model()->find("id={$promotion_id}");
+                $buyInfo=Buy::model()->find("id={$qinfo['item_id']}");
+                $gg->goods_name = $buyInfo['title'];
+                $gg->origion_price = $qinfo['price'];
+                $gg->promotion_price = $qinfo['price'];
+                $gg->store_id = $qinfo['store_id'];
+            }else {
+                $pinfo = Promotion::model()->find("id={$promotion_id}");
+                $pminfo=PromotionManage::model()->find("id={$pinfo['pm_id']}");
+                $gg->goods_name = $pinfo['name'];
+                $gg->goods_sn = $pinfo['goods_sn'];
+                $gg->origion_price = $pinfo['origion_price'];
+                $gg->promotion_price = $pinfo['promotion_price'];
+                $gg->store_id = $pminfo['store_id'];
+            }
             $gg->goods_number = $goods_number;
-            $gg->origion_price = $pinfo['origion_price'];
-            $gg->promotion_price = $pinfo['promotion_price'];
             $gg->save();
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
@@ -99,6 +110,7 @@ class OrderController extends PublicController
         $user = $this->check_user();
         $order_id = Frame::getIntFromRequest('order_id');
         $order_sn = Frame::getStringFromRequest('order_sn');
+        $extension_code = Frame::getStringFromRequest('extension_code');//接收商品类型
         if (empty($order_id)) {
             $result ['ret_num'] = 2015;
             $result ['ret_msg'] = '参数不全';
@@ -123,24 +135,44 @@ class OrderController extends PublicController
         foreach ($info as $k => $v) {
             //商品信息
             $info[$k]['qrcode'] = $v['qrcode'] ? URL . $v['qrcode'] : "";
-            $pinfo = Promotion::model()->find("id={$v['promotion_id']}");
-            $info[$k]['is_close'] = $pinfo['is_close'] ? $pinfo['is_close'] : 0;
-            $info[$k]['is_out'] = $pinfo['valid_right'] > time() ? 0 : 1;
-            $info[$k]['promotion_pic'] = $pinfo['poster_st'] ? URL . $pinfo['poster_st'] : "";
 
-            $pminfo = PromotionManage::model()->find("id={$pinfo['pm_id']}");
-            $info[$k]['train_id'] = $pminfo['store_id'];
+            if ($extension_code != 2) {
+                $pinfo = Promotion::model()->find("id={$v['promotion_id']}");
+                $info[$k]['is_close'] = $pinfo['is_close'] ? $pinfo['is_close'] : 0;
+                $info[$k]['is_out'] = $pinfo['valid_right'] > time() ? 0 : 1;
+                $info[$k]['promotion_pic'] = $pinfo['poster_st'] ? URL . $pinfo['poster_st'] : "";
 
-            //商家地址/信息
-            $ninfo = NumberTrain::model()->find("id={$pminfo['store_id']}");
-            $info[$k]['lat'] = $ninfo['lat'];
-            $info[$k]['lng'] = $ninfo['lng'];
-            $info[$k]['store_pic'] = $ninfo['poster'] ? URL . $this->getThumb($ninfo['poster']) : "";
-            $info[$k]['short_name'] = $ninfo['short_name'] ? $ninfo['short_name'] : "";
+                $pminfo = PromotionManage::model()->find("id={$pinfo['pm_id']}");
+                $info[$k]['train_id'] = $pminfo['store_id'];
 
-            //商家环信名用于聊天
-            $minfo = Member::model()->find("id={$pminfo['member_id']}");
-            $info[$k]['huanxin_username'] = $minfo['huanxin_username'];
+                //商家地址/信息
+                $ninfo = NumberTrain::model()->find("id={$pminfo['store_id']}");
+                $info[$k]['lat'] = $ninfo['lat'];
+                $info[$k]['lng'] = $ninfo['lng'];
+                $info[$k]['store_pic'] = $ninfo['poster'] ? URL . $this->getThumb($ninfo['poster']) : "";
+                $info[$k]['short_name'] = $ninfo['short_name'] ? $ninfo['short_name'] : "";
+
+
+                //商家环信名用于聊天
+                $minfo = Member::model()->find("id={$pminfo['member_id']}");
+                $info[$k]['huanxin_username'] = $minfo['huanxin_username'];
+            } else {
+                $qinfo = Quote::model()->find("id={$v['promotion_id']}");
+                $info[$k]['train_id'] = $qinfo['store_id'];
+                $qa = QuoteAttachment::model()->find("quote_id={$qinfo['id']}");
+                $info[$k]['promotion_pic'] = $qa['poster'] ? URL . $qa['poster'] : "";
+
+                //商家地址/信息
+                $ninfo = NumberTrain::model()->find("id={$qinfo['store_id']}");
+                $info[$k]['lat'] = $ninfo['lat'];
+                $info[$k]['lng'] = $ninfo['lng'];
+                $info[$k]['store_pic'] = $ninfo['poster'] ? URL . $this->getThumb($ninfo['poster']) : "";
+                $info[$k]['short_name'] = $ninfo['short_name'] ? $ninfo['short_name'] : "";
+
+                //商家环信名用于聊天
+                $minfo = Member::model()->find("id={$qinfo['member_id']}");
+                $info[$k]['huanxin_username'] = $minfo['huanxin_username'];
+            }
 
             //退款
             $backinfo = BackOrder::model()->find("apply_id={$user['id']} and order_id= {$v['order_id']}");
@@ -229,7 +261,7 @@ class OrderController extends PublicController
             $where = " where a.member_id=" . $user['id'] . " and a.shipping_status=" . $status . " and a.order_status!=2 and a.order_status!=4";
         }
         //除去未付款的电脑版订单
-        $where .=" and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
+        $where .= " and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
         $sql_num = "select count(1) as num from store_order_info as a " . $where;
         $command = $connection->createCommand($sql_num);
         $num_tpl = $command->queryAll();
@@ -290,56 +322,68 @@ class OrderController extends PublicController
                 $result0[$kk]['store_pic'] = $shopinfo[$vv['promotion_id']]['poster'] ? URL . $this->getThumb($shopinfo[$vv['promotion_id']]['poster']) : "";
                 $result0[$kk]['train_id'] = $shopinfo[$vv['promotion_id']]['id'];
 
-                //商城图额外展现
-                if($vv['extension_code']==3||$vv['extension_code']==4||$vv['extension_code']==5){
+                //我要买+商城图额外展现
+                if ($vv['extension_code'] == 3 || $vv['extension_code'] == 4 || $vv['extension_code'] == 5) {
+                    //商城图额外展现
                     $result0[$kk]['short_name'] = "奔犇商城";
-                    $result0[$kk]['store_pic']="";
-                }else{
+                    $result0[$kk]['store_pic'] = "";
+                } elseif ($vv['extension_code'] == 2) {
+                    //我要买额外展现
+                    $quoteInfo = Quote::model()->find("id={$vv['promotion_id']}");
+                    if ($quoteInfo) {
+                        $trainInfo = NumberTrain::model()->find("id={$quoteInfo['store_id']}");
+                    }
+                    $result0[$kk]['short_name'] = $trainInfo ? $trainInfo['short_name'] : "";
+                    $result0[$kk]['store_pic'] = $trainInfo ? URL . $trainInfo['poster'] : "";
+                } else {
                     $result0[$kk]['short_name'] = $shopinfo[$vv['promotion_id']]['short_name'];
                     $result0[$kk]['store_pic'] = $shopinfo[$vv['promotion_id']]['poster'] ? URL . $this->getThumb($shopinfo[$vv['promotion_id']]['poster']) : "";
                 }
 
                 //非系统商店
-                if($vv['extension_code']==0||$vv['extension_code']==1||$vv['extension_code']==2) {
+                if ($vv['extension_code'] == 0 || $vv['extension_code'] == 1) {
                     $result0[$kk]['promotion_pic'] = $pic_tpl[$vv['promotion_id']] ? URL . $this->getThumb($pic_tpl[$vv['promotion_id']]) : "";
                 }
                 //系统商店
-                if(!$result0[$kk]['promotion_pic']){
-                    if($vv['extension_code']==4){
-                        $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/recharge.png";
-                    }elseif($vv['extension_code']==5){
-                        $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/auction.png";
-                    }
-
-                    //0：促销，1：团购，4.充值，11：会员号，10：我要开分店，14：好友联盟，13：大喇叭，12：小喇叭，15：政企
-                    switch($vv['pc_code']){
-                        case "0":
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/promotion.png";
-                            break;
-                        case 1:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/groupbuy.png";
-                            break;
-                        case 4:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/recharge.png";
-                            break;
-                        case 11:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/vip.png";
-                            break;
-                        case 10:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/dispatch.png";
-                            break;
-                        case 14:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/league.png";
-                            break;
-                        case 13:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/bigshut.png";
-                            break;
-                        case 12:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/smallshut.png";
-                            break;
-                        case 15:
-                            $result0[$kk]['promotion_pic']=URL."/uploads/images/benbenStore/peopleup.png";
-                            break;
+                if (!$result0[$kk]['promotion_pic']) {
+                    if ($vv['extension_code'] == 4) {
+                        $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/recharge.png";
+                    } elseif ($vv['extension_code'] == 5) {
+                        $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/auction.png";
+                    } elseif ($vv['extension_code'] == 2) {
+                        $att = QuoteAttachment::model()->find("quote_id={$vv['promotion_id']}");
+                        $result0[$kk]['promotion_pic'] = $att ? URL . $att['poster'] : "";
+                    } elseif ($vv['extension_code'] == 3) {
+                        //0：促销，1：团购，4.充值，11：会员号，10：我要开分店，14：好友联盟，13：大喇叭，12：小喇叭，15：政企
+                        switch ($vv['pc_code']) {
+                            case "0":
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/promotion.png";
+                                break;
+                            case 1:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/groupbuy.png";
+                                break;
+                            case 4:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/recharge.png";
+                                break;
+                            case 11:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/vip.png";
+                                break;
+                            case 10:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/dispatch.png";
+                                break;
+                            case 14:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/league.png";
+                                break;
+                            case 13:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/bigshut.png";
+                                break;
+                            case 12:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/smallshut.png";
+                                break;
+                            case 15:
+                                $result0[$kk]['promotion_pic'] = URL . "/uploads/images/benbenStore/peopleup.png";
+                                break;
+                        }
                     }
                 }
                 $result0[$kk]['back_status'] = $back_tpl[$vv['order_id']]['status'] ? $back_tpl[$vv['order_id']]['status'] : 0;
@@ -482,7 +526,7 @@ class OrderController extends PublicController
         }
 
         //账户充值的订单不予退款
-        if ($oinfo['extension_code'] ==4) {
+        if ($oinfo['extension_code'] == 4) {
             $result ['ret_num'] = 511;
             $result ['ret_msg'] = '现金充值不予退款申请，可联系客服处理！';
             echo json_encode($result);
@@ -521,7 +565,7 @@ class OrderController extends PublicController
         $comment_type = Frame::getIntFromRequest('comment_type');//0评论的是促销,1评论的是团购
         $content = Frame::getStringFromRequest('content');
         $comment_rank = Frame::getIntFromRequest('comment_rank');//3好评，2中评，1差评
-        $connection=Yii::app()->db;
+        $connection = Yii::app()->db;
         if (empty($order_id) || empty($comment_type) || empty($content) || empty($comment_rank)) {
             $result ['ret_num'] = 2015;
             $result ['ret_msg'] = '参数不全！';
@@ -564,31 +608,31 @@ class OrderController extends PublicController
                 $stinfo->order_status = 6;
                 $stinfo->update();
 
-                $nowmonth=strtotime(date("Y-m",time())."-1 0:0:0");
-                $month=date("m",time());
-                if($month==12){
-                    $month=1;
-                }else{
+                $nowmonth = strtotime(date("Y-m", time()) . "-1 0:0:0");
+                $month = date("m", time());
+                if ($month == 12) {
+                    $month = 1;
+                } else {
                     $month++;
                 }
-                $nextmonth=strtotime(date("Y",time())."-".$month."-1 0:0:0");
+                $nextmonth = strtotime(date("Y", time()) . "-" . $month . "-1 0:0:0");
                 //好评+1，中评0，差评-1分，number_train
                 //判断同产品/每月/相同买家/卖家之间分数-5<=x<=10
-                $sql="SELECT sum(comment_rank)-2*count(1) as new_red from store_comment
-                WHERE comment_rank>0 and add_time>=".$nowmonth." and add_time<".$nextmonth." and member_id=".$user['id']." and promotion_id=".$promotion_id;
-                $command=$connection->createCommand($sql);
-                $result0=$command->queryAll();
-                if($result0['new_red']<=10&&$result0['new_red']>=-5){
-                    $shopinfo=$this->getShopinfo($promotion_id);
-                    $train=NumberTrain::model()->find("id={$shopinfo[$promotion_id]['id']}");
-                    $train->score=$train['score']+$comment_rank-2;
+                $sql = "SELECT sum(comment_rank)-2*count(1) as new_red from store_comment
+                WHERE comment_rank>0 and add_time>=" . $nowmonth . " and add_time<" . $nextmonth . " and member_id=" . $user['id'] . " and promotion_id=" . $promotion_id;
+                $command = $connection->createCommand($sql);
+                $result0 = $command->queryAll();
+                if ($result0['new_red'] <= 10 && $result0['new_red'] >= -5) {
+                    $shopinfo = $this->getShopinfo($promotion_id);
+                    $train = NumberTrain::model()->find("id={$shopinfo[$promotion_id]['id']}");
+                    $train->score = $train['score'] + $comment_rank - 2;
                     $train->update();
                 }
                 //相同买家/卖家/同产品/1月内，交易成功增加已售数量
-                $num=StoreComment::model()->count("add_time>=".$nowmonth." and add_time<".$nextmonth." and member_id=".$user['id']." and promotion_id=".$promotion_id);
-                if($num<=15){
-                    $pro=Promotion::model()->find("id={$promotion_id}");
-                    $pro->sellcount=$pro['sellcount']+1;
+                $num = StoreComment::model()->count("add_time>=" . $nowmonth . " and add_time<" . $nextmonth . " and member_id=" . $user['id'] . " and promotion_id=" . $promotion_id);
+                if ($num <= 15) {
+                    $pro = Promotion::model()->find("id={$promotion_id}");
+                    $pro->sellcount = $pro['sellcount'] + 1;
                     $pro->update();
                 }
             }
@@ -707,12 +751,12 @@ class OrderController extends PublicController
         $user = $this->check_user();
         $order_id = Frame::getIntFromRequest('order_id');
         $oinfo = StoreComment::model()->findAll("order_id={$order_id}");
-        $tpl=array();
-        $info=array();
+        $tpl = array();
+        $info = array();
         //取各个子评论
         foreach ($oinfo as $k => $v) {
-            if ($v['parent_id']!=0){
-                $tpl[$v['parent_id']][]=array(
+            if ($v['parent_id'] != 0) {
+                $tpl[$v['parent_id']][] = array(
                     'comment_id' => $v['comment_id'],
                     'comment_type' => $v['comment_type'],
                     'promotion_id' => $v['promotion_id'],
@@ -737,7 +781,7 @@ class OrderController extends PublicController
                     'comment_rank' => $vo['comment_rank'],
                     'add_time' => $vo['add_time'],
                     'is_seller' => $vo['is_seller'],//0买家,1卖家
-                    'reply'=>$tpl[$vo['comment_id']]?$tpl[$vo['comment_id']]:array(),
+                    'reply' => $tpl[$vo['comment_id']] ? $tpl[$vo['comment_id']] : array(),
                 );
             }
         }
@@ -779,6 +823,12 @@ class OrderController extends PublicController
         where a.order_sn='" . $order_sn . "'";
         $command = $connection->createCommand($sql);
         $info = $command->queryAll();
+        if (!$info[0]['promotion_id']) {
+            $result ['ret_num'] = 2212;
+            $result ['ret_msg'] = '不存在此订单';
+            echo json_encode($result);
+            die();
+        }
         $pinfo = Promotion::model()->find("pm_id={$pmid['id']} and id={$info[0]['promotion_id']}");
         //加入首图
         $info[0]['promotion_pic'] = $pinfo['poster_st'] ? URL . $this->getThumb($pinfo['poster_st']) : "";
@@ -810,6 +860,7 @@ class OrderController extends PublicController
         $this->check_key();
         $user = $this->check_user();
         $order_id = Frame::getStringFromRequest('order_id');
+        $now = time();
         if (empty($order_id)) {
             $result ['ret_num'] = 2015;
             $result ['ret_msg'] = '参数不全';
@@ -850,10 +901,20 @@ class OrderController extends PublicController
         }
         $soinfo->shipping_status = 2;
         $soinfo->order_status = 5;
+        $soinfo->pay_time = $now;
         if ($soinfo->pay_id == 3) {
             $soinfo->pay_status = 2;
         }
         if ($soinfo->update()) {
+            $log = new OrderOfflineLog();
+            $log->user_id = $soinfo->member_id;
+            $log->shopper_id = $user['id'];
+            $log->order_id = $soinfo->order_id;
+            $log->order_sn = $soinfo->order_sn;
+            $goods = StoreOrderGoods::model()->find("order_id=" . $soinfo->order_id);
+            $log->name = $goods->goods_name;
+            $log->consume_time = $now;
+            $log->save();
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
             echo json_encode($result);
@@ -863,6 +924,23 @@ class OrderController extends PublicController
             echo json_encode($result);
             die();
         }
+    }
+
+    /**
+     * 商家确认消费记录
+     */
+    public function actionConsumeRecords()
+    {
+        $this->check_key();
+        $user = $this->check_user();
+        $connection = Yii::app()->db;
+        $sql = "select * from order_offline_log where shopper_id=" . $user['id'];
+        $command = $connection->createCommand($sql);
+        $res = $command->queryAll();
+        $result['list'] = $res ? $res : array();
+        $result ['ret_num'] = 0;
+        $result ['ret_msg'] = '操作成功';
+        echo json_encode($result);
     }
 
     /*
@@ -880,33 +958,36 @@ class OrderController extends PublicController
         }
         //取出所有商家的产品（包括已下架）
         $traininfo = NumberTrain::model()->find("member_id={$user['id']}");
-        $pminfo = PromotionManage::model()->find("member_id={$user['id']}");
-        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
-        $tpl_pid=array();
-        foreach ($pinfo as $k => $v) {
-            $tpl_pid[] = $v['id'];
-        }
-        if(!$tpl_pid){
-            $result ['ret_num'] = 6554;
-            $result ['ret_msg'] = '亲！您还没有销售出任何商品';
-            echo json_encode($result);
-            die();
-        }
+//        $pminfo = PromotionManage::model()->find("member_id={$user['id']}");
+//        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
+//        $tpl_pid = array();
+//        foreach ($pinfo as $k => $v) {
+//            $tpl_pid[] = $v['id'];
+//        }
+//        if (!$tpl_pid) {
+//            $result ['ret_num'] = 6554;
+//            $result ['ret_msg'] = '亲！您还没有销售出任何商品';
+//            echo json_encode($result);
+//            die();
+//        }
         $connection = Yii::app()->db;
         $maxnum = 10;//最大单页显示数据条数
         if ($status != '0' && $status != '1' && $status != '2' && $status != '4') {
             //status未传,全部数据
-            $where = " where b.promotion_id in (" . implode(",", $tpl_pid) . ")";
+            $where = " where b.store_id = ".$traininfo['id'];
         } else if ($status == 2) {
             //商家待评价,用户已收货，且用户已评价
-            $where = " where b.promotion_id in (" . implode(",", $tpl_pid) . ") and a.shipping_status=2 and a.order_status=6 and a.store_comment_status=0";
+            $where = " where b.store_id =".$traininfo['id'] ." and a.shipping_status=2 and a.order_status=6 and a.store_comment_status=0";
         } else if ($status == 4) {
             //申请退款
-            $where = " where b.promotion_id in (" . implode(",", $tpl_pid) . ") and a.order_status=4";
+            $where = " where b.store_id =".$traininfo['id'] ." and a.order_status=4";
         } else {
             //具体状态数据,非取消的订单和退货的
-            $where = " where b.promotion_id in (" . implode(",", $tpl_pid) . ") and a.shipping_status=" . $status . " and a.order_status!=2 and a.order_status!=4";
+            $where = " where b.store_id =".$traininfo['id'] ." and a.shipping_status=" . $status . " and a.order_status!=2 and a.order_status!=4";
         }
+        //商家订单不包括促销、团购以外的订单
+        $where .= " and (a.extension_code=0 or a.extension_code=1 or a.extension_code=2)";
+
         $sql_num = "select count(1) as num from store_order_info where order_id in (select a.order_id from store_order_goods as b
         left join store_order_info as a on a.order_id=b.order_id " . $where . " GROUP BY b.order_id)";
         $command = $connection->createCommand($sql_num);
@@ -916,43 +997,47 @@ class OrderController extends PublicController
 
         //全部订单
         $sql_num00 = "select count(1) as num from store_order_info where order_id in (select a.order_id from store_order_goods as b
-        left join store_order_info as a on a.order_id=b.order_id where b.promotion_id in (" . implode(",", $tpl_pid) . ") GROUP BY b.order_id)";
+        left join store_order_info as a on a.order_id=b.order_id where b.store_id = ".$traininfo['id']." GROUP BY b.order_id)";
         $command = $connection->createCommand($sql_num00);
         $num00_tpl = $command->queryAll();
 
         //获取已下单未发货的数量
         $sql_num0 = "SELECT COUNT(1) as num from store_order_info where order_id in (select a.order_id from store_order_goods as b
-        left join store_order_info as a on a.order_id=b.order_id where b.promotion_id in (" . implode(",", $tpl_pid) . ") and a.shipping_status=0 and a.order_status!=2 and a.order_status!=4 GROUP BY b.order_id)";
+        left join store_order_info as a on a.order_id=b.order_id where b.store_id = ".$traininfo['id']." and a.shipping_status=0 and a.order_status!=2 and a.order_status!=4 GROUP BY b.order_id)";
         $command = $connection->createCommand($sql_num0);
         $num0_tpl = $command->queryAll();
 
         //获取已发货的=待收货的数量
         $sql_num1 = "SELECT COUNT(1) as num from store_order_info where order_id in (select a.order_id from store_order_goods as b
-        left join store_order_info as a on a.order_id=b.order_id where b.promotion_id in (" . implode(",", $tpl_pid) . ") and a.shipping_status=1 and a.order_status!=2 and a.order_status!=4 GROUP BY b.order_id)";
+        left join store_order_info as a on a.order_id=b.order_id where b.store_id = ".$traininfo['id']." and a.shipping_status=1 and a.order_status!=2 and a.order_status!=4 GROUP BY b.order_id)";
         $command = $connection->createCommand($sql_num1);
         $num1_tpl = $command->queryAll();
 
         //获取用户已收货已评价，商家待评价的数量
         $sql_num2 = "SELECT COUNT(1) as num from store_order_info where order_id in (select a.order_id from store_order_goods as b
-        left join store_order_info as a on a.order_id=b.order_id where b.promotion_id in (" . implode(",", $tpl_pid) . ") and a.shipping_status=2 and a.order_status=6 and a.store_comment_status=0 GROUP BY b.order_id)";
+        left join store_order_info as a on a.order_id=b.order_id where b.store_id = ".$traininfo['id']." and a.shipping_status=2 and a.order_status=6 and a.store_comment_status=0 GROUP BY b.order_id)";
         $command = $connection->createCommand($sql_num2);
         $num2_tpl = $command->queryAll();
 
         //获取已退货的数量
         $sql_num3 = "SELECT COUNT(1) as num from store_order_info where order_id in (select a.order_id from store_order_goods as b
-        left join store_order_info as a on a.order_id=b.order_id where b.promotion_id in (" . implode(",", $tpl_pid) . ") and a.order_status!=2 and a.order_status=4 GROUP BY b.order_id)";
+        left join store_order_info as a on a.order_id=b.order_id where b.store_id = ".$traininfo['id']." and a.order_status!=2 and a.order_status=4 GROUP BY b.order_id)";
         $command = $connection->createCommand($sql_num3);
         $num3_tpl = $command->queryAll();
 
         //取出每页数据
         if ($p <= $allpage) {
             $sql = "select a.order_id,a.order_sn,a.shipping_status,a.shipping_sn,a.pay_id,a.pay_name,a.goods_amount,a.shipping_fee,a.order_amount,a.pay_status,
-             a.order_status,a.member_id,b.promotion_id,b.goods_name,b.goods_number,b.promotion_price
+             a.order_status,a.member_id,a.extension_code,b.promotion_id,b.goods_name,b.goods_number,b.promotion_price
             from store_order_info as a left join store_order_goods as b on a.order_id = b.order_id" . $where . " order by a.order_id Desc limit " . ($p - 1) * $maxnum . " ," . $maxnum;
             $command = $connection->createCommand($sql);
             $result0 = $command->queryAll();
             foreach ($result0 as $k => $v) {
-                $promotionid_arr[] = $v['promotion_id'];
+                if($v['extension_code']!=2) {
+                    $promotionid_arr[] = $v['promotion_id'];
+                }else if($v['extension_code']==2){
+                    $quote_arr[]=$v['promotion_id'];
+                }
                 $order_arr[] = $v['order_id'];
                 $member_arr[] = $v['member_id'];
             }
@@ -963,7 +1048,11 @@ class OrderController extends PublicController
                 $is_close[$v['id']] = $v['is_close'] ? $v['is_close'] : 0;
                 $is_out[$v['id']] = $v['valid_right'] > time() ? 0 : 1;
             }
-
+            //获取我要买详情
+            $qa=QuoteAttachment::model()->findAll("quote_id in (" . implode(",", $quote_arr) . ") group by quote_id");
+            foreach ($qa as $k => $v) {
+                $poster_tpl[$v['quote_id']] = $v['poster'];
+            }
             //获取退款状态
             $backinfo = BackOrder::model()->findAll("train_id={$traininfo['id']} and order_id in (" . implode(",", $order_arr) . ")");
             foreach ($backinfo as $kb => $vb) {
@@ -1015,6 +1104,7 @@ class OrderController extends PublicController
         $user = $this->check_user();
         $order_id = Frame::getIntFromRequest('order_id');
         $order_sn = Frame::getStringFromRequest('order_sn');
+        $extension_code = Frame::getStringFromRequest('extension_code');//商品类型
         if (empty($order_id)) {
             $result ['ret_num'] = 2015;
             $result ['ret_msg'] = '参数不全';
@@ -1039,10 +1129,17 @@ class OrderController extends PublicController
         foreach ($info as $k => $v) {
             //商品信息
             $info[$k]['qrcode'] = $v['qrcode'] ? URL . $v['qrcode'] : "";
-            $pinfo = Promotion::model()->find("id={$v['promotion_id']}");
-            $info[$k]['is_close'] = $pinfo['is_close'] ? $pinfo['is_close'] : 0;
-            $info[$k]['is_out'] = $pinfo['valid_right'] > time() ? 0 : 1;
-            $info[$k]['promotion_pic'] = $pinfo['poster_st'] ? URL . $pinfo['poster_st'] : "";
+            if ($extension_code != 2) {
+                $pinfo = Promotion::model()->find("id={$v['promotion_id']}");
+                $info[$k]['is_close'] = $pinfo['is_close'] ? $pinfo['is_close'] : 0;
+                $info[$k]['is_out'] = $pinfo['valid_right'] > time() ? 0 : 1;
+                $info[$k]['promotion_pic'] = $pinfo['poster_st'] ? URL . $pinfo['poster_st'] : "";
+            } else {
+                $qinfo = Quote::model()->find("id={$v['promotion_id']}");
+                $info[$k]['train_id'] = $qinfo['store_id'];
+                $qa = QuoteAttachment::model()->find("quote_id={$qinfo['id']}");
+                $info[$k]['promotion_pic'] = $qa['poster'] ? URL . $qa['poster'] : "";
+            }
 
             //买家收货地址
             $dis = array("province" => $v['province'], "city" => $v['city'], "area" => $v['area'], "street" => $v['street']);
@@ -1058,14 +1155,6 @@ class OrderController extends PublicController
             $info[$k]['huanxin_username'] = $minfo['huanxin_username'];
             $info[$k]['user_poster'] = $minfo['poster'] ? URL . $minfo['poster'] : "";
             $info[$k]['nick_name'] = $minfo['nick_name'] ? $minfo['nick_name'] : "";
-
-            $storeinfo = NumberTrain::model()->find("member_id={$user['id']}");
-
-            //退款
-            $backinfo = BackOrder::model()->find("train_id={$storeinfo['id']} and order_id= {$v['order_id']}");
-            $info[$k]['back_deal_time'] = $backinfo['deal_time'] ? $backinfo['deal_time'] : 0;
-            $info[$k]['back_apply_time'] = $backinfo['apply_time'] ? $backinfo['apply_time'] : 0;
-            $info[$k]['back_status'] = $backinfo['status'] ? $backinfo['status'] : 0;
         }
 
         $result ['ret_num'] = 0;
@@ -1134,15 +1223,15 @@ class OrderController extends PublicController
             echo json_encode($result);
             die();
         }
-        $sginfo=StoreOrderGoods::model()->find("order_id={$order_id}");
-        $shopinfo=$this->getShopinfo($sginfo['promotion_id']);
-        if($shopinfo[$sginfo['promotion_id']]['member_id']!=$user['id']){
+        $sginfo = StoreOrderGoods::model()->find("order_id={$order_id}");
+        $shopinfo = $this->getShopinfo($sginfo['promotion_id']);
+        if ($shopinfo[$sginfo['promotion_id']]['member_id'] != $user['id']) {
             $result ['ret_num'] = 2590;
             $result ['ret_msg'] = '您不是店主无权退款！';
             echo json_encode($result);
             die();
         }
-        $backinfo->status=5;//商家同意退款
+        $backinfo->status = 5;//商家同意退款
         if ($backinfo->update()) {
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
