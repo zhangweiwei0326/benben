@@ -253,7 +253,7 @@ class Easemob {
 		$url = $this->url . "messages";
 		$access_token = $this->getToken ();
 		$header [] = 'Authorization: Bearer ' . $access_token;
-		$result = $this->postCurl ( $url, $option, $header );
+		$result = $this->postCurl ( $url, $option, $header,'POST',1,$is_back );
 		return $result;
 	}
 	/*

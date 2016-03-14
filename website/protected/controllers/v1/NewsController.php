@@ -305,6 +305,7 @@ class NewsController extends PublicController{
 			echo json_encode( $result );
 			die();
 		}
+		$time1=time();
 		$tpl_attachment=array();//临时附件数组
 		//上传图片至环信服务器
 		if($img1){
@@ -336,7 +337,7 @@ class NewsController extends PublicController{
 		if($audio){
 			$audio_a=$this->upload($audio);
 		}
-
+		$time2=time();
 		//如果有联盟成员单独选择，则优先处理
 		if($legphone){
 			$idinfo=Member::model()->findAll("benben_id in ({$legphone}) and benben_id>0 and id_enable=1");
@@ -376,7 +377,7 @@ class NewsController extends PublicController{
 		foreach($tpl_minfo as $kk=>$vv){
 			$tpl_fall[]=$vv['id'];
 		}
-
+$time3=time();
 		$memberId = array();//发送消息的好友名单
 		$legMember = array();//发联盟好友人员消息
 		$newsArray = array();
@@ -430,87 +431,248 @@ class NewsController extends PublicController{
 			if ($type == 1) {
 				$newsType = 7;
 			}
+			$time4=time();
 			$insertNews = array();
 			if (count($newsArray) > 0) {
+				//发送环信消息,图片、文字分开发
+				$finfo=FriendLeague::model()->find("id={$league}");
+				$poster=$finfo['poster'] ? URL.$finfo['poster'] : "";
+				$other_arr = array("t1" => 1, "t2" => 0,"leg_id"=>$finfo['id'],"leg_poster"=>$poster,"leg_type"=>$finfo['type'],"train_id"=>($identity[0]['id']?$identity[0]['id']:""),"shop"=>($identity[0]['id']?"hz".$user['benben_id']:""),"type"=>$type);
+				$receive_text_arr=array();
+				$receive_aud_arr=array();
+				$receive_img_arr=array();
 				foreach ($newsArray as $key => $value) {
 					$extra="";
-					//发送环信消息,图片、文字分开发
-					$finfo=FriendLeague::model()->find("id={$value['league_id']}");
 					$minfo=Member::model()->find("id={$value['receive']}");
-					$poster=$finfo['poster'] ? URL.$finfo['poster'] : "";
-					$other_arr = array("t1" => 1, "t2" => 0,"leg_id"=>$finfo['id'],"leg_poster"=>$poster,"leg_type"=>$finfo['type'],"train_id"=>($identity[0]['id']?$identity[0]['id']:""),"shop"=>($identity[0]['id']?"hz".$user['benben_id']:""),"type"=>$type);
 					if($content){
-						$this->sendTextMessage($finfo['name'],array(0=>$minfo['huanxin_username']),$content,$other_arr);
+						$receive_text_arr[]=$minfo['huanxin_username'];
 					}
 					if($audio){
-						$this->sendAudMessage($finfo['name'],array(0 => $minfo['huanxin_username']),$audio_a,$audiotime,$other_arr);
+						$receive_aud_arr[]=$minfo['huanxin_username'];
 						$extra.="[语音]";
 					}
 					if($flag){
-						if($img1) {
-							$this->sendIMGMessage($finfo['name'], array(0 => $minfo['huanxin_username']), $img1_a, $img1, $other_arr);
-						}
-						if($img2) {
-							$this->sendIMGMessage($finfo['name'], array(0 => $minfo['huanxin_username']), $img2_a, $img2, $other_arr);
-						}
-						if($img3) {
-							$this->sendIMGMessage($finfo['name'], array(0 => $minfo['huanxin_username']), $img3_a, $img3, $other_arr);
-						}
-						if($img4) {
-							$this->sendIMGMessage($finfo['name'], array(0 => $minfo['huanxin_username']), $img4_a, $img4, $other_arr);
-						}
-						if($img5) {
-							$this->sendIMGMessage($finfo['name'], array(0 => $minfo['huanxin_username']), $img5_a, $img5, $other_arr);
-						}
-						if($img6) {
-							$this->sendIMGMessage($finfo['name'], array(0 => $minfo['huanxin_username']), $img6_a, $img6, $other_arr);
-						}
+						$receive_img_arr[]=$minfo['huanxin_username'];
 						$extra.=" [图片]";
 					}
 
 					$insertNews[] = "(".$newsType.", ".$value['sender'].", ".$value['receive'].", '".$content.$extra."', 0, ".time().", ".$identity1.",0)";
 				}
-			}
 
+				//发送文本环信
+				if($receive_text_arr) {
+					$max=0;
+					$count=0;
+					$send_arr=array();
+					$max=ceil(count($receive_text_arr)/50);
+					foreach($receive_text_arr as $k=>$v){
+						$count++;
+						if(fmod($count,50)==0){
+							$this->sendTextMessage($user['huanxin_username'], $send_arr, $content, $other_arr);
+							$max--;
+							unset($send_arr);
+						}else{
+							$send_arr[]=$v;
+						}
+						if($count==count($receive_text_arr) && count($send_arr)){
+							$this->sendTextMessage($user['huanxin_username'], $send_arr, $content, $other_arr);
+						}
+					}
+				}
+				//发送语言环信
+				if($receive_aud_arr) {
+					$max=0;
+					$count=0;
+					$send_arr=array();
+					$max=ceil(count($receive_aud_arr)/50);
+					foreach($receive_aud_arr as $k=>$v){
+						$count++;
+						if(fmod($count,50)==0){
+							$this->sendAudMessage($user['huanxin_username'],$send_arr,$audio_a,$audiotime,$other_arr);
+							$max--;
+							unset($send_arr);
+						}else{
+							$send_arr[]=$v;
+						}
+						if($count==count($receive_aud_arr) && count($send_arr)){
+							$this->sendAudMessage($user['huanxin_username'],$send_arr,$audio_a,$audiotime,$other_arr);
+						}
+					}
+				}
+				//发送图片环信
+				if($receive_img_arr) {
+					$max=0;
+					$count=0;
+					$send_arr=array();
+					$max=ceil(count($receive_img_arr)/50);
+					foreach($receive_img_arr as $k=>$v){
+						$count++;
+						if(fmod($count,50)==0){
+							if($img1) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img1_a, $img1, $other_arr,1);
+							}
+							if($img2) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img2_a, $img2, $other_arr,1);
+							}
+							if($img3) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img3_a, $img3, $other_arr,1);
+							}
+							if($img4) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img4_a, $img4, $other_arr,1);
+							}
+							if($img5) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img5_a, $img5, $other_arr,1);
+							}
+							if($img6) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img6_a, $img6, $other_arr,1);
+							}
+							$max--;
+							unset($send_arr);
+						}else{
+							$send_arr[]=$v;
+						}
+						if($count==count($receive_img_arr) && count($send_arr)){
+							if($img1) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img1_a, $img1, $other_arr,1);
+							}
+							if($img2) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img2_a, $img2, $other_arr,1);
+							}
+							if($img3) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img3_a, $img3, $other_arr,1);
+							}
+							if($img4) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img4_a, $img4, $other_arr,1);
+							}
+							if($img5) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img5_a, $img5, $other_arr,1);
+							}
+							if($img6) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img6_a, $img6, $other_arr,1);
+							}
+						}
+					}
+				}
+			}
+			$time5=time();
 			if (count($allfriendphone)) {
+				//发送环信消息,图片、文字分开发
+				$other_arr = array("t1" => 1, "t2" => 0,"train_id"=>($identity[0]['id']?$identity[0]['id']:0),"shop"=>($identity[0]['id']?"hz".$user['benben_id']:""),"type"=>$type);
+				$receive_text_arr=array();
+				$receive_aud_arr=array();
+				$receive_img_arr=array();
 				foreach($allfriendphone as $value){
 					$extra="";
-					//发送环信消息,图片、文字分开发
-					$other_arr = array("t1" => 1, "t2" => 0,"train_id"=>($identity[0]['id']?$identity[0]['id']:0),"shop"=>($identity[0]['id']?"hz".$user['benben_id']:""),"type"=>$type);
 					if($content){
-						$this->sendTextMessage($user['huanxin_username'],array(0=>$value['huanxin_username']),$content,$other_arr);
+						$receive_text_arr[]=$value['huanxin_username'];
 					}
 					if($audio){
-						$this->sendAudMessage($user['huanxin_username'],array(0 => $value['huanxin_username']),$audio_a,$audiotime,$other_arr);
+						$receive_aud_arr[]=$value['huanxin_username'];
 						$extra.="[语音]";
 					}
 					if($flag){
-						if($img1) {
-							$this->sendIMGMessage($user['huanxin_username'], array(0 => $value['huanxin_username']), $img1_a, $img1, $other_arr);
-						}
-						if($img2) {
-							$this->sendIMGMessage($user['huanxin_username'], array(0 => $value['huanxin_username']), $img2_a, $img2, $other_arr);
-						}
-						if($img3) {
-							$this->sendIMGMessage($user['huanxin_username'], array(0 => $value['huanxin_username']), $img3_a, $img3, $other_arr);
-						}
-						if($img4) {
-							$this->sendIMGMessage($user['huanxin_username'], array(0 => $value['huanxin_username']), $img4_a, $img4, $other_arr);
-						}
-						if($img5) {
-							$this->sendIMGMessage($user['huanxin_username'], array(0 => $value['huanxin_username']), $img5_a, $img5, $other_arr);
-						}
-						if($img6) {
-							$this->sendIMGMessage($user['huanxin_username'], array(0 => $value['huanxin_username']), $img6_a, $img6, $other_arr);
-						}
+						$receive_img_arr[]=$value['huanxin_username'];
 						$extra.="[图片]";
 					}
-
 					$insertNews[] = "(".$newsType.", ".$user->id.", ".$value['id'].", '".$content.$extra."', 0, ".time().", ".$identity1.",0)";
-					
+				}
+
+				//发送文本环信
+				if($receive_text_arr) {
+					$max=0;
+					$count=0;
+					$send_arr=array();
+					$max=ceil(count($receive_text_arr)/50);
+					foreach($receive_text_arr as $k=>$v){
+						$count++;
+						if(fmod($count,50)==0){
+							$this->sendTextMessage($user['huanxin_username'], $send_arr, $content, $other_arr);
+							$max--;
+							unset($send_arr);
+						}else{
+							$send_arr[]=$v;
+						}
+						if($count==count($receive_text_arr) && count($send_arr)){
+							$this->sendTextMessage($user['huanxin_username'], $send_arr, $content, $other_arr);
+						}
+					}
+				}
+				//发送语言环信
+				if($receive_aud_arr) {
+					$max=0;
+					$count=0;
+					$send_arr=array();
+					$max=ceil(count($receive_aud_arr)/50);
+					foreach($receive_aud_arr as $k=>$v){
+						$count++;
+						if(fmod($count,50)==0){
+							$this->sendAudMessage($user['huanxin_username'],$send_arr,$audio_a,$audiotime,$other_arr);
+							$max--;
+							unset($send_arr);
+						}else{
+							$send_arr[]=$v;
+						}
+						if($count==count($receive_aud_arr) && count($send_arr)){
+							$this->sendAudMessage($user['huanxin_username'],$send_arr,$audio_a,$audiotime,$other_arr);
+						}
+					}
+				}
+				//发送图片环信
+				if($receive_img_arr) {
+					$max=0;
+					$count=0;
+					$send_arr=array();
+					$max=ceil(count($receive_img_arr)/50);
+					foreach($receive_img_arr as $k=>$v){
+						$count++;
+						if(fmod($count,50)==0){
+							if($img1) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img1_a, $img1, $other_arr,1);
+							}
+							if($img2) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img2_a, $img2, $other_arr,1);
+							}
+							if($img3) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img3_a, $img3, $other_arr,1);
+							}
+							if($img4) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img4_a, $img4, $other_arr,1);
+							}
+							if($img5) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img5_a, $img5, $other_arr,1);
+							}
+							if($img6) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img6_a, $img6, $other_arr,1);
+							}
+							$max--;
+							unset($send_arr);
+						}else{
+							$send_arr[]=$v;
+						}
+						if($count==count($receive_img_arr) && count($send_arr)){
+							if($img1) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img1_a, $img1, $other_arr,1);
+							}
+							if($img2) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img2_a, $img2, $other_arr,1);
+							}
+							if($img3) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img3_a, $img3, $other_arr,1);
+							}
+							if($img4) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img4_a, $img4, $other_arr,1);
+							}
+							if($img5) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img5_a, $img5, $other_arr,1);
+							}
+							if($img6) {
+								$this->sendIMGMessage($user['huanxin_username'], $send_arr, $img6_a, $img6, $other_arr,1);
+							}
+						}
+					}
 				}
 			}
-
+			$time6=time();
 //			$league_count = 0;
 //			if ($league > 0&& $legphone>0) {
 //				$league_count = max(0, $this->getLeagueCount($league)-1);
@@ -577,10 +739,13 @@ class NewsController extends PublicController{
 					}
 				}
 			}
-
+			$time7=time();
 			$this->addIntegral($user->id, 10);	
 			$result['ret_num'] = 0;
 			$result['ret_msg'] = '小喇叭发送成功';
+			$result['allTime']=array(
+				$time1,$time2,$time3,$time4,$time5,$time6,$time7
+			);
 			echo json_encode( $result );
 
 		}else{
