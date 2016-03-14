@@ -20,7 +20,7 @@
  * @property integer $street
  * @property string $cornet
  * @property integer $integral
- * @property integer $coin
+ * @property float $coin
  * @property integer $status
  * @property integer $created_time
  * @property string $token
@@ -38,6 +38,8 @@
  * @property integer $group_disable
  * @property integer $store_disable
  * @property integer $league_disable
+ * @property float $fee
+ * @property float $guarantee
  */
 class Member extends CActiveRecord
 {
@@ -57,13 +59,13 @@ class Member extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('benben_id, sex, province, city, area, street, integral, coin, status, created_time, userinfo, creation_disable, buy_disable, enterprise_disable, group_disable, store_disable, league_disable', 'numerical', 'integerOnly'=>true),
+			array('benben_id, sex, province, city, area, street, integral, status, created_time, userinfo, creation_disable, buy_disable, enterprise_disable, group_disable, store_disable, league_disable', 'numerical', 'integerOnly'=>true),
 			array('name, nick_name, id_card, cornet', 'length', 'max'=>20),
 			array('poster, card_poster, token, huanxin_username, huanxin_uuid, address, qrcode, huanxin_password', 'length', 'max'=>255),
 			array('phone', 'length', 'max'=>11),
 			array('age, password', 'length', 'max'=>40),
 			array('phone_model', 'length', 'max'=>45),
-			array('fee,guarantee', 'numerical'),
+			array('fee, guarantee, coin', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, benben_id, fee, guarantee, name, nick_name, poster, phone, id_card, card_poster, sex, age, province, city, area, street, cornet, integral, coin, status, created_time, token, password, huanxin_username, huanxin_uuid, userinfo, address, qrcode, huanxin_password, phone_model, creation_disable, buy_disable, enterprise_disable, group_disable, store_disable, league_disable', 'safe', 'on'=>'search'),
