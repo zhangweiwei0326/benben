@@ -1222,6 +1222,7 @@ class StoreController extends PublicController
     public function actionHelpcollect(){
         $this->check_key();
         $user = $this->check_user();
+        $is_exist=PromotionManageAttach::model()->find("member_id={$user['id']} and is_member_ico=1 and overdue_date>".time());
         $traininfo=NumberTrain::model()->find("member_id={$user['id']} and is_close=0");
         if(!$traininfo){
             $result['ret_num'] = 122;
@@ -1272,8 +1273,15 @@ class StoreController extends PublicController
             $is_gb=0;
         }
 
-        //判断保证金会员是否开通vip_type=2（由于保证金会员暂且没有，全部设为未开通）
+        //判断会员号是否开通涉及promotion_manage_attach（由于保证金会员暂且没有，全部设为未开通）
         $is_vip=0;
+        if($is_exist){
+            $is_vip=1;
+            $vip_num=$is_exist['person_num'];
+        }else{
+            $is_vip=0;
+            $vip_num=0;
+        }
 
         $result ['ret_num'] = 0;
         $result ['ret_msg'] = '操作成功';
@@ -1282,6 +1290,7 @@ class StoreController extends PublicController
         $result ['is_po'] = $is_po;
         $result ['is_gb'] = $is_gb;
         $result ['is_vip'] = $is_vip;
+        $result ['vip_num'] = $vip_num;
         echo json_encode($result);
     }
 
