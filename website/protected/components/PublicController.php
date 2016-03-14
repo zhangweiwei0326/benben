@@ -1105,4 +1105,157 @@ class PublicController extends Controller
             }
         }
     }
+
+    //公钥加密
+    function encrypt_data_public($data_to_encrypt,$public_key_path)
+    {
+        header("Content-Type:text/html;charset=utf-8");
+        date_default_timezone_set('Asia/Shanghai');
+        $string_to_encrypt = $data_to_encrypt;
+
+
+        if (! file_exists($public_key_path))
+        {
+            return 0;
+        }
+
+        $fp = fopen ( $public_key_path, "r" );
+        $public_key_tmp = fread ( $fp, 8192 );
+        fclose( $fp );
+
+
+        $public_key = openssl_get_publickey($public_key_tmp);
+
+
+        if (!$public_key)
+        {
+            openssl_free_key( $public_key );
+            return 0;
+        }
+
+
+        openssl_public_encrypt( $string_to_encrypt, $encrypted_data_tmp, $public_key );
+
+
+        if( empty( $encrypted_data_tmp))
+        {
+            openssl_free_key( $public_key );
+            return 0;
+        }
+
+        $ret = base64_encode( $encrypted_data_tmp );
+        return $ret;
+    }
+
+    //私钥解密
+    function decrypt_data_private($encrypted_data,$private_key_path)
+    {
+        header("Content-Type:text/html;charset=utf-8");
+        date_default_timezone_set('Asia/Shanghai');
+        if(! file_exists($private_key_path))
+        {
+            return 001;
+        }
+
+        $fp=fopen ($private_key_path,"r");
+        $private_key_tmp = fread( $fp, 8192 );
+        fclose($fp);
+
+
+        $private_key = openssl_get_privatekey( $private_key_tmp );
+
+
+
+        if (!$private_key)
+        {
+            return 002;
+        }
+
+        $ret = openssl_private_decrypt( base64_decode($encrypted_data), $decrypted, $private_key );
+
+        if (!$ret)
+        {
+            openssl_free_key($private_key);
+            return 003;
+        }
+
+        openssl_free_key($private_key);
+        return $decrypted;
+    }
+
+    //私钥加密
+    function encrypt_data_private($data_to_encrypt,$private_key_path)
+    {
+        header("Content-Type:text/html;charset=utf-8");
+        date_default_timezone_set('Asia/Shanghai');
+        $string_to_encrypt = $data_to_encrypt;
+
+
+        if (! file_exists($private_key_path))
+        {
+            return 0;
+        }
+
+        $fp = fopen ( $private_key_path, "r" );
+        $private_key_tmp = fread ( $fp, 8192 );
+        fclose( $fp );
+
+
+        $private_key = openssl_get_privatekey($private_key_tmp);
+
+
+        if (!$private_key)
+        {
+            openssl_free_key( $private_key );
+            return 0;
+        }
+
+
+        openssl_private_encrypt( $string_to_encrypt, $encrypted_data_tmp, $private_key );
+
+
+        if( empty( $encrypted_data_tmp))
+        {
+            openssl_free_key( $private_key );
+            return 0;
+        }
+
+        $ret = base64_encode( $encrypted_data_tmp );
+        return $ret;
+    }
+
+    //公钥解密
+    function decrypt_data_public($encrypted_data,$public_key_path)
+    {
+        header("Content-Type:text/html;charset=utf-8");
+        date_default_timezone_set('Asia/Shanghai');
+        if(! file_exists($public_key_path))
+        {
+            return 0;
+        }
+
+        $fp=fopen ($public_key_path,"r");
+        $public_key_tmp = fread( $fp, 8192 );
+        fclose($fp);
+
+
+        $public_key = openssl_get_publickey( $public_key_tmp );
+
+
+
+        if (!$public_key)
+        {
+            return 0;
+        }
+
+        $ret = openssl_public_decrypt( base64_decode($encrypted_data), $decrypted, $public_key );
+
+        if (!$ret)
+        {
+            openssl_free_key($public_key);
+            return 0;
+        }
+        openssl_free_key($public_key);
+        return $decrypted;
+    }
 }
