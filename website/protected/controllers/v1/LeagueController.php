@@ -737,6 +737,10 @@ class LeagueController extends PublicController
 			echo json_encode( $result );
 			die ();
 		}
+		$up_rights=StoreRights::model()->find("member_id={$enterprise['member_id']}");
+		if($up_rights && $up_rights['overdue_date']>time()){
+			$max_chief=$up_rights['person_num'];
+		}
 		$memberType = $info['type'];
 		$memberRemark = $info['remark_content']?$info['remark_content']:$info['member_id'];
 		$connection = Yii::app()->db;
@@ -1400,8 +1404,8 @@ class LeagueController extends PublicController
 			$dSql = "delete from league_member where league_id = {$enterpriseid} and remark_content = '{$memberid}'";
 			$command = $connection->createCommand($dSql);
 			$resultn = $command->execute();
-			$enterprise->number = $enterprise->number - (1+$resultn);
-			$enterprise->save();
+//			$enterprise->number = $enterprise->number - (1+$resultn);
+//			$enterprise->save();
 		}else{
 			$info->delete();
 			$enterprise->number = $enterprise->number - 1;
