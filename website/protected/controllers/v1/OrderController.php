@@ -296,7 +296,7 @@ class OrderController extends PublicController
         //取出每页数据
         if ($p <= $allpage) {
             $sql = "select a.order_id,a.order_sn,a.shipping_status,a.shipping_sn,a.pay_id,a.pay_name,a.goods_amount,a.shipping_fee,a.order_amount,a.pay_status,
-             a.extension_code,a.order_status,b.promotion_id,b.goods_name,b.goods_number,b.promotion_price,b.extension_code as pc_code
+             a.extension_code,a.order_status,b.store_id as train_id, b.promotion_id,b.goods_name,b.goods_number,b.promotion_price,b.extension_code as pc_code
             from store_order_info as a left join store_order_goods as b on a.order_id = b.order_id" . $where . " order by a.order_id Desc limit " . ($p - 1) * $maxnum . " ," . $maxnum;
             $command = $connection->createCommand($sql);
             $result0 = $command->queryAll();
@@ -320,7 +320,6 @@ class OrderController extends PublicController
             $shopinfo = $this->getShopinfo(implode(",", $promotionid_arr));
             foreach ($result0 as $kk => $vv) {
                 $result0[$kk]['store_pic'] = $shopinfo[$vv['promotion_id']]['poster'] ? URL . $this->getThumb($shopinfo[$vv['promotion_id']]['poster']) : "";
-                $result0[$kk]['train_id'] = $shopinfo[$vv['promotion_id']]['id'];
 
                 //我要买+商城图额外展现
                 if ($vv['extension_code'] == 3 || $vv['extension_code'] == 4 || $vv['extension_code'] == 5) {
@@ -338,6 +337,7 @@ class OrderController extends PublicController
                 } else {
                     $result0[$kk]['short_name'] = $shopinfo[$vv['promotion_id']]['short_name'];
                     $result0[$kk]['store_pic'] = $shopinfo[$vv['promotion_id']]['poster'] ? URL . $this->getThumb($shopinfo[$vv['promotion_id']]['poster']) : "";
+                    $result0[$kk]['train_id'] = $shopinfo[$vv['promotion_id']]['id'];
                 }
 
                 //非系统商店
@@ -1042,16 +1042,20 @@ class OrderController extends PublicController
                 $member_arr[] = $v['member_id'];
             }
             //获取订单的商品图片信息
-            $poster_tpl = Promotion::model()->findAll("id in (" . implode(",", $promotionid_arr) . ")");
-            foreach ($poster_tpl as $k => $v) {
-                $poster_tpl[$v['id']] = $v['poster_st'];
-                $is_close[$v['id']] = $v['is_close'] ? $v['is_close'] : 0;
-                $is_out[$v['id']] = $v['valid_right'] > time() ? 0 : 1;
+            if($promotionid_arr) {
+                $poster_tpl = Promotion::model()->findAll("id in (" . implode(",", $promotionid_arr) . ")");
+                foreach ($poster_tpl as $k => $v) {
+                    $poster_tpl[$v['id']] = $v['poster_st'];
+                    $is_close[$v['id']] = $v['is_close'] ? $v['is_close'] : 0;
+                    $is_out[$v['id']] = $v['valid_right'] > time() ? 0 : 1;
+                }
             }
             //获取我要买详情
-            $qa=QuoteAttachment::model()->findAll("quote_id in (" . implode(",", $quote_arr) . ") group by quote_id");
-            foreach ($qa as $k => $v) {
-                $poster_tpl[$v['quote_id']] = $v['poster'];
+            if($quote_arr) {
+                $qa = QuoteAttachment::model()->findAll("quote_id in (" . implode(",", $quote_arr) . ") group by quote_id");
+                foreach ($qa as $k => $v) {
+                    $poster_quote_tpl[$v['quote_id']] = $v['poster'];
+                }
             }
             //获取退款状态
             $backinfo = BackOrder::model()->findAll("train_id={$traininfo['id']} and order_id in (" . implode(",", $order_arr) . ")");
@@ -1070,7 +1074,9 @@ class OrderController extends PublicController
                 $result0[$kk]['user_poster'] = $userpic[$vv['member_id']] ? URL . $userpic[$vv['member_id']] : "";
                 $result0[$kk]['nick_name'] = $usernick[$vv['member_id']] ? $usernick[$vv['member_id']] : "";
                 $result0[$kk]['huanxin_username'] = $userconnect[$vv['member_id']] ? $userconnect[$vv['member_id']] : "";
-                $result0[$kk]['promotion_pic'] = $poster_tpl[$vv['promotion_id']] ? URL . $this->getThumb($poster_tpl[$vv['promotion_id']]) : "";
+                $result0[$kk]['promotion_pic'] = $vv['extension_code']==2?
+                    ($poster_quote_tpl[$vv['promotion_id']] ? URL . $this->getThumb($poster_quote_tpl[$vv['promotion_id']]) : ""):
+                    ($poster_tpl[$vv['promotion_id']] ? URL . $this->getThumb($poster_tpl[$vv['promotion_id']]) : "");
                 $result0[$kk]['back_status'] = $back_tpl[$vv['order_id']]['status'] ? $back_tpl[$vv['order_id']]['status'] : 0;
                 $result0[$kk]['back_apply_time'] = $back_tpl[$vv['order_id']]['apply_time'] ? $back_tpl[$vv['order_id']]['apply_time'] : 0;
                 $result0[$kk]['back_deal_time'] = $back_tpl[$vv['order_id']]['deal_time'] ? $back_tpl[$vv['order_id']]['deal_time'] : 0;
