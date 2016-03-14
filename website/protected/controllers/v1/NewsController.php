@@ -297,11 +297,19 @@ class NewsController extends PublicController{
 		}
 
 		//1个月只能够发30天小喇叭
+		//购买的小喇叭数量
+		$is_exist_horn=PromotionManageAttach::model()->find("member_id={$user['id']}");
+		if($is_exist_horn){
+			$extra_samll_horn=$is_exist_horn['small_horn_num'];
+		}else{
+			$extra_samll_horn=0;
+		}
 		$command = $connection->createCommand("select count(*) as c from broadcasting_log where member_id = {$user->id} and created_time >= ".strtotime(date('Y-m-01', strtotime(date("Y-m-d")))));
 		$authority = $command->queryAll();
-		if ($authority && $authority[0]['c'] > 30) {
+
+		if ($authority && $authority[0]['c'] >= 30+$extra_samll_horn) {
 			$result['ret_num'] = 5301;
-			$result['ret_msg'] = '你本月已经发送了30条小喇叭';
+			$result['ret_msg'] ="'你本月小喇叭已经用完";
 			echo json_encode( $result );
 			die();
 		}
@@ -740,7 +748,12 @@ class NewsController extends PublicController{
 				}
 			}
 //			$time7=time();
-			$this->addIntegral($user->id, 10);	
+			$this->addIntegral($user->id, 10);
+			//发完小喇叭检查购买喇叭数量是否需要递减
+			if($authority[0]['c'] >=30 && $authority[0]['c']<=30+$extra_samll_horn){
+				$is_exist_horn->small_horn_num=$is_exist_horn->small_horn_num-($authority[0]['c']-30)-1;
+				$is_exist_horn->save();
+			}
 			$result['ret_num'] = 0;
 			$result['ret_msg'] = '小喇叭发送成功';
 //			$result['allTime']=array(
@@ -812,8 +825,14 @@ class NewsController extends PublicController{
 		$command = $connection->createCommand("select count(*) as c from broadcasting_log where member_id = ".$user->id." and created_time >= ".strtotime(date('Y-m-01', strtotime(date("Y-m-d")))));
 		$authority = $command->queryAll();
 		$authorityNumber = 30;
+		$is_exist=PromotionManageAttach::model()->find("member_id={$user['id']}");
+		if($is_exist['small_horn_num']){
+			$all_small=$is_exist['small_horn_num'];
+		}else{
+			$all_small=0;
+		}
 		if ($authority) {
-			$authorityNumber = 30 - $authority[0]['c'];
+			$authorityNumber = 30 - $authority[0]['c'] + $all_small;
 		}
 		if ($infoQuery) {
 			$friendIds = array();
