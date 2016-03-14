@@ -168,10 +168,12 @@ class StoreCommentController extends PublicController
         $info = array();
         $tpl = array();
         //查询非商家的主回复
-        $sql = "select a.*,b.nick_name,b.poster from store_comment as a left join member as b on a.member_id=b.id where a.promotion_id in (" . implode(",", $promotion_id_arr) . ") and ((a.parent_id=0 and a.is_seller!=1) or
+        if($promotion_id_arr) {
+            $sql = "select a.*,b.nick_name,b.poster from store_comment as a left join member as b on a.member_id=b.id where a.promotion_id in (" . implode(",", $promotion_id_arr) . ") and ((a.parent_id=0 and a.is_seller!=1) or
         (a.parent_id not in (select comment_id from store_comment where parent_id=0 and is_seller=1) and a.parent_id!=0)) order by a.comment_id Desc";
-        $command = $connection->createCommand($sql);
-        $result0 = $command->queryAll();
+            $command = $connection->createCommand($sql);
+            $result0 = $command->queryAll();
+        }
 
         if ($result0) {
             //取各个子评论
