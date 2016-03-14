@@ -2558,7 +2558,15 @@ class UserController extends PublicController
         //我的订单（未发货，未收货）
         $order_num=StoreOrderInfo::model()->count("(shipping_status=0 or shipping_status=1) and member_id={$user['id']}");
         //我的收藏
-        $collect_num=CollectGoods::model()->count("member_id={$user['id']}");
+        $collect_goods=CollectGoods::model()->findAll("member_id={$user['id']}");
+        $collect_num=count($collect_goods);
+        foreach($collect_goods as $k=>$v){
+            $p=Promotion::model()->find("id={$v['promotion_id']}");
+            if(!$p){
+                CollectGoods::model()->deleteAll("rec_id={$v['rec_id']}");
+                $collect_num--;
+            }
+        }
         $result['ret_num'] = 0;
         $result['ret_msg'] = '操作成功';
         $result['rank'] = $rank ? $rank:0;
