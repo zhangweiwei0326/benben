@@ -305,7 +305,7 @@ class NewsController extends PublicController{
 			echo json_encode( $result );
 			die();
 		}
-		$time1=time();
+//		$time1=time();
 		$tpl_attachment=array();//临时附件数组
 		//上传图片至环信服务器
 		if($img1){
@@ -337,7 +337,7 @@ class NewsController extends PublicController{
 		if($audio){
 			$audio_a=$this->upload($audio);
 		}
-		$time2=time();
+//		$time2=time();
 		//如果有联盟成员单独选择，则优先处理
 		if($legphone){
 			$idinfo=Member::model()->findAll("benben_id in ({$legphone}) and benben_id>0 and id_enable=1");
@@ -377,7 +377,7 @@ class NewsController extends PublicController{
 		foreach($tpl_minfo as $kk=>$vv){
 			$tpl_fall[]=$vv['id'];
 		}
-$time3=time();
+//$time3=time();
 		$memberId = array();//发送消息的好友名单
 		$legMember = array();//发联盟好友人员消息
 		$newsArray = array();
@@ -431,7 +431,7 @@ $time3=time();
 			if ($type == 1) {
 				$newsType = 7;
 			}
-			$time4=time();
+//			$time4=time();
 			$insertNews = array();
 			if (count($newsArray) > 0) {
 				//发送环信消息,图片、文字分开发
@@ -554,7 +554,7 @@ $time3=time();
 					}
 				}
 			}
-			$time5=time();
+//			$time5=time();
 			if (count($allfriendphone)) {
 				//发送环信消息,图片、文字分开发
 				$other_arr = array("t1" => 1, "t2" => 0,"train_id"=>($identity[0]['id']?$identity[0]['id']:0),"shop"=>($identity[0]['id']?"hz".$user['benben_id']:""),"type"=>$type);
@@ -672,7 +672,7 @@ $time3=time();
 					}
 				}
 			}
-			$time6=time();
+//			$time6=time();
 //			$league_count = 0;
 //			if ($league > 0&& $legphone>0) {
 //				$league_count = max(0, $this->getLeagueCount($league)-1);
@@ -739,13 +739,13 @@ $time3=time();
 					}
 				}
 			}
-			$time7=time();
+//			$time7=time();
 			$this->addIntegral($user->id, 10);	
 			$result['ret_num'] = 0;
 			$result['ret_msg'] = '小喇叭发送成功';
-			$result['allTime']=array(
-				$time1,$time2,$time3,$time4,$time5,$time6,$time7
-			);
+//			$result['allTime']=array(
+//				$time1,$time2,$time3,$time4,$time5,$time6,$time7
+//			);
 			echo json_encode( $result );
 
 		}else{
