@@ -31,7 +31,7 @@ class PromotionController extends PublicController
             echo json_encode($result);
             die();
         }
-        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
+        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']} and type=0");
 
         //读取促销模版的封面图和名称,同时处理有效期的促销
         $now = time();
@@ -114,7 +114,7 @@ class PromotionController extends PublicController
             die();
         }
 
-        $promotion = Promotion::model()->find("id={$promotionid} and is_del=0");
+        $promotion = Promotion::model()->find("id={$promotionid} and is_del=0 and type=0");
 
         if($promotion) {
             $result['ret_num'] = 0;
@@ -380,7 +380,7 @@ class PromotionController extends PublicController
             die();
         }
 
-        $pinfo = Promotion::model()->find("id={$promotionid} and is_del=0");
+        $pinfo = Promotion::model()->find("id={$promotionid} and is_del=0 and type=0");
         $type=array();//促销图片id数组
         if($pinfo) {
             $type=explode(",",$ids);
@@ -482,7 +482,7 @@ class PromotionController extends PublicController
             echo json_encode($result);
             die();
         }
-        $pinfo=Promotion::model()->find("id={$promotionid}");
+        $pinfo=Promotion::model()->find("id={$promotionid} and type=0");
         if($pinfo){
             //排空数据库图库，首张封面图不清空
             if(file_exists(ROOT.$pinfo['poster_nd'])&&$pinfo['poster_nd']){
@@ -535,7 +535,7 @@ class PromotionController extends PublicController
 
         //判断是否达到模版限制
         $pminfo = PromotionManage::model()->find("member_id={$user['id']}");
-        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
+        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']} and type=0");
         $now = time();
         $off = 0;//下线模版数量
         $on = 0;//上线模版数量

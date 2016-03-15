@@ -31,7 +31,7 @@ class GroupBuyController extends PublicController
             echo json_encode($result);
             die();
         }
-        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
+        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']} and type=1");
 
         //读取团购模版的封面图和名称,同时处理有效期的促销
         $now = time();
@@ -116,7 +116,7 @@ class GroupBuyController extends PublicController
             die();
         }
 
-        $promotion = Promotion::model()->find("id={$promotionid} and is_del=0");
+        $promotion = Promotion::model()->find("id={$promotionid} and is_del=0 and type=1");
         if($promotion) {
             $imginfo = GoodsGallery::model()->findAll("goods_id={$promotionid} order by img_desc asc");
             foreach ($imginfo as $v) {
@@ -173,7 +173,7 @@ class GroupBuyController extends PublicController
         $this->check_key();
         $user = $this->check_user();
         $promotionid = Frame::getIntFromRequest('promotionid');
-        $promotion = Promotion::model()->find("id={$promotionid} and is_del=0 and is_close=0");
+        $promotion = Promotion::model()->find("id={$promotionid} and is_del=0 and is_close=0 and type=1");
 
         if($promotion) {
             $imginfo = GoodsGallery::model()->findAll("goods_id={$promotionid} order by img_desc asc");
@@ -378,7 +378,7 @@ class GroupBuyController extends PublicController
             echo json_encode($result);
             die();
         }
-        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
+        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']} and type=1");
         $now = time();
         $off = 0;//下线模版数量
         $on = 0;//上线模版数量
@@ -505,7 +505,7 @@ class GroupBuyController extends PublicController
         }
 
         $connection=Yii::app()->db;
-        $pinfo = Promotion::model()->find("id={$promotionid} and is_del=0");
+        $pinfo = Promotion::model()->find("id={$promotionid} and is_del=0 and type=1");
         if($pinfo) {
             if ($pay_ids) {
                 $pinfo->pay_ids = $pay_ids;
@@ -639,7 +639,7 @@ class GroupBuyController extends PublicController
             echo json_encode($result);
             die();
         }
-        $pinfo=Promotion::model()->find("id={$promotionid}");
+        $pinfo=Promotion::model()->find("id={$promotionid} and type=1");
         if($pinfo){
             //排空服务器图集,首张封面图不清空
             $ginfo=GoodsGallery::model()->findAll("goods_id={$promotionid} order by img_desc asc");
@@ -690,7 +690,7 @@ class GroupBuyController extends PublicController
             echo json_encode($result);
             die();
         }
-        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
+        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']} and type=1");
         $now = time();
         $off = 0;//下线模版数量
         $on = 0;//上线模版数量

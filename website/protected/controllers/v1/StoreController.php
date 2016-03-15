@@ -732,7 +732,7 @@ class StoreController extends PublicController
             }
             $pid=PromotionManage::model()->find("member_id={$number_info['member_id']}");
             if($pid) {
-                $pinfo = Promotion::model()->findAll("pm_id={$pid['id']} and is_close=0 order by vip_time Desc,valid_right Desc limit " . $pid['online_restrict']);
+                $pinfo = Promotion::model()->findAll("pm_id={$pid['id']} and type={$pid['store_type']} and is_close=0 order by vip_time Desc,valid_right Desc limit " . $pid['online_restrict']);
                 foreach ($pinfo as $kp => $vp) {
                     $goodsinfo=GoodsGallery::model()->find("goods_id={$vp['id']} order by img_desc asc");
                     $promotion[] = array(
@@ -899,7 +899,7 @@ class StoreController extends PublicController
                 $is_promotion=1;
                 $pid=PromotionManage::model()->find("member_id={$number_info['member_id']}");
                 if($pid) {
-                    $pinfo = Promotion::model()->findAll("pm_id={$pid['id']} and is_close=0 and valid_right>=".time()." and valid_left<".time()." order by vip_time Desc,valid_right Desc limit " . $pid['online_restrict']);
+                    $pinfo = Promotion::model()->findAll("pm_id={$pid['id']} and type={$pid['store_type']} and is_close=0 and valid_right>=".time()." and valid_left<".time()." order by vip_time Desc,valid_right Desc limit " . $pid['online_restrict']);
                     foreach ($pinfo as $kp => $vp) {
                         $goodsinfo=GoodsGallery::model()->find("goods_id={$vp['id']} order by img_desc asc");
                         $promotion[] = array(
