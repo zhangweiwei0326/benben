@@ -12,7 +12,7 @@ class ProtocolController extends BaseController
 	 * @var int the define the index for the menu
 	 */
 	 
-	 public $menuIndex = 70;
+	 public $menuIndex = 90;
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -57,7 +57,7 @@ class ProtocolController extends BaseController
 				$this->redirect($this->getBackListPageUrl());
 		}
 		
-		$type = array("1" => "奔犇使用协议", "2" => "东阳百姓网入网声明", "3" =>"关于我们" ,"4" => "法律声明", "5" => "使用帮助", "6" => "积分说明");
+		$type = array("1" => "政企通讯录会员服务协议", "2" => "东阳百姓网入网声明", "3" =>"关于我们" ,"4" => "法律声明", "5" => "使用帮助", "6" => "积分说明", "7" => "管理员必看","8" =>"联系我们");
 		$model->type = $type[$model->type];
 		
 		
@@ -87,7 +87,7 @@ class ProtocolController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$this->insert_log(70);
+		$this->insert_log(90);
 		$model = Protocol::model();
 		$cri = new CDbCriteria();
 		$cri->order = "id desc";

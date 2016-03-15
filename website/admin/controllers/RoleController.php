@@ -12,7 +12,7 @@ class RoleController extends BaseController
 	 * @var int the define the index for the menu
 	 */
 	 
-	 public $menuIndex = 81;
+	 public $menuIndex = 101;
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -81,6 +81,18 @@ class RoleController extends BaseController
 					//var_dump($dogroup);exit;
 					$model->dogroup= $dogroup;
 				}
+				
+				//$model->doapplyregister =  $_POST['Role']['doapplyregister'][0] ? 1 : 0;
+				$applyregister_arr = $_POST['Role']['doapplyregister'];
+				if(1){
+					$doapplyregister = 0;
+					if($applyregister_arr['editall']){
+						$doapplyregister += 1;
+					}
+					//var_dump($doapplyregister);exit;
+					$model->doapplyregister= $doapplyregister;
+				}
+				
 				//$model->dostore =  $_POST['Role']['dostore'][0] ? 1 : 0;
 				$store_arr = $_POST['Role']['dostore'];
 				if(1){
@@ -291,6 +303,18 @@ class RoleController extends BaseController
 					//var_dump($dogroup);exit;
 					$model->dogroup= $dogroup;
 				}
+				
+				//$model->doapplyregister =  $_POST['Role']['doapplyregister'][0] ? 1 : 0;
+				$applyregister_arr = $_POST['Role']['doapplyregister'];
+				if(1){
+					$doapplyregister = 0;
+					if($applyregister_arr['editall']){
+						$doapplyregister += 1;
+					}
+                   //var_dump($doapplyregister);exit;
+					$model->doapplyregister= $doapplyregister;
+				}
+				
 				//$model->dostore =  $_POST['Role']['dostore'][0] ? 1 : 0;
 				$store_arr = $_POST['Role']['dostore'];
 				if(1){
@@ -449,7 +473,7 @@ class RoleController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$this->insert_log(81);
+		$this->insert_log(101);
 		$model = Role::model();
 		$cri = new CDbCriteria();
 		$cri->order = "id desc";

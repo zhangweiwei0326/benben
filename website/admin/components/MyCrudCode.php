@@ -1,11 +1,11 @@
 <?php
 Class MyCrudCode extends CrudCode{
-	public function generateActiveLabelWithOption($modelClass,$column, $option)
+	public  static function generateActiveLabelWithOption($modelClass,$column, $option)
 	{
 		return "\$form->labelEx(\$model,'{$column->name}', {$option})";
 	}	
 
-	public function generateActiveFieldWithOption($modelClass,$column, $option = array())
+	public static function generateActiveFieldWithOption($modelClass,$column, $option = array())
 	{
 		if($column->type==='boolean')
 			return "\$form->checkBox(\$model,'{$column->name}', ".self::arrayToString($option).")";
@@ -33,7 +33,7 @@ Class MyCrudCode extends CrudCode{
 		}
 	}
 
-	private function arrayToString($array)
+	private static function arrayToString($array)
 	{
 		$string = '';
 		if (is_array($array)) {

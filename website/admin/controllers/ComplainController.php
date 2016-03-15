@@ -12,7 +12,7 @@ class ComplainController extends BaseController
 	 * @var int the define the index for the menu
 	 */
 	 
-	 public $menuIndex = 73;
+	 public $menuIndex = 93;
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -46,28 +46,37 @@ class ComplainController extends BaseController
 	{
 		$model=$this->loadModel($id);
 		$member = new Member();
-		$sql = "select * from member where id = ".$model->member_id;
-		$member = $member->findBySql($sql);
-		$area = "";
-		if ($member->province > 0) {
-			$area .= $this->areas($member->province)." ";			
+		$apply1=ApplyRegister::model();
+		if($model->member_id){
+			$sql = "select * from member where id = ".$model->member_id;
+			$member = $member->findBySql($sql);
+			$area = "";
+			if ($member->province > 0) {
+				$area .= $this->areas($member->province)." ";			
+			}
+			if ($member->city > 0) {
+				$area .= $this->areas($member->city)." ";		
+			}		
+			if ($member->area > 0) {
+				$area .= $this->areas($member->area)." ";			
+			}
+			if ($member->street > 0) {
+				$area .= $this->areas($member->street);
+			}
+			
+			$model->member_id = $member->name;
+			$model->benben_id = $member->benben_id;
+			$model->phone = $member->phone;
+			$model->sex = $member->sex;
+			$model->area = $area;
+			$model->created_time = date('Y-m-d H:i:s', $model->created_time);
+		}else{		
+			$sql = "select name,phone from apply_register where id = ".$model->apply_id;
+			$apply2=$apply1->findBySql($sql);
+			$model->member_id = $apply2->name;
+			$model->phone = $apply2->phone;
+			$model->created_time = date('Y-m-d H:i:s', $model->created_time);
 		}
-		if ($member->city > 0) {
-			$area .= $this->areas($member->city)." ";		
-		}		
-		if ($member->area > 0) {
-			$area .= $this->areas($member->area)." ";			
-		}
-		if ($member->street > 0) {
-			$area .= $this->areas($member->street);
-		}
-		
-		$model->member_id = $member->name;
-		$model->benben_id = $member->benben_id;
-		$model->phone = $member->phone;
-		$model->sex = $member->sex;
-		$model->area = $area;
-		$model->created_time = date('Y-m-d H:i:s', $model->created_time);
 		$this->render('update',array(
 			'name' => $member->nick_name,	
 			'model'=>$model,
@@ -95,7 +104,7 @@ class ComplainController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$this->insert_log(73);
+		$this->insert_log(93);
 		$model = Complain::model();
 		$cri = new CDbCriteria();
 		
@@ -134,13 +143,14 @@ class ComplainController extends BaseController
 		}
 		
 		if($phone){
-			$cri->addCondition('a.phone = '.$phone,'AND');
+			$cri->addCondition('a.phone = '.$phone.' or b.phone='.$phone,'AND');
 			$result['phone'] = $phone;
 		}
 
 		
-		$cri->select = "t.*, a.nick_name as sname ,a.benben_id,a.phone";
-		$cri->join = "left join member a on a.id = t.member_id";
+		$cri->select = "t.*, b.phone as bphone, b.name as bname, a.nick_name as sname ,a.benben_id,a.phone";
+		$cri->join = "left join member a on a.id = t.member_id
+							 left join apply_register b on t.apply_id = b.id";
 		$cri->order = "t.created_time desc";
 		$pages = new CPagination();
 		$pages->itemCount = $model->count($cri);

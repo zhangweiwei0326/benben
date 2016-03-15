@@ -2,19 +2,20 @@
 class BaseController extends Controller {
 
 	public $menuIndex;
-	public $isRoles = array("member" => "domember", "bxapply" => "dobaixing", "topAuction"=>"doshop","backOrder"=>"doshop","storeAuth"=>"doshop",
-		"enterprise" => "doenterprise", 'groups' => "dogroup","prizeSetting"=>"dolottery","winningList"=>"dolottery",
-		"numberTrain" => "dostore", "creation" => "docreation",
-		"buy" => "dorelease", "friend" => "dofriend", "happy" => "dohappy", "findstatistic" => "dohappy",
-		"user" => "dosystem", "role" => "dosystem","loginLog" => "dosystem","friendDisable" => "dofriend","friendComment"=> "dofriend",
-		"memberDisable" =>"domember", "bxapplyRecord" => "dobaixing",
-		"groupDisable" => "dogroup", "groupMember"=>"dogroup",
-		"numberDisable" => "dostore","protocol" => "doother",
-		'splash' => 'doother',"quote"=>"dorelease",
-		'leagueMember'=>'dofriend','findstatistic'=>'dofind',
-		"industry" => "doother","version" => "doother",'complain'=>'doother',
-		"enterpriseDisable" =>'doenterprise', 'enterpriseMember' => 'doenterprise',
-		"buyDisable" => "dorelease", "creationDisable"  => "docreation", "creationComment" => "docreation", "notice" => "donews", "friendLeague" => "doleague");
+	public $isRoles = array("member" => "domember", "bxapply" => "dobaixing", "topAuction"=>"doshop",
+							"backOrder"=>"doshop", "storeAuth"=>"doshop", "enterprise" => "doenterprise",
+							"groups" => "dogroup", "prizeSetting"=>"dolottery", "winningList"=>"dolottery",
+							"numberTrain" => "dostore", "creation" => "docreation", "buy" => "dorelease",
+							"friend" => "dofriend", "happy" => "dohappy", "storeChargeAdmin"=>"dopay",
+							"user" => "dosystem", "role" => "dosystem", "loginLog" => "dosystem",
+							"friendDisable" => "dofriend", "friendComment"=> "dofriend", "memberDisable" =>"domember",
+							"bxapplyRecord" => "dobaixing", "groupDisable" => "dogroup", "groupMember"=>"dogroup",
+							"numberDisable" => "dostore", "protocol" => "doother", "splash" => "doother",
+							"quote"=>"dorelease", "leagueMember"=>"dofriend", "findstatistic"=>"dofind",
+							"industry" => "doother", "version" => "doother", "complain"=>"doother",
+							"enterpriseDisable" =>"doenterprise", "enterpriseMember" => "doenterprise", "buyDisable" => "dorelease",
+							"creationDisable"  => "docreation", "creationComment" => "docreation", "notice" => "donews",
+							"friendLeague" => "doleague", "applyRegister" => "doapplyregister", "storePriceAdmin"=>"doservice",);
 
 
 	protected function beforeAction($action) {
@@ -39,6 +40,14 @@ class BaseController extends Controller {
 // 			$this->redirect ( array ('/' ) );
 			return true;
 		} else {
+			$user = User::model ()->findByPk(Yii::app ()->user->getState ( "userInfo" )->id);
+			$login_id = Yii::app ()->user->getState ( "userInfo" )->id.$user->last_login;
+			if((md5($login_id) != Yii::app ()->user->getState ( "userInfo" )->login_id)&&(Yii::app()->controller->id != "site")){
+				Yii::app ()->user->logout ( false );
+				$this->redirect ( Yii::app ()->homeUrl );
+				return;
+			}
+
 			// 更新用户信息
 			if (isset($userid )){
 
@@ -47,7 +56,6 @@ class BaseController extends Controller {
 			}
 			if (! empty ( $userData )) {
 				Yii::app ()->user->setState ( "userInfo", $userData );
-
 			}
 			return true;
 		}
@@ -229,7 +237,7 @@ class BaseController extends Controller {
 		}
 		$pages = $totalpage;
 
-
+		$conpage="";
 		$line = $line - 1;
 		$page = $page <= 0 ? 1 : $page;
 		$page = $page > $pages ? $pages : $page;

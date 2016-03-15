@@ -189,6 +189,7 @@ class ApplyRegisterController extends BaseController
 		$pages->pageSize = 50;
 		$pages->applyLimit($cri);
 		$items = $model->findAll($cri);
+		
 		$this->render('index',array('items'=>$items,'pages'=> $pages,'result' => $result));
 		
 	}
@@ -204,63 +205,88 @@ class ApplyRegisterController extends BaseController
 		
 	//审核通过
 		if(isset($_POST['ApplyRegister']))
-		{
-			$model1=new Enterprise();
-			$model1->name=$model->enterprise_name;
-			$model1->type=$model->enterprise_type;
-			$model1->created_time=$model->created_time;
-			//政企通讯录创建方式：后台
-			$model1->origin=2;
-// 			if($model->apply_type==3){
-// 				$model1->number=50000;}else{
-// 					$model1->number=500;
-// 				}	
+		{		
+							//审核通过修改申请表状态，政企通讯录id
+							$model->status=1;
+							$model->review_name=Yii::app()->user->id;
+							$model->review_time=time();
+							if($model->save()){
+							$this->redirect($this->getBackListPageUrl());
+							}else{
+							    var_dump($model->getErrors());
+							}
+// 			$model1=new Enterprise();
+// 			$model1->name=$model->enterprise_name;
+// 			$model1->type=$model->enterprise_type;
+// 			$model1->created_time=$model->created_time;
+// 			//政企通讯录创建方式：后台
+// 			$model1->origin=2;
+
 			
-			if($model1->save())
-				//审核通过修改申请表状态，政企通讯录id
-				$model->status=1;
-				$model->enterprise_id=$model1->id;
-				$model->review_name=Yii::app()->user->id;
-				$model->review_time=time();
+// 			if($model1->save())
+// 				//审核通过修改申请表状态，政企通讯录id
+// 				$model->status=1;
+// 				$model->enterprise_id=$model1->id;
+// 				$model->review_name=Yii::app()->user->id;
+// 				$model->review_time=time();
 				
-				//审核通过添加政企权限
-				$role=new EnterpriseRole();
-				$role->enterprise_id=$model1->id;				
-				$role->enterprise_apply=1;				
-				$role->member_add=1;
-				$role->access_level=1;
-				if($model->apply_type==3){
-					$role->member_limit=50000;
-					$role->broadcast_num=200;
-					$role->broadcast_available=200;
-					$role->group_level=4;
-					$role->manage_num=5;
-					$role->access_level_set=1;
-				}else{
-					$role->member_limit=500;
-					$role->broadcast_num=10;
-					$role->broadcast_available=10;
-					$role->group_level=0;
-					$role->manage_num=1;
-					$role->access_level_set=0;
-				}
-				$role->created_time=time();
-				if($model->save()&&$role->save()){
-				$this->redirect($this->getBackListPageUrl());
-				}else{
-				    var_dump($model->getErrors());
-				}
+// 				//审核通过添加政企权限
+// 				$role=new EnterpriseRole();
+// 				$role->enterprise_id=$model1->id;				
+// 				$role->enterprise_apply=1;				
+// 				$role->member_add=1;
+// 				$role->access_level=1;
+// 				if($model->apply_type==3){
+// 					$role->member_limit=50000;
+// 					$role->broadcast_num=200;
+// 					$role->broadcast_available=200;
+// 					$role->group_level=4;
+// 					$role->manage_num=5;
+// 					$role->access_level_set=1;
+// 				}else{
+// 					$role->member_limit=500;
+// 					$role->broadcast_num=10;
+// 					$role->broadcast_available=10;
+// 					$role->group_level=0;
+// 					$role->manage_num=1;
+// 					$role->access_level_set=0;
+// 				}
+// 				$role->created_time=time();
+// 				if($model->save()&&$role->save()){
+// 				$this->redirect($this->getBackListPageUrl());
+// 				}else{
+// 				    var_dump($model->getErrors());
+// 				}
 		}
 		
 		//审核拒绝
-		if(isset($_GET['status'])){
-				if($_GET['status']=='reject'){
+// 		if(isset($_GET['status'])){
+// 				if($_GET['status']=='reject'){
+// 					$model->status=2;
+// 					$model->review_name=Yii::app()->user->id ;
+// 					$model->review_time=time();
+// 					$model->reason=$reason;
+// 					if($model->save())
+// 					      $this->redirect('/admin.php/applyRegister');
+// 				}
+// 			}
+
+			if(Yii::app()->request->isAjaxRequest){
+				$reason=Frame::getStringFromArray($_POST, reason);
+				$re_status=Frame::getStringFromArray($_POST,status);
+				if($re_status=="reject"){
 					$model->status=2;
 					$model->review_name=Yii::app()->user->id ;
 					$model->review_time=time();
-					if($model->save())
-					      $this->redirect('/admin.php/applyRegister');
+					$model->reason=$reason;
+// 					var_dump($model->reason);die();
+					if($model->save()){
+						echo 200;die();
+					}
 				}
+				die();
+// 					      $this->redirect('/admin.php/applyRegister');
+				
 			}
 			
 		$model->created_time = date('Y-m-d H:i:s', $model->created_time);
@@ -270,6 +296,54 @@ class ApplyRegisterController extends BaseController
 		));
 	}
 	
+	/**
+	 * 组织机构/学校政企名称修改审核
+	 * */
+	public function actionReviewFix($id){
+		$model=ApplyFixEnterprise::model()->findByAttributes(array('apply_id'=>$id));
+		
+		// 修改审核拒绝
+				if(isset($_GET['status'])){
+						if($_GET['status']=='reject'){
+							$model->apply_status=2;
+//               			$model->review_name=Yii::app()->user->id ;
+							$model->review_time=time();
+							if($model->save())
+								      $this->redirect('/admin.php/applyRegister');
+							}
+						}
+			//修改审核同意
+			if(Yii::app()->request->isAjaxRequest){
+				$apply_id=Frame::getIntFromRequest(apply_id);
+				$e_name=htmlspecialchars(addslashes(Frame::getStringFromArray($_POST, e_name)));
+				$e_num=htmlspecialchars(addslashes(Frame::getStringFromArray($_POST, e_num)));
+				$e_attachment=htmlspecialchars(Frame::getStringFromArray($_POST,e_attachment));
+// 				var_dump($apply_id);var_dump($e_attachment);die();
+				$model1=ApplyRegister::model()->findByAttributes(array('id'=>$apply_id));
+				$model1->enterprise_name=$e_name;
+				$model1->name=$e_name;
+				$model1->identity_num=$e_num;
+				$model1->identity_attachment=$e_attachment;
+// 				var_dump($model1);die();
+				$model->apply_status=1;
+				//               			$model->review_name=Yii::app()->user->id ;
+				$model->review_time=time();
+				$enterprise_id=$model1->enterprise_id;
+				$model2=Enterprise::model()->findByAttributes(array('id'=>$enterprise_id));
+				$model2->name=$e_name;
+				if($model->save()&&$model1->save()&&$model2->save()){
+					echo 200;
+					die();
+				}
+				die();
+			}
+		
+		$model->created_time = date('Y-m-d H:i:s', $model->created_time);
+		$this->render('reviewFix',array(
+				'model'=>$model,
+				'backUrl' => $this->getBackListPageUrl(),
+		));
+	}
 	
 	public function actionDelete($id)
 	{

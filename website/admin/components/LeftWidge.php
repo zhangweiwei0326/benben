@@ -27,8 +27,10 @@ class LeftWidge extends CWidget {
 		$domember = $roles->domember;
 		$dobaixing = $roles->dobaixing;
 		$doenterprise = $roles->doenterprise;
+		$doapplyregister = $roles->doapplyregister;     //申请审核
 		$dogroup = $roles->dogroup;
 		$doshop = $roles->doshop;
+		$dolottery = $roles->dolottery;
 		$dostore = $roles->dostore;
 		$docreation = $roles->docreation;
 		$dorelease = $roles->dorelease;
@@ -40,10 +42,13 @@ class LeftWidge extends CWidget {
 		$doleague = $roles->doleague;
 		$dofind = $roles->dofind;
 		$doother = $roles->doother;
+		$dopay = $roles->dopay;
+		$doservice = $roles->doservice;
 		$role_arr = array(
 			"domember"=>$domember,
 			"dobaixing"=>$dobaixing,
 			"doenterprise"=>$doenterprise,
+			"doapplyregister" =>$doapplyregister,       //申请审核
 			"dogroup"=>$dogroup,
 			"dostore"=>$dostore,
 			"doshop"=>$doshop,
@@ -57,7 +62,9 @@ class LeftWidge extends CWidget {
 			"donews"=>$donews,
 			"doleague"=>$doleague,
 			"dofind"=>$dofind,
-			"doother"=>$doother
+			"doother"=>$doother,
+			"dopay"=>$dopay,
+			"doservice"=>$doservice
 		);
 		session_start();
 		session_regenerate_id(true);
@@ -80,24 +87,24 @@ class LeftWidge extends CWidget {
 
 		//系统管理
 		if($dosystem){
-			$menu['8']['role'] = 1;
-			if($dosystem & 1) $subMenu['8']['1']['role'] = 1;
-			if($dosystem & 2) $subMenu['8']['2']['role'] = 1;
-			if($dosystem & 4) $subMenu['8']['3']['role'] = 1;
-			if($dosystem & 8) $subMenu['8']['4']['role'] = 1;
+			$menu['10']['role'] = 1;
+			if($dosystem & 1) $subMenu['10']['1']['role'] = 1;
+			if($dosystem & 2) $subMenu['10']['2']['role'] = 1;
+			if($dosystem & 4) $subMenu['10']['3']['role'] = 1;
+			if($dosystem & 8) $subMenu['10']['4']['role'] = 1;
 		}else{
-			$menu['8']['role'] = 1;
-			$subMenu['8']['3']['role'] = 1;
+			$menu['10']['role'] = 1;
+			$subMenu['10']['3']['role'] = 1;
 		}
 
 		//其它网站管理
 		if($doother){
-			if($doother & 1) $subMenu['7']['1']['role'] = 1;
-			if($doother & 2) $subMenu['7']['2']['role'] = 1;
-			if($doother & 4) $subMenu['7']['3']['role'] = 1;
-			if($doother & 8) $subMenu['7']['4']['role'] = 1;
-			if($doother & 16) $subMenu['7']['5']['role'] = 1;
-			$menu['7']['role'] = 1;
+			if($doother & 1) $subMenu['9']['1']['role'] = 1;
+			if($doother & 2) $subMenu['9']['2']['role'] = 1;
+			if($doother & 4) $subMenu['9']['3']['role'] = 1;
+			if($doother & 8) $subMenu['9']['4']['role'] = 1;
+			if($doother & 16) $subMenu['9']['5']['role'] = 1;
+			$menu['9']['role'] = 1;
 			//if($doother & 3) $subMenu['6']['1']['role'] = 1;
 		}
 
@@ -153,18 +160,27 @@ class LeftWidge extends CWidget {
 			$menu['5']['role'] = 1;
 			$subMenu['5']['1']['role'] = 1;
 		}
+		if($dopay){
+			$menu['8']['role'] = 1;
+			$subMenu['8']['1']['role'] = 1;
+		}
+		if($doservice){
+			$menu['7']['role'] = 1;
+			$subMenu['7']['1']['role'] = 1;
+			$subMenu['7']['2']['role'] = 1;
+		}
 		//商家管理
 		if($doshop){
-			$menu['9']['role'] = 1;
-			$subMenu['9']['1']['role'] =1;
-			$subMenu['9']['2']['role'] =1;
-			$subMenu['9']['3']['role'] =1;
+			$menu['11']['role'] = 1;
+			$subMenu['11']['1']['role'] =1;
+			$subMenu['11']['2']['role'] =1;
+			$subMenu['11']['3']['role'] =1;
 		}
 		//抽奖管理
-		if($doshop){
-			$menu['10']['role'] = 1;
-			$subMenu['10']['1']['role'] =1;
-			$subMenu['10']['2']['role'] =1;
+		if($dolottery){
+			$menu['12']['role'] = 1;
+			$subMenu['12']['1']['role'] =1;
+			$subMenu['12']['2']['role'] =1;
 		}
 		$this->render ( 'leftView', array (
 			"index" => $this->index,
