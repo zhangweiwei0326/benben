@@ -2615,4 +2615,230 @@ class UserController extends PublicController
         echo json_encode($result);
     }
 
+    /**
+     * 支付账户绑定
+     * pay_account
+     */
+    public function actionPayBind(){
+        $this->check_key();
+        $user = $this->check_user();
+        $account_cry = Frame::getStringFromRequest('account');
+        $type = Frame::getIntFromRequest('type');
+
+        if(empty($account_cry)||empty($type)){
+            $result['ret_num'] = 2016;
+            $result['ret_msg'] = '缺少参数';
+            echo json_encode($result);
+            die();
+        }
+
+        //获取私钥位置
+        $pri_file=ROOT.'/pay_account_private.pem';
+
+        //解密私钥
+        $str=$this->decrypt_data_private($account_cry,$pri_file);
+        $array_account=explode(";", $str);//账号;用户名
+        /*
+         * 支付宝帐号处理
+         */
+        if($type==1){
+            if(count($array_account)!=2){
+                $result['ret_num'] = 136;
+                $result['error_message'] = '参数错误';
+                echo json_encode($result);
+                die();
+            }
+            $pa=PayAccount::model()->find("member_id={$user['id']}");
+            if($pa['ali_account']){
+                $result['ret_num'] = 147;
+                $result['error_message'] = '请先解绑后再绑定！';
+                echo json_encode($result);
+                die();
+            }
+            if($pa){
+                $pa->ali_account=$array_account[0];
+                $pa->ali_name=$array_account[1];
+                $pa->member_id=$user['id'];
+                $pa->save();
+            }else{
+                $paccount=new PayAccount();
+                $paccount->ali_account=$array_account[0];
+                $paccount->ali_name=$array_account[1];
+                $paccount->member_id=$user['id'];
+                $paccount->save();
+            }
+
+        }else{
+            $result['ret_num'] = 126;
+            $result['ret_msg'] = '参数错误';
+            echo json_encode($result);
+            die();
+        }
+        $result['ret_num'] = 0;
+        $result['ret_msg'] = '操作成功！';
+        echo json_encode($result);
+    }
+
+    /**
+     * 查询支付宝帐号
+     */
+    public function actionGetPayAccount(){
+        $this->check_key();
+        $user=$this->check_user();
+        //获取私钥位置
+        $pri_file=ROOT.'/pay_account_private.pem';
+
+        $info=PayAccount::model()->find("member_id={$user['id']}");
+        $result['allmoney']=$user['fee'] ? $user['fee'] : "0.00";//可以提现金额
+        $datum=array();
+        if ($info) {
+            //判断是否绑定支付宝账号
+            if ($info['ali_account']) {
+                $tpl=$info['ali_account'].";".$info['ali_name'];
+                //私钥加密
+                $str=$this->encrypt_data_private($tpl,$pri_file);
+                $data['type']=1;
+                $data['account']=$str;
+                $datum[]=$data;
+            }
+
+            //判断是否绑定银行卡账号
+            if($info['card_account']){
+                $tpl=$info['card_account'].";".$info['card_name'];
+                //私钥加密
+                $str=$this->encrypt_data_private($tpl,$pri_file);
+                $data['type']=2;
+                $data['account']=$str;
+                $datum[]=$data;
+            }
+        }else{
+            $datum=array();
+        }
+        $result['ret_num'] = 0;
+        $result['ret_msg'] = '操作成功！';
+        $result['result'] = $datum;
+        echo json_encode($result);
+    }
+
+    /**
+     * 支付宝解绑
+     */
+    public function actionPayUnbind(){
+        $this->check_key();
+        $user=$this->check_user();
+        $type = Frame::getIntFromRequest('type');
+
+        if(empty($type)){
+            $result['ret_num'] = 2016;
+            $result['ret_msg'] = '缺少参数！';
+            echo json_encode($result);
+            die();
+        }
+        $accountInfo=PayAccount::model()->find("member_id={$user['id']}");
+        if($type==1){
+            //支付宝帐号解除绑定
+            if(!$accountInfo['ali_account']){
+                $result['ret_num'] = 2000;
+                $result['ret_msg'] = '您暂未绑定支付宝帐号';
+                echo json_encode($result);
+                die();
+            }
+            $accountInfo->ali_account="";
+            $accountInfo->ali_name="";
+            $accountInfo->save();
+        }
+        $result['ret_num'] = 0;
+        $result['ret_msg'] = '操作成功！';
+        echo json_encode($result);
+    }
+
+    /**
+     * 支付宝提现接口
+     */
+    public function actionPayCashOut(){
+        $this->check_key();
+        $user=$this->check_user();
+        $fee=Frame::getStringFromRequest('fee');
+        $type=Frame::getIntFromRequest('type');
+
+        if(empty($fee)||empty($type)){
+            $result['ret_num'] = 2016;
+            $result['ret_msg'] = '缺少参数！';
+            echo json_encode($result);
+            die();
+        }
+        if($fee<=10){
+            $result['ret_num'] = 2101;
+            $result['ret_msg'] = '每笔至少10元哦！';
+            echo json_encode($result);
+            die();
+        }
+        //每天最多提现3笔,不包括提现失败的
+        $now=time();
+        $today=strtotime(date("Y-m-d",$now)." 0:0:0");
+
+        $pay_num=Pay::model()->count("member_id={$user['id']} and status!=2 and time>=".$today." and time<".($today+86400));
+        if($pay_num>=3){
+            $result['ret_num'] = 1709;
+            $result['ret_msg'] = '每天最多提现3笔！';
+            echo json_encode($result);
+            die();
+        }
+
+        if($user['fee']<$fee){
+            $result['ret_num'] = 2511;
+            $result['ret_msg'] = '提现金额不足！';
+            echo json_encode($result);
+            die();
+        }
+
+        $accountInfo=PayAccount::model()->find("member_id={$user['id']}");
+        if($type==1){
+            if(!$accountInfo['ali_account']){
+                $result['ret_num'] = 3311;
+                $result['ret_msg'] = '暂未绑定账号！';
+                echo json_encode($result);
+                die();
+            }
+
+            $connection=Yii::app()->db;
+            $transaction=$connection->beginTransaction();
+            try{
+                $minfo=Member::model()->find("id={$user['id']}");
+                $minfo->fee=$minfo['fee']-$fee;
+                $minfo->save();
+
+                $restFee=Member::model()->find("id={$user['id']}");
+                if($restFee['fee']<0){
+                    throw new Exception("Value must be 1 or above");
+                }
+
+                $paylist=new Pay();
+                $paylist->member_id=$user['id'];
+                $paylist->fee=$fee;
+                $paylist->time=$now;
+                $paylist->status=0;
+                $paylist->type=1;
+                $paylist->payinfo_id=$accountInfo['id'];
+                $paylist->account=$accountInfo['ali_account'];
+                $paylist->pay_name=$accountInfo['ali_name'];
+                $paylist->save();
+                $transaction->commit();
+                $result['ret_num'] = 0;
+                $result['ret_msg'] = '操作成功！';
+                echo json_encode($result);
+            }catch (Exception $e){
+                $transaction->rollBack();
+                $result['ret_num'] = 1922;
+                $result['ret_msg'] = '操作过于频繁！';
+                echo json_encode($result);
+                die();
+            }
+        }else{
+            $result['ret_num'] = 1922;
+            $result['ret_msg'] = '参数错误！';
+            echo json_encode($result);
+            die();
+        }
+    }
 }

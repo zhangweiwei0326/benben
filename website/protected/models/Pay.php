@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This is the model class for table "activity".
+ * This is the model class for table "pay".
  *
  * The followings are the available columns in table 'activity':
  * @property integer $id
@@ -14,6 +14,7 @@
  * @property int $type
  * @property int $payinfo_id
  * @property string $account
+ * @property string $pay_name
  * @property string $pay_time
  */
 class Pay extends CActiveRecord
@@ -35,11 +36,11 @@ class Pay extends CActiveRecord
         // will receive user inputs.
         return array(
             array('member_id, time, payinfo_id', 'numerical', 'integerOnly'=>true),
-            array('memo,reason,account,pay_time', 'length', 'max'=>255),
+            array('memo,reason,account,pay_name,pay_time', 'length', 'max'=>255),
             array('fee,status,type', 'numerical'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, member_id, time, payinfo_id, memo, reason, account,pay_time,fee,status,type', 'safe', 'on'=>'search'),
+            array('id, member_id, time, payinfo_id, pay_name, memo, reason, account,pay_time,fee,status,type', 'safe', 'on'=>'search'),
         );
     }
 
@@ -71,6 +72,7 @@ class Pay extends CActiveRecord
             'payinfo_id' => 'Payinfo Id',
             'account' => 'Account',
             'pay_time' => 'Pay Time',
+            'pay_name'=>'Pay Name'
         );
     }
 
@@ -103,6 +105,7 @@ class Pay extends CActiveRecord
         $criteria->compare('payinfo_id',$this->payinfo_id);
         $criteria->compare('account',$this->account);
         $criteria->compare('pay_time',$this->pay_time);
+        $criteria->compare('pay_name',$this->pay_name);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
