@@ -20,6 +20,7 @@
  * @property string $review_name
  * @property integer $review_time
  * @property integer $created_time
+ * @property integer $enterprise_id
  */
 class ApplyRegister extends CActiveRecord
 {
@@ -39,13 +40,13 @@ class ApplyRegister extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('enterprise_type, apply_type, status, review_time, created_time', 'numerical', 'integerOnly'=>true),
+			array('enterprise_type, apply_type, status, review_time, created_time, enterprise_id', 'numerical', 'integerOnly'=>true),
 			array('name, identity_num, identity_attachment, identity_attachment_more, enterprise_name', 'length', 'max'=>255),
 			array('phone', 'length', 'max'=>20),
 			array('login_name, login_password, email, review_name', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, phone, identity_num, identity_attachment, identity_attachment_more, enterprise_name, enterprise_type, login_name, login_password, email, apply_type, status, review_name, review_time, created_time', 'safe', 'on'=>'search'),
+			array('id, name, phone, identity_num, identity_attachment, identity_attachment_more, enterprise_name, enterprise_type, login_name, login_password, email, apply_type, status, review_name, review_time, created_time, enterprise_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -82,6 +83,7 @@ class ApplyRegister extends CActiveRecord
 			'review_name' => '审核人',
 			'review_time' => '审核时间',
 			'created_time' => '申请时间',
+			'enterprise_id' => '政企通讯录id',
 		);
 	}
 
@@ -119,6 +121,7 @@ class ApplyRegister extends CActiveRecord
 		$criteria->compare('review_name',$this->review_name,true);
 		$criteria->compare('review_time',$this->review_time);
 		$criteria->compare('created_time',$this->created_time);
+		$criteria->compare('enterprise_id',$this->enterprise_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

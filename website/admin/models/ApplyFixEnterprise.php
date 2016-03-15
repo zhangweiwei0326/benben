@@ -1,30 +1,27 @@
 <?php
 
 /**
- * This is the model class for table "complain".
+ * This is the model class for table "apply_fix_enterprise".
  *
- * The followings are the available columns in table 'complain':
+ * The followings are the available columns in table 'apply_fix_enterprise':
  * @property integer $id
- * @property integer $member_id
- * @property string $info
- * @property integer $created_time
  * @property integer $apply_id
+ * @property string $enterprise_name
+ * @property string $identity_num
+ * @property string $identity_attachment
+ * @property integer $apply_type
+ * @property integer $apply_status
+ * @property integer $created_time
+ * @property integer $review_time
  */
-class Complain extends CActiveRecord
+class ApplyFixEnterprise extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
-	public $benben_id;
-	public $sname;
-	public $phone;
-	public $bphone;
-	public $bname;
-	public $sex;
-	public $area;
 	public function tableName()
 	{
-		return 'complain';
+		return 'apply_fix_enterprise';
 	}
 
 	/**
@@ -35,11 +32,12 @@ class Complain extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('info, created_time', 'required'),
-			array('member_id, created_time, apply_id', 'numerical', 'integerOnly'=>true),
+			array('apply_id, apply_type, apply_status, created_time, review_time', 'numerical', 'integerOnly'=>true),
+			array('enterprise_name', 'length', 'max'=>45),
+			array('identity_num, identity_attachment', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, member_id, info, created_time, apply_id', 'safe', 'on'=>'search'),
+			array('id, apply_id, enterprise_name, identity_num, identity_attachment, apply_type, apply_status, created_time, review_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,10 +59,14 @@ class Complain extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'member_id' => 'Member',
-			'info' => 'Info',
-			'created_time' => 'Created Time',
 			'apply_id' => 'Apply',
+			'enterprise_name' => 'Enterprise Name',
+			'identity_num' => 'Identity Num',
+			'identity_attachment' => 'Identity Attachment',
+			'apply_type' => 'Apply Type',
+			'apply_status' => 'Apply Status',
+			'created_time' => 'Created Time',
+			'review_time' => 'Review Time',
 		);
 	}
 
@@ -87,10 +89,14 @@ class Complain extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('member_id',$this->member_id);
-		$criteria->compare('info',$this->info,true);
-		$criteria->compare('created_time',$this->created_time);
 		$criteria->compare('apply_id',$this->apply_id);
+		$criteria->compare('enterprise_name',$this->enterprise_name,true);
+		$criteria->compare('identity_num',$this->identity_num,true);
+		$criteria->compare('identity_attachment',$this->identity_attachment,true);
+		$criteria->compare('apply_type',$this->apply_type);
+		$criteria->compare('apply_status',$this->apply_status);
+		$criteria->compare('created_time',$this->created_time);
+		$criteria->compare('review_time',$this->review_time);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -101,7 +107,7 @@ class Complain extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Complain the static model class
+	 * @return ApplyFixEnterprise the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
