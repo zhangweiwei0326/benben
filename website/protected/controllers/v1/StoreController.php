@@ -1251,7 +1251,7 @@ class StoreController extends PublicController
         //判断促销是否开通
         $is_open=$this->storevip($user['id']);
         if($is_open) {
-            $pm1num=PromotionManage::model()->count("member_id={$user['id']} and vip_type=0");
+            $pm1num=PromotionManage::model()->count("member_id={$user['id']} and store_type=0");
             if($pm1num){
                 $is_po=1;
             }else{
@@ -1263,7 +1263,7 @@ class StoreController extends PublicController
 
         //判断团购是否开通
         if($is_open){
-            $pm2num=PromotionManage::model()->count("member_id={$user['id']} and vip_type=1");
+            $pm2num=PromotionManage::model()->count("member_id={$user['id']} and store_type=1");
             if($pm2num){
                 $is_gb=1;
             }else{
