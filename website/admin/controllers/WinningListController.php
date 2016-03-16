@@ -12,7 +12,7 @@ class WinningListController extends BaseController
 	 * @var int the define the index for the menu
 	 */
 	 
-	 public $menuIndex = 102;
+	 public $menuIndex = 122;
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -24,7 +24,7 @@ class WinningListController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$this->insert_log(102);
+		$this->insert_log(122);
 		$is_send = intval($_GET['is_send']);
 
 		$model = LotteryLog::model();

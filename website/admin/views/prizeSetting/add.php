@@ -1,7 +1,7 @@
 <?php
 	Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl."/themes/css/content.css");
 ?>
-
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/css/webuploader.css" />
 <div class="main_right_content">
 	<ol class="breadcrumb main_right_content_breadcrumb">
 		<li><a href="<?php echo Yii::app()->createUrl('prizeSetting/index')?>">奖品设置</a></li>
@@ -18,7 +18,6 @@
 								    <!--用来存放item-->
 								    <div id="fileList" class="uploader-list"></div>
 								    <div id="filePicker">选择图片</div>
-								    <div id="rt_rt_1abn1q5n5sje1fks1t7gmfuok74" style="position: absolute; top: 0px; left: 0px; width: 94px; height: 43px; overflow: hidden; bottom: auto; right: auto;"><input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label></div>
 								</div>
 						</div>  
 							<p id="picture">支持png,jpg格式,宽高为:194*122</p>	
@@ -43,6 +42,7 @@
 			</div>
 	</div>
 </div>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/js/webuploader.js"></script>
 <script type="text/javascript">  
 
 	// 初始化Web Uploader
@@ -52,10 +52,10 @@
 	    auto: true,
 
 	    // swf文件路径
-	    swf: '/wtz/benben/website/themes'+'/js/Uploader.swf',
+	    swf: 'http://112.124.101.177:81/themes/js/Uploader.swf',
 
 	    // 文件接收服务端。
-	    server: "http://localhost:8080/wtz/benben/website/admin.php/prizeSetting/upload",
+	    server: "http://112.124.101.177:81/admin.php/prizeSetting/upload",
 
 	    // 选择文件的按钮。可选。
 	    // 内部根据当前运行是创建，可能是input元素，也可能是flash.

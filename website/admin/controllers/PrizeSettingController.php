@@ -12,7 +12,7 @@ class PrizeSettingController extends BaseController
 	 * @var int the define the index for the menu
 	 */
 	 
-	 public $menuIndex = 101;
+	 public $menuIndex = 121;
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -24,7 +24,7 @@ class PrizeSettingController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$this->insert_log(101);
+		$this->insert_log(121);
 		//获取查询参数
 		$result = array();
 		$statues = intval($_GET['status_num']);

@@ -34,18 +34,26 @@ function getMenu() {
 			'uri' => '/notice'
 		),
 		7 => array (
+				'name' => '奔犇商场',
+				'uri' => '/storePriceAdmin'
+		),
+		8 => array (
+				'name' => '支付管理',
+				'uri' => '/pay'
+		),
+		9 => array (
 			'name' => '其它管理',
 			'uri' => '/protocol'
 		),
-		8 => array (
+		10 => array (
 			'name' => '系统管理',
 			'uri' => '/user/'
 		) ,
-		9 => array (
+		11 => array (
 			'name' => '商家管理',
 			'uri' => '/shop'
 		),
-		10 => array (
+		12 => array (
 			'name' => '抽奖管理',
 			'uri' => '/lottery'
 		)
@@ -143,6 +151,22 @@ function getSubMenu() {
 			)
 		),
 		7 => array(
+				1 => array(
+						'name' => '服务管理',
+						'uri' => '/storePriceAdmin'
+				),
+				2 => array(
+						'name' => '充值记录',
+						'uri' => '/storeChargeAdmin'
+				)
+		),
+		8 => array(
+				1 => array(
+						'name' => '支付管理',
+						'uri' => '/pay'
+				)
+		),
+		9 => array(
 			1 => array(
 				'name' => '协议&说明',
 				'uri' => '/protocol'
@@ -164,7 +188,7 @@ function getSubMenu() {
 				'uri' => '/splash'
 			),
 		),
-		8 => array (
+		10 => array (
 			1 => array (
 				'name' => '用户管理',
 				'uri' => '/user'
@@ -184,7 +208,7 @@ function getSubMenu() {
 			),
 
 		) ,
-		9 => array(
+		11 => array(
 			1 => array(
 				'name'=> '拍卖管理',
 				'uri' => '/topAuction'
@@ -198,7 +222,7 @@ function getSubMenu() {
 				'uri' =>'/storeAuth'
 			),
 		),
-		10 => array(
+		12 => array(
 			1 => array(
 				'name'=> '奖品设置',
 				'uri' => '/prizeSetting'

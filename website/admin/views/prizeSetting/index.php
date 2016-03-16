@@ -54,10 +54,10 @@ Yii::app ()->clientScript->registerCssFile ( Yii::app ()->request->baseUrl . "/t
                 foreach ( $items as $item ) {
              ?>
                 <tr class="main_right_content_content_body">
-                    <td><img src="<?php echo $item->prize;?>"></td>
+                    <td><img src="/<?php echo $item->prize;?>" width="80" height="80"></td>
                     <td><?php echo $item->prize_name;?></td>
                     <td><?php echo $item->frequency;?></td>
-                    <td><?php echo date('Y-m-d H:i:s',$item->last_time); ?></td>
+                    <td><?php if($item->last_time){echo date('Y-m-d H:i:s',$item->last_time);} ?></td>
                     <td class="status">
                         <?php  if($item->statues== 0){echo "下线";}?>
                         <?php  if($item->statues== 1){echo "上线中";}?>
