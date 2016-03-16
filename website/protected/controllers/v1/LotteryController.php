@@ -19,7 +19,16 @@ class LotteryController extends PublicController
             throw new CHttpException(404);
         }
         $this->render('lotterydraw',array("benben_id"=>$benben_id));
-}
+    }
+
+    // 抽奖记录
+    public function actionLotteryLog(){
+        $benben_id=Frame::getIntFromRequest("benben_id");
+        if(empty($benben_id)){
+            throw new CHttpException(404);
+        }
+        $this->render('lotteryLog',array("benben_id"=>$benben_id));
+    }
 
     /**
      *初始化抽奖
@@ -185,6 +194,28 @@ class LotteryController extends PublicController
         }
 
     }
+
+    // 中奖记录手机端
+    public function actionInitLotteryLog(){
+        $benben_id = intval($_GET['benben_id']);
+        $model = LotteryLog::model();
+        $cri = new CDbCriteria();
+        //参数判断
+        $cri->select = "t.*,member.phone as phone,member.name as name";
+        $cri->join = "left join member on member.benben_id = t.benben_id";
+        $cri->addCondition('t.benben_id = ' . $benben_id, 'AND');
+        $cri->order = "lottery_time desc";
+        // echo '<pre>';
+        // var_dump($cri);
+        // exit;
+        $items = $model->findAll($cri);
+
+        $result['items']=$items;
+        $result['benebn_id']=$benben_id;
+        echo json_encode($result);
+        // $this->render('lotteryLog',array('items'=>$items));
+    }
+
 
 
 }

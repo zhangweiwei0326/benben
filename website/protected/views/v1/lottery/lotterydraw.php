@@ -1,3 +1,4 @@
+<?php $log_url = Yii::app()->createUrl('v2/lottery/lotteryLog')."?benben_id=".$benben_id; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +34,7 @@
 	<!-- lottery-help start -->
 	<div class="lottery-help">
 		<span>本次抽奖将消耗<span>0.5</span>个犇币</span>
-		<a href="">中奖记录</a>
+		<a id="lotteryLog" href="<?php echo $log_url; ?>">中奖记录</a>
 	</div>
 	<!-- lottery-help end -->
 	<div class="container">
