@@ -5,7 +5,7 @@
  * Date: 2016/1/19
  * Time: 19:51
  */
-class PayController extends Controller
+class PayController extends BaseController
 {
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -17,12 +17,207 @@ class PayController extends Controller
      * @var int the define the index for the menu
      */
 
-    public $menuIndex = 0;
+    public $menuIndex = 81;
+
+    /**
+     * Lists all models.
+     */
+    public function actionIndex(){
+        $this->insert_log(81);
+        $model = Pay::model();
+        $cri = new CDbCriteria();
+        $cri->select="t.*";
+//        $cri->join.="left join store_order_goods b on t.order_id=b.order_id ";
+        $cri->order = "t.time desc";
+//        $cri->addCondition("t.extension_code =3");
+
+        $result['order_status'] = -1;
+        $result['service_name'] = -1;
+        if(isset($_GET) && !empty($_GET)) {
+            $result = array();
+            $pay_id = $_GET['pay_id'];
+            $type = $_GET['type'];
+            $status = $_GET['status'];
+            $nick_name = $_GET['nick_name'];
+            $phone = $_GET['phone'];
+            $account = $_GET['account'];
+            $created_time1 = $_GET['created_time1'];
+            $created_time2 = $_GET['created_time2'];
+
+            if ($pay_id) {
+                $cri->addSearchCondition('t.id', $pay_id, true, 'AND');
+                $result['pay_id'] = $pay_id;
+            }
+            if ($type > -1) {
+                $cri->addSearchCondition('t.type', $type, true, 'AND');
+                $result['type'] = $type;
+            } else {
+                $result['type'] = -1;
+            }
+            if ($status > -1) {
+                $cri->addCondition("t.status ={$status}");
+                $result['status'] = $status;
+            } else {
+                $result['status'] = -1;
+            }
+            if ($nick_name) {
+                $cri->join .= "left join member m on t.member_id=m.id ";
+                $cri->addCondition("m.nick_name like '%$nick_name%'");
+                $result['nick_name'] = $nick_name;
+            }
+            if ($phone) {
+                $cri->join .= "left join member m on t.member_id=m.id ";
+                $cri->addCondition("m.phone like '%$phone%'");
+                $result['phone'] = $phone;
+            }
+            if($account){
+                $cri->addCondition("t.account like '%$account%'");
+                $result['account'] = $account;
+            }
+            if ($created_time1) {
+                $created_time1_tmp=strtotime($created_time1);
+                $cri->addCondition("t.time >= '".$created_time1_tmp."' ");
+                $result['created_time1']=$created_time1;
+            }
+            if ($created_time2) {
+                $created_time2_tmp=strtotime($created_time2);
+                $cri->addCondition("t.time < '".$created_time2_tmp."' ");
+                $result['created_time2']=$created_time2;
+            }
+        }
+
+        $pages = new CPagination();
+        $pages->itemCount = $model->count($cri);
+        $pages->pageSize = 12;
+        $pages->applyLimit($cri);
+        $items = $model->findAll($cri);
+        $this->render('index', array('items' => $items, 'pages' => $pages, 'result' => $result));
+    }
+
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete($id){
+        $payInfo=Pay::model()->find("id={$id}");
+        if(!$payInfo){
+            $result['status']=0;
+            $result['msg']="该记录不存在！";
+        }else{
+            $connection=Yii::app()->db;
+            $transaction=$connection->beginTransaction();
+            try{
+                $right=Pay::model()->updateAll(array("status"=>2,"reason"=>"信息不正确，已取消"),"id={$id}");
+                if($right) {
+                    $minfo = Member::model()->find("id={$payInfo->member_id}");
+                    $minfo->fee = $minfo['fee'] + $payInfo['fee'];
+                    $minfo->save();
+                }
+                $transaction->commit();
+                $result['status']="1";
+            }catch (Exception $e){
+                $transaction->rollBack();
+                $result['status']=0;
+                $result['msg']="网络错误！";
+            }
+        }
+        echo json_encode($result);
+        die();
+    }
+
+    /**
+     * Description of PayController
+     * 处理支付宝异步回调
+     * @author Administrator
+     * 支付宝支付
+     */
+    public function actionCashOut(){
+        include_once('lib/alipay/Corefunction.php');
+        include_once('lib/alipay/Md5function.php');
+        include_once('lib/alipay/Rsafunction.php');
+        include_once('lib/alipay/Notify.php');
+        include_once('lib/alipay/Submit.php');
+
+        header("Content-type:text/html;charset=utf-8");
+        $alipay_config = Yii::app()->params['alipay_config'];
+
+        /**************************请求参数**************************/
+
+        //服务器异步通知页面路径
+        $notify_url = Yii::app()->params['alipay']['cash_notify_url'];
+        //需http://格式的完整路径，不允许加?id=123这类自定义参数
+        //付款账号
+        $email = Yii::app()->params['alipay']['seller_email'];
+        //必填
+
+        //付款账户名"杭州"
+        $account_name = Yii::app()->params['alipay']['account_name'];
+        //必填，个人支付宝账号是真实姓名公司支付宝账号是公司名称
+
+        //付款当天日期
+        $pay_date = date("Ymd",  time());
+        //必填，格式：年[4位]月[2位]日[2位]，如：20100801
+
+        //批次号
+        $batch_no = $pay_date.time();
+        //必填，格式：当天日期[8位]+序列号[3至16位]，如：201008010000001
+        //type=1支付宝
+        $payinfo=Pay::model()->findAll("status=0 and type=1 limit 1000");
+        $total=0.00;
+        $detail=array();
+        foreach ($payinfo as $k => $v) {
+            $detail[]=($v['id'])."^".$v['account']."^".$v['pay_name']."^".$v['fee']."^工资";
+            $total+=$v['fee'];
+            $changestatus['status']=3;//转账中
+            Pay::model()->updateAll(array("status"=>3),"id={$v['id']}");
+        }
+
+        $num=count($detail);
+        $more=  implode("|", $detail);
+
+        //付款总金额
+        $batch_fee = $total;
+        //必填，即参数detail_data的值中所有金额的总和
+
+        //付款笔数
+        $batch_num = $num;
+        //必填，即参数detail_data的值中，“|”字符出现的数量加1，最大支持1000笔（即“|”字符出现的数量999个）
+
+        //付款详细数据
+        $detail_data = $more;
+        //必填，格式：流水号1^收款方帐号1^真实姓名^付款金额1^备注说明1|流水号2^收款方帐号2^真实姓名^付款金额2^备注说明2....
+
+
+        /************************************************************/
+
+        //构造要请求的参数数组，无需改动
+        $parameter = array(
+            "service" => "batch_trans_notify",
+            "partner" => trim($alipay_config['partner']),
+            "notify_url"	=> $notify_url,
+            "email"	=> $email,
+            "account_name"	=> $account_name,
+            "pay_date"	=> $pay_date,
+            "batch_no"	=> $batch_no,
+            "batch_fee"	=> $batch_fee,
+            "batch_num"	=> $batch_num,
+            "detail_data"	=> $detail_data,
+            "_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
+        );
+
+        //建立请求
+        $alipaySubmit = new \AlipaySubmit($alipay_config);
+        $html_text = $alipaySubmit->buildRequestForm($parameter,"post", "处理中，请勿点击！");
+        echo $html_text;
+    }
+
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionBackOrder(){
+        $this->insert_log(121);
         header("Content-type: text/html; charset=utf-8");
         include_once('lib/alipay/Corefunction.php');
         include_once('lib/alipay/Md5function.php');
@@ -129,7 +324,7 @@ class PayController extends Controller
         );
         //建立请求
         $alipaySubmit = new \AlipaySubmit($alipay_config);
-        $html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
+        $html_text = $alipaySubmit->buildRequestForm($parameter,"post", "确认");
         echo $html_text;
     }
 }

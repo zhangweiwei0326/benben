@@ -15,7 +15,8 @@ class BaseController extends Controller {
 							"industry" => "doother", "version" => "doother", "complain"=>"doother",
 							"enterpriseDisable" =>"doenterprise", "enterpriseMember" => "doenterprise", "buyDisable" => "dorelease",
 							"creationDisable"  => "docreation", "creationComment" => "docreation", "notice" => "donews",
-							"friendLeague" => "doleague", "applyRegister" => "doapplyregister", "storePriceAdmin"=>"doservice",);
+							"friendLeague" => "doleague", "applyRegister" => "doapplyregister", "storePriceAdmin"=>"doservice",
+							"pay"=>"dopay");
 
 
 	protected function beforeAction($action) {
