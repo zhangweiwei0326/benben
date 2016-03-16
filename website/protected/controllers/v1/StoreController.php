@@ -730,6 +730,15 @@ class StoreController extends PublicController
             }else{
                 $is_promotion=0;
             }
+
+            //查看是否是会员号
+            $is_exist=PromotionManageAttach::model()->find("store_id={$id} and is_member_ico=1 and overdue_date>".time());
+            if($is_exist){
+                $vip_store=1;
+            }else{
+                $vip_store=0;
+            }
+
             $pid=PromotionManage::model()->find("member_id={$number_info['member_id']}");
             if($pid) {
                 $pinfo = Promotion::model()->findAll("pm_id={$pid['id']} and type={$pid['store_type']} and is_close=0 order by vip_time Desc,valid_right Desc limit " . $pid['online_restrict']);
@@ -796,6 +805,7 @@ class StoreController extends PublicController
                 "vip_time"=>$storeinfo['status']==2 ? ($pid['vip_time'] ? $pid['vip_time'] : 0) : ($pid['time']?$pid['time']:0),
                 "is_overtime"=>$is_promotion?0:1,
                 'vip_type'=>$pid['store_type'] ? $pid['store_type'] : 0,
+                'vip_store'=>$vip_store,
                 'type'=>$storeinfo['type']?$storeinfo['type']:0,
                 'shopnum'=>$shopnum,
                 'auth_grade'=>$pid ? $pid['vip_type']+1 : 0,
@@ -921,6 +931,14 @@ class StoreController extends PublicController
                 $is_promotion=0;
             }
 
+            //是否是会员号
+            $is_exist=PromotionManageAttach::model()->find("store_id={$id} and is_member_ico=1 and overdue_date>".time());
+            if($is_exist){
+                $vip_store=1;
+            }else{
+                $vip_store=0;
+            }
+
             //评论数，好评率
             $sql12 = "select a.comment_rank from store_comment as a left join promotion as b on a.promotion_id=b.id
             left join promotion_manage as c on b.pm_id=c.id where c.store_id={$number_info['id']} and a.parent_id=0 and a.is_seller=0";
@@ -966,6 +984,7 @@ class StoreController extends PublicController
                 "vip_time"=>$pid['vip_time'] ? $pid['vip_time'] : 0,
                 "is_overtime"=>$pid['vip_time'] ? (($pid['vip_time']>=time()) ? 0 : 1) : 1,
                 'vip_type'=>$pid['store_type'] ? $pid['store_type'] : 0,
+                'vip_store'=>$vip_store,
                 'type'=>$storeinfo['type']?$storeinfo['type']:0,
                 'shopnum'=>$shopnum?$shopnum:0,
                 'auth_grade'=>$pid ? $pid['vip_type']+1 : 0,
