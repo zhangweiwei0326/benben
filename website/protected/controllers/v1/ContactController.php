@@ -1193,8 +1193,8 @@ class ContactController extends PublicController
         $ownbx = Bxapply::model()->count("phone = '{$user->phone}' and status = 3");//自己是否是百姓用户
         if ($m->get("bxapply:" . $user['id']) != $ownbx) {
             $m->set("bxapply:" . $user['id'], $ownbx);
-            $old = $m->get("addrsverion:" . $user['id']);
-            $m->set("addrsverion:" . $user['id'], ($old + 1));
+            $old = $m->get("addrsversion:" . $user['id']);
+            $m->set("addrsversion:" . $user['id'], ($old + 1));
         }
         /*
          * 判断快照版本是否一致，一致则返回成功

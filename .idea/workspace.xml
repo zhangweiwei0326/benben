@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6e370b6-e089-43e3-a515-2ae6b256c3e4" name="Default" comment="政企通讯录退出统计和拨打电话统计">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/website/protected/views/v1/store/declaration.php" />
+    <list default="true" id="d6e370b6-e089-43e3-a515-2ae6b256c3e4" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/blade.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/protected/controllers/v1/BuyController.php" afterPath="$PROJECT_DIR$/website/protected/controllers/v1/BuyController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/protected/controllers/v1/StoreController.php" afterPath="$PROJECT_DIR$/website/protected/controllers/v1/StoreController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/protected/controllers/v1/ContactController.php" afterPath="$PROJECT_DIR$/website/protected/controllers/v1/ContactController.php" />
     </list>
     <ignored path="benben.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,13 +32,65 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="declaration.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/website/protected/views/v1/store/declaration.php">
+      <file leaf-file-name="ContactController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/ContactController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39298245">
-              <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.6043956">
+              <caret line="1193" column="55" selection-start-line="1193" selection-start-column="49" selection-end-line="1193" selection-end-column="55" />
               <folding>
-                <element signature="n#style#0;n#h2#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1458186909751" expanded="true" signature="769:917" placeholder="select a.id,..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="1212:1284" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="4319:4427" placeholder="select benbe..member..." />
+                <marker date="1458186909751" expanded="true" signature="7170:7274" placeholder="insert into group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="15429:15514" placeholder="insert into group_contact_phone..." />
+                <marker date="1458186909751" expanded="true" signature="19683:19752" placeholder="insert into group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="20738:20856" placeholder="select benbe..member..." />
+                <marker date="1458186909751" expanded="true" signature="21229:21414" placeholder="select phone..group_contact_phone..." />
+                <marker date="1458186909751" expanded="true" signature="23627:23731" placeholder="insert into group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="25695:25883" placeholder="select a.pos..number_train..." />
+                <marker date="1458186909751" expanded="true" signature="26362:26554" placeholder="select a.pos..friend_league..." />
+                <marker date="1458186909751" expanded="true" signature="37743:37878" placeholder="select a.id,..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="42142:42236" placeholder="insert into group_contact_phone..." />
+                <marker date="1458186909751" expanded="true" signature="44435:44532" placeholder="select id,so..group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="45331:45455" placeholder="select id,gr..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="46389:46539" placeholder="select a.id,..member..." />
+                <marker date="1458186909751" expanded="true" signature="47042:47629" placeholder="select a.id,..group_contact_phone..." />
+                <marker date="1458186909751" expanded="true" signature="50471:50597" placeholder="SELECT area_..area..." />
+                <marker date="1458186909751" expanded="true" signature="55548:55813" placeholder="select a.id,..number_train..." />
+                <marker date="1458186909751" expanded="true" signature="63432:63529" placeholder="select id,so..group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="64476:64713" placeholder="select a.gro..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="65629:65837" placeholder="select a.id ..member..." />
+                <marker date="1458186909751" expanded="true" signature="69015:69280" placeholder="select a.id,..number_train..." />
+                <marker date="1458186909751" expanded="true" signature="72441:72510" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="72678:72734" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="73039:73113" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="78203:78254" placeholder="select id fr..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="78596:78664" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="78983:79057" placeholder="select id fr..group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="79845:79893" placeholder="delete from ..." />
+                <marker date="1458186909751" expanded="true" signature="80122:80211" placeholder="delete from ..." />
+                <marker date="1458186909751" expanded="true" signature="80525:80599" placeholder="select id fr..group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="81559:81633" placeholder="select id fr..group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="84367:84437" placeholder="select id fr..group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="84557:84631" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="84792:84867" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="85983:86058" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="87202:87252" placeholder="select phone..member..." />
+                <marker date="1458186909751" expanded="true" signature="87453:87504" placeholder="select phone..bxapply..." />
+                <marker date="1458186909751" expanded="true" signature="91119:91322" placeholder="select a.id ..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="98926:99091" placeholder="select a.id ..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="101410:101512" placeholder="SELECT area_..area..." />
+                <marker date="1458186909751" expanded="true" signature="105501:105550" placeholder="update group..." />
+                <marker date="1458186909751" expanded="true" signature="114602:114659" placeholder="select id,me..group_contact..." />
+                <marker date="1458186909751" expanded="true" signature="114800:115089" placeholder="select a.id,..group_contact_phone..." />
+                <marker date="1458186909751" expanded="true" signature="115222:115351" placeholder="select a.id ..group_contact_info..." />
+                <marker date="1458186909751" expanded="true" signature="115847:115980" placeholder="select id, h..member..." />
+                <marker date="1458186909751" expanded="true" signature="116221:116390" placeholder="delete from ..." />
+                <marker date="1458186909751" expanded="true" signature="117129:117185" placeholder="delete from ..." />
+                <marker date="1458186909751" expanded="true" signature="118112:118275" placeholder="select id,ni..member..." />
+                <marker date="1458186909751" expanded="true" signature="118315:118380" placeholder="select id,ni..member..." />
+                <marker date="1458186909751" expanded="true" signature="119455:119727" placeholder="select a.id ..group_contact_phone..." />
+                <marker date="1458186909751" expanded="true" signature="120285:120423" placeholder="select nick_..member..." />
               </folding>
             </state>
           </provider>
@@ -67,57 +118,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/website/protected/models/StoreTransfer.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/CollectGoods.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/CollectGoodsController.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/Member.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/EnterpriseDisplayMember.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/AuctionLog.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/TopAuction.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/StoreAuth.php" />
-        <option value="$PROJECT_DIR$/website/admin/components/Controller.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/PromotionManage.php" />
-        <option value="$USER_HOME$/Desktop/params.php" />
-        <option value="$PROJECT_DIR$/website/protected/views/v1/storeComment/promotionlist.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/StoreCommentController.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/TopAuctionController.php" />
-        <option value="$PROJECT_DIR$/website/protected/views/v1/auctionDeclaration/auctionDeclaration.html" />
-        <option value="$PROJECT_DIR$/website/protected/views/v1/TopAuction/auctionDeclaration.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/AlipayController.php" />
-        <option value="$PROJECT_DIR$/website/protected/config/main.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/SplashController.php" />
+        <option value="$PROJECT_DIR$/website/protected/config/params.php" />
         <option value="$PROJECT_DIR$/website/admin/controllers/CrontabscriptController.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/EnterpriseRole.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/GroupBuyController.php" />
-        <option value="$PROJECT_DIR$/website/admin/controllers/DrawbackController.php" />
-        <option value="$PROJECT_DIR$/website/admin/config/main.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/OrderController.php" />
-        <option value="$PROJECT_DIR$/website/admin/controllers/PayController.php" />
-        <option value="$PROJECT_DIR$/website/admin/config/params.php" />
-        <option value="$PROJECT_DIR$/website/admin/views/drawback/index.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/BuyAttachment.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/QuoteAttachment.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/UserController.php" />
-        <option value="$PROJECT_DIR$/website/protected/views/v1/promotion/detail.php" />
-        <option value="$PROJECT_DIR$/website/protected/views/v1/groupBuy/detail.php" />
-        <option value="$PROJECT_DIR$/../Admin/Controller/PayController.class.php" />
-        <option value="$PROJECT_DIR$/../batch_trans_notify-PHP-UTF-8/alipayapi.php" />
-        <option value="$PROJECT_DIR$/website/lib/Frame.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/PromotionController.php" />
-        <option value="$PROJECT_DIR$/website/protected/components/ImageController.php" />
-        <option value="$PROJECT_DIR$/website/protected/components/PublicController.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/GroupController.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/LeagueController.php" />
-        <option value="$PROJECT_DIR$/website/admin/components/LeftWidge.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/ContactController.php" />
-        <option value="$PROJECT_DIR$/website/protected/controllers/v1/BxapplyController.php" />
-        <option value="$PROJECT_DIR$/../info.php" />
-        <option value="$PROJECT_DIR$/../Admin/Conf/config.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/PayController.php" />
         <option value="$PROJECT_DIR$/website/protected/models/Enterprise.php" />
-        <option value="$PROJECT_DIR$/website/protected/models/EnterpriseDialLog.php" />
         <option value="$PROJECT_DIR$/website/protected/controllers/v1/EnterpriseController.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/Quote.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/OrderOfflineLog.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/Buy.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/Guarantee.php" />
         <option value="$PROJECT_DIR$/website/protected/controllers/v1/BuyController.php" />
+        <option value="$PROJECT_DIR$/website/protected/views/v1/TopAuction/auctionDeclaration.php" />
+        <option value="$PROJECT_DIR$/website/protected/views/v1/guarantee/introduce.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/Industry.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/StoreOrderGoods.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/PromotionManage.php" />
+        <option value="$PROJECT_DIR$/website/lib/Easemob.class.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/OrderController.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/NewsController.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/Member.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/GuaranteeController.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/StoreCommentController.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/LeagueController.php" />
+        <option value="$PROJECT_DIR$/website/protected/components/PublicController.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/PayAccount.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/PromotionController.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/GroupBuyController.php" />
+        <option value="$PROJECT_DIR$/website/protected/models/Pay.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/UserController.php" />
+        <option value="$PROJECT_DIR$/website/admin/components/LeftWidge.php" />
+        <option value="$PROJECT_DIR$/website/lib/global.php" />
+        <option value="$PROJECT_DIR$/website/admin/controllers/PrizeSettingController.php" />
+        <option value="$PROJECT_DIR$/website/admin/controllers/WinningListController.php" />
+        <option value="$PROJECT_DIR$/website/admin/views/prizeSetting/add.php" />
+        <option value="$PROJECT_DIR$/website/admin/views/prizeSetting/index.php" />
+        <option value="$PROJECT_DIR$/website/admin/controllers/LotteryController.php" />
         <option value="$PROJECT_DIR$/website/protected/controllers/v1/StoreController.php" />
-        <option value="$PROJECT_DIR$/website/protected/views/v1/store/declaration.php" />
+        <option value="$PROJECT_DIR$/website/admin/controllers/NoticeController.php" />
+        <option value="$PROJECT_DIR$/website/admin/components/BaseController.php" />
+        <option value="$PROJECT_DIR$/website/admin/models/Pay.php" />
+        <option value="$PROJECT_DIR$/website/admin/config/params.php" />
+        <option value="$PROJECT_DIR$/website/protected/config/main.php" />
+        <option value="$PROJECT_DIR$/website/admin/config/main.php" />
+        <option value="$PROJECT_DIR$/website/admin/controllers/AlipayController.php" />
+        <option value="$PROJECT_DIR$/website/admin/views/pay/index.php" />
+        <option value="$PROJECT_DIR$/website/admin/controllers/PayController.php" />
+        <option value="$PROJECT_DIR$/../Admin/View/Salary/withdrawCash.html" />
+        <option value="$PROJECT_DIR$/website/protected/views/v1/lottery/lotterydraw.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/LotteryController.php" />
+        <option value="$PROJECT_DIR$/website/protected/views/v1/lottery/lotteryLog.php" />
+        <option value="$PROJECT_DIR$/website/protected/controllers/v1/ContactController.php" />
       </list>
     </option>
   </component>
@@ -134,9 +185,10 @@
   <component name="PhpWebServerValidation" path_to_validation_script="/index.php/v1" selected_validation_type="LOCAL" web_path_to_validation_script="http://112.124.101.177:81" />
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
-    <option name="width" value="1378" />
-    <option name="height" value="735" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -163,7 +215,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -258,6 +309,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -360,7 +412,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="store" />
+              <option name="myItemId" value="lottery" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -434,42 +486,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="benben" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="benben" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="website" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../fast" />
     <property name="js-jscs-nodeInterpreter" value="C:\outsoft\nodejs\node.exe" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="103" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="132" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="132" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="925" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="120" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="127" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="126" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="919" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\xampp\htdocs\wtz\benben\website\protected" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\web\wtz\benben\website\protected\views\v1\lottery" />
+      <recent name="C:\web\wtz\benben\website\protected\models" />
+      <recent name="C:\web\wtz\benben\website\themes\css" />
+      <recent name="C:\web\wtz\benben\website\themes\js" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.StoreController.php">
@@ -541,42 +597,6 @@
       <created>1445915729830</created>
       <option name="number" value="Default" />
       <updated>1445915729830</updated>
-    </task>
-    <task id="LOCAL-00001" summary="促销页面修复iphone4适配问题，文字换行问题，删除图片为空问题">
-      <created>1453169929557</created>
-      <option name="number" value="00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1453169929557</updated>
-    </task>
-    <task id="LOCAL-00002" summary="修改政企逻辑判断错误">
-      <created>1453175144228</created>
-      <option name="number" value="00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1453175144228</updated>
-    </task>
-    <task id="LOCAL-00003" summary="修改政企逻辑判断错误">
-      <created>1453182625846</created>
-      <option name="number" value="00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1453182625846</updated>
-    </task>
-    <task id="LOCAL-00004" summary="号码直通车加入通讯录版本控制；退款接口部分修改">
-      <created>1453203070554</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1453203070554</updated>
-    </task>
-    <task id="LOCAL-00005" summary="支付宝退款接口实现，退款参数配置，手机端退款增加">
-      <created>1453211060604</created>
-      <option name="number" value="00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1453211060604</updated>
-    </task>
-    <task id="LOCAL-00006" summary="格式的改变">
-      <created>1453344505254</created>
-      <option name="number" value="00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1453344505254</updated>
     </task>
     <task id="LOCAL-00007" summary="修改通讯录详情界面">
       <created>1453348123754</created>
@@ -680,7 +700,199 @@
       <option name="project" value="LOCAL" />
       <updated>1455619396996</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="号码直通车会员服务协议">
+      <created>1456211872757</created>
+      <option name="number" value="00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1456211872757</updated>
+    </task>
+    <task id="LOCAL-00025" summary="号码直通车会员服务协议">
+      <created>1456212085926</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1456212085926</updated>
+    </task>
+    <task id="LOCAL-00026" summary="号码直通车会员服务协议">
+      <created>1456212669883</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1456212669883</updated>
+    </task>
+    <task id="LOCAL-00027" summary="获取用户积分">
+      <created>1456213470644</created>
+      <option name="number" value="00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1456213470644</updated>
+    </task>
+    <task id="LOCAL-00028" summary="二维码更新">
+      <created>1456303290790</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1456303290790</updated>
+    </task>
+    <task id="LOCAL-00029" summary="免费促销试用期延长直到2016-7-31 0：0：0">
+      <created>1456307573058</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1456307573058</updated>
+    </task>
+    <task id="LOCAL-00030" summary="小喇叭部分用户发送成功未显示在列表中">
+      <created>1456390859456</created>
+      <option name="number" value="00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1456390859456</updated>
+    </task>
+    <task id="LOCAL-00031" summary="百姓网申请添加顺序">
+      <created>1456457285222</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1456457285222</updated>
+    </task>
+    <task id="LOCAL-00032" summary="给通讯录增加字段，政企简称short_name">
+      <created>1456467772835</created>
+      <option name="number" value="00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1456467772835</updated>
+    </task>
+    <task id="LOCAL-00033" summary="犇币兑换，订单页面展示修改（兼容网页端）">
+      <created>1457537405903</created>
+      <option name="number" value="00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1457537405903</updated>
+    </task>
+    <task id="LOCAL-00034" summary="订单支付，我要买支付，定时任务，公告">
+      <created>1457617767014</created>
+      <option name="number" value="00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1457617767014</updated>
+    </task>
+    <task id="LOCAL-00035" summary="fix promotion and order">
+      <created>1457692990039</created>
+      <option name="number" value="00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1457692990039</updated>
+    </task>
+    <task id="LOCAL-00036" summary="小喇叭群发功能改善，提高发送速度">
+      <created>1457939505761</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1457939505761</updated>
+    </task>
+    <task id="LOCAL-00037" summary="小喇叭发送提速">
+      <created>1457939725152</created>
+      <option name="number" value="00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1457939725152</updated>
+    </task>
+    <task id="LOCAL-00038" summary="订单列表修复我要买的详情情况">
+      <created>1457941707961</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1457941707961</updated>
+    </task>
+    <task id="LOCAL-00039" summary="小喇叭数量与商城互动">
+      <created>1457957091498</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1457957091498</updated>
+    </task>
+    <task id="LOCAL-00040" summary="缴纳/解冻保证金功能完善">
+      <created>1457958574554</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1457958574554</updated>
+    </task>
+    <task id="LOCAL-00041" summary="收藏小助手内容数据更新，与商城数据进行同步">
+      <created>1457958630325</created>
+      <option name="number" value="00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1457958630325</updated>
+    </task>
+    <task id="LOCAL-00042" summary="修复无个人商品评论时数据报错的问题">
+      <created>1457958867826</created>
+      <option name="number" value="00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1457958867826</updated>
+    </task>
+    <task id="LOCAL-00043" summary="修复pc端购买堂主数量与手机端不同步">
+      <created>1457963529233</created>
+      <option name="number" value="00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1457963529233</updated>
+    </task>
+    <task id="LOCAL-00044" summary="修复收藏的商品被删除后还有显示数字的错误">
+      <created>1457964255834</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1457964255834</updated>
+    </task>
+    <task id="LOCAL-00045" summary="提现init">
+      <created>1457967726124</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1457967726124</updated>
+    </task>
+    <task id="LOCAL-00046" summary="支付init">
+      <created>1457967806224</created>
+      <option name="number" value="00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1457967806224</updated>
+    </task>
+    <task id="LOCAL-00047" summary="修复团购和促销商品在购买转换时出现的复用情况">
+      <created>1458010211190</created>
+      <option name="number" value="00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1458010211190</updated>
+    </task>
+    <task id="LOCAL-00048" summary="修复收藏小助手团购、促销的商店类型和团购、促销、保证金vip类型之间的关系">
+      <created>1458019031481</created>
+      <option name="number" value="00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1458019031481</updated>
+    </task>
+    <task id="LOCAL-00049" summary="多团队合作内容部分合并">
+      <created>1458025551497</created>
+      <option name="number" value="00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1458025551497</updated>
+    </task>
+    <task id="LOCAL-00050" summary="提现手机端接口初始化">
+      <created>1458025623097</created>
+      <option name="number" value="00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1458025623208</updated>
+    </task>
+    <task id="LOCAL-00051" summary="团队合并代码init">
+      <created>1458029769569</created>
+      <option name="number" value="00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1458029769569</updated>
+    </task>
+    <task id="LOCAL-00052" summary="抽奖模块init">
+      <created>1458096676942</created>
+      <option name="number" value="00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1458096676963</updated>
+    </task>
+    <task id="LOCAL-00053" summary="判断号直是否是会员号">
+      <created>1458106247070</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1458106247070</updated>
+    </task>
+    <task id="LOCAL-00054" summary="后台提现集成init">
+      <created>1458139191383</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1458139191383</updated>
+    </task>
+    <task id="LOCAL-00055" summary="中奖历史记录页面">
+      <created>1458141024065</created>
+      <option name="number" value="00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1458141024065</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TodoView">
@@ -693,14 +905,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1378" height="735" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3596358" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34568834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5030257" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3681592" sideWeight="0.4969743" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3666121" sideWeight="0.4969743" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -712,7 +924,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2496329" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32890365" sideWeight="0.49710983" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32733223" sideWeight="0.49710983" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39930955" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -729,1254 +941,560 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="促销页面修复iphone4适配问题，文字换行问题，删除图片为空问题" />
-    <MESSAGE value="修改政企逻辑判断错误" />
-    <MESSAGE value="号码直通车加入通讯录版本控制；退款接口部分修改" />
-    <MESSAGE value="支付宝退款接口实现，退款参数配置，手机端退款增加" />
-    <MESSAGE value="格式的改变" />
-    <MESSAGE value="修改通讯录详情界面" />
-    <MESSAGE value="修改一些原先bugs" />
-    <MESSAGE value="通讯录漏考虑无奔犇号情况，给予修正；通讯录详情的界面数据缺失，给予修正" />
-    <MESSAGE value="我要买功能图片添加" />
-    <MESSAGE value="功能更新，通讯录详细接口拆分" />
-    <MESSAGE value="我要买报价图片功能添加" />
-    <MESSAGE value="我要买创建字段错误" />
-    <MESSAGE value="修复通讯录字段错误，内容不同意；事务执行漏洞补丁&#10;" />
-    <MESSAGE value="bug修复&#10;" />
-    <MESSAGE value="百姓网账号列表页/详情页不同步，修复" />
-    <MESSAGE value="促销图片处理方式修改，去最短边剪裁" />
-    <MESSAGE value="解决因为初始不同意同步通讯录导致缺少初始分组的情况" />
-    <MESSAGE value="好友联盟邀请分组/群组邀请分组重写" />
-    <MESSAGE value="合并项目奔犇商城和政企后台" />
-    <MESSAGE value="号码直通车的行业分类修改" />
-    <MESSAGE value="政企通讯录退出统计和拨打电话统计" />
-    <option name="LAST_COMMIT_MESSAGE" value="政企通讯录退出统计和拨打电话统计" />
+    <MESSAGE value="给通讯录增加字段，政企简称short_name" />
+    <MESSAGE value="犇币兑换，订单页面展示修改（兼容网页端）" />
+    <MESSAGE value="订单支付，我要买支付，定时任务，公告" />
+    <MESSAGE value="fix promotion and order" />
+    <MESSAGE value="小喇叭群发功能改善，提高发送速度" />
+    <MESSAGE value="小喇叭发送提速" />
+    <MESSAGE value="订单列表修复我要买的详情情况" />
+    <MESSAGE value="小喇叭数量与商城互动" />
+    <MESSAGE value="缴纳/解冻保证金功能完善" />
+    <MESSAGE value="收藏小助手内容数据更新，与商城数据进行同步" />
+    <MESSAGE value="修复无个人商品评论时数据报错的问题" />
+    <MESSAGE value="修复pc端购买堂主数量与手机端不同步" />
+    <MESSAGE value="修复收藏的商品被删除后还有显示数字的错误" />
+    <MESSAGE value="提现init" />
+    <MESSAGE value="支付init" />
+    <MESSAGE value="修复团购和促销商品在购买转换时出现的复用情况" />
+    <MESSAGE value="修复收藏小助手团购、促销的商店类型和团购、促销、保证金vip类型之间的关系" />
+    <MESSAGE value="多团队合作内容部分合并" />
+    <MESSAGE value="提现手机端接口初始化" />
+    <MESSAGE value="团队合并代码init" />
+    <MESSAGE value="抽奖模块init" />
+    <MESSAGE value="判断号直是否是会员号" />
+    <MESSAGE value="后台提现集成init" />
+    <MESSAGE value="中奖历史记录页面" />
+    <MESSAGE value="修复首页通讯录接口中的单词拼错" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复首页通讯录接口中的单词拼错" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="29" />
+      <option name="time" value="30" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/website/admin/views/drawback/index.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/RoleController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="87" column="94" selection-start-line="87" selection-start-column="94" selection-end-line="87" selection-end-column="94" />
+        <state vertical-scroll-proportion="0.36979166">
+          <caret line="250" column="28" selection-start-line="250" selection-start-column="26" selection-end-line="250" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/models/QuoteAttachment.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/ApplyRegisterController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="79" column="53" selection-start-line="79" selection-start-column="53" selection-end-line="79" selection-end-column="53" />
+        <state vertical-scroll-proportion="0.5138889">
+          <caret line="389" column="30" selection-start-line="389" selection-start-column="30" selection-end-line="389" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/CreationController.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/components/views/leftView.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.19270833">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/views/layouts/home.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/models/BuyAttachment.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.2581227">
-          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/views/v1/groupBuy/detail.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44584838">
-          <caret line="49" column="107" selection-start-line="49" selection-start-column="107" selection-end-line="49" selection-end-column="107" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/UserController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1413" column="62" selection-start-line="1413" selection-start-column="62" selection-end-line="1413" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Admin/Controller/PayController.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03429603">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_0.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3501805">
-          <caret line="685" column="9" selection-start-line="685" selection-start-column="9" selection-end-line="685" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/gd.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55595666">
-          <caret line="1145" column="9" selection-start-line="1145" selection-start-column="9" selection-end-line="1145" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/IndustryController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.11732852">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Downloads/alipaytranspay/批量付款到支付宝账户有密接口-batch_trans_notify(20150528)/batch_trans_notify-PHP-UTF-8/index.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/views/layouts/area.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/TopAuctionController.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/config/console.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3693694">
-          <caret line="291" column="31" selection-start-line="291" selection-start-column="31" selection-end-line="291" selection-end-column="31" />
+        <state vertical-scroll-proportion="-1.3489584">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/components/thumb.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/components/views/headerView.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13898917">
-          <caret line="52" column="49" selection-start-line="52" selection-start-column="49" selection-end-line="52" selection-end-column="49" />
+        <state vertical-scroll-proportion="-0.19270833">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/components/ImageController.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/WinningListController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2129964">
-          <caret line="67" column="4" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.7256944">
+          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/lib/Frame.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/views/prizeSetting/add.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6570397">
-          <caret line="339" column="5" selection-start-line="339" selection-start-column="5" selection-end-line="339" selection-end-column="5" />
-          <folding />
+        <state vertical-scroll-proportion="-0.4496528">
+          <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../benben-develop/benben-develop/website/admin/components/Controller.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/views/prizeSetting/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5329861">
+          <caret line="59" column="94" selection-start-line="59" selection-start-column="94" selection-end-line="59" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/themes/css/lottery.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../benben-develop/benben-develop/website/admin/components/HeaderWidge.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/models/Member.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-2.5052083">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../benben-develop/benben-develop/website/admin/components/LeftWidge.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.392857">
-          <caret line="171" column="9" selection-start-line="163" selection-start-column="8" selection-end-line="171" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/admin/components/LeftWidge.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6026616">
-          <caret line="163" column="8" selection-start-line="163" selection-start-column="8" selection-end-line="163" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../benben-develop/benben-develop/website/admin/components/views/leftView.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../benben-develop/benben-develop/website/protected/components/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/EnterpriseIndexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6352584">
-          <caret line="11" column="15" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/lib/uploadEnterpriseMember.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22924188">
-          <caret line="61" column="81" selection-start-line="61" selection-start-column="81" selection-end-line="61" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/lib/uploadzip.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.40433213">
-          <caret line="85" column="88" selection-start-line="85" selection-start-column="88" selection-end-line="85" selection-end-column="88" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/LeagueController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.055267703">
-          <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+        <state vertical-scroll-proportion="94.61979">
+          <caret line="1473" column="13" selection-start-line="1473" selection-start-column="13" selection-end-line="1473" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/views/v1/promotion/detail.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10830325">
-          <caret line="63" column="31" selection-start-line="63" selection-start-column="20" selection-end-line="63" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/PromotionController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-44.107143">
-          <caret line="65" column="31" selection-start-line="65" selection-start-column="31" selection-end-line="65" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/ContactController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="206" column="16" selection-start-line="206" selection-start-column="16" selection-end-line="206" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/BxapplyController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.607142">
-          <caret line="715" column="16" selection-start-line="715" selection-start-column="16" selection-end-line="715" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/config/main.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.107143">
-          <caret line="62" column="53" selection-start-line="62" selection-start-column="53" selection-end-line="62" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../let.php">
+    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/IndustryController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../batch_trans_notify-PHP-UTF-8/alipay.config.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/LoginLogController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25694445">
+          <caret line="4" column="47" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/protected/models/LotteryLog.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../batch_trans_notify-PHP-UTF-8/index.php">
+    <entry file="file://$PROJECT_DIR$/website/protected/models/PrizeSetting.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.2036037">
-          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../batch_trans_notify-PHP-UTF-8/alipayapi.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.034234233">
-          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Admin/Conf/config.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.54774773">
-          <caret line="16" column="35" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/config/params.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.3009009">
-          <caret line="70" column="31" selection-start-line="70" selection-start-column="31" selection-end-line="70" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/models/Activity.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-0.9635417">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/models/Buy.php">
+    <entry file="file://$PROJECT_DIR$/website/ueditor1_4_3-utf8-php/third-party/highcharts/highcharts.src.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.4369602">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-          <folding>
-            <marker date="1445910710615" expanded="true" signature="10:572" placeholder=" This is the model class for table &quot;buy&quot;. ..." />
-            <marker date="1445910710615" expanded="true" signature="606:4176" placeholder="{...}" />
-            <marker date="1445910710615" expanded="true" signature="613:670" placeholder=" @return string the associated database table name ..." />
-            <marker date="1445910710615" expanded="true" signature="701:723" placeholder="{...}" />
-            <marker date="1445910710615" expanded="true" signature="729:789" placeholder=" @return array validation rules for model attributes. ..." />
-            <marker date="1445910710615" expanded="true" signature="816:1558" placeholder="{...}" />
-            <marker date="1445910710615" expanded="true" signature="932:1553" placeholder="..." />
-            <marker date="1445910710615" expanded="true" signature="1564:1603" placeholder=" @return array relational rules. ..." />
-            <marker date="1445910710615" expanded="true" signature="1634:1794" placeholder="{...}" />
-            <marker date="1445910710615" expanded="true" signature="1786:1789" placeholder="..." />
-            <marker date="1445910710615" expanded="true" signature="1800:1863" placeholder=" @return array customized attribute labels (name=&gt;label) ..." />
-            <marker date="1445910710615" expanded="true" signature="1900:2341" placeholder="{...}" />
-            <marker date="1445910710615" expanded="true" signature="1919:2336" placeholder="..." />
-            <marker date="1445910710615" expanded="true" signature="2347:2839" placeholder=" Retrieves a list of models based on the current search/filter conditions. ..." />
-            <marker date="1445910710615" expanded="true" signature="2867:3825" placeholder="{...}" />
-            <marker date="1445910710615" expanded="true" signature="3790:3819" placeholder="..." />
-            <marker date="1445910710615" expanded="true" signature="3831:4078" placeholder=" Returns the static model of the specified AR class. ..." />
-            <marker date="1445910710615" expanded="true" signature="4132:4174" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/models/BuyAppeal.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="5.747841">
-          <caret line="104" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
-          <folding>
-            <marker date="1445910710656" expanded="true" signature="10:282" placeholder=" This is the model class for table &quot;buy_appeal&quot;. ..." />
-            <marker date="1445910710656" expanded="true" signature="322:2844" placeholder="{...}" />
-            <marker date="1445910710656" expanded="true" signature="329:386" placeholder=" @return string the associated database table name ..." />
-            <marker date="1445910710656" expanded="true" signature="417:446" placeholder="{...}" />
-            <marker date="1445910710656" expanded="true" signature="452:512" placeholder=" @return array validation rules for model attributes. ..." />
-            <marker date="1445910710656" expanded="true" signature="539:1007" placeholder="{...}" />
-            <marker date="1445910710656" expanded="true" signature="655:1002" placeholder="..." />
-            <marker date="1445910710656" expanded="true" signature="1013:1052" placeholder=" @return array relational rules. ..." />
-            <marker date="1445910710656" expanded="true" signature="1083:1243" placeholder="{...}" />
-            <marker date="1445910710656" expanded="true" signature="1235:1238" placeholder="..." />
-            <marker date="1445910710656" expanded="true" signature="1249:1312" placeholder=" @return array customized attribute labels (name=&gt;label) ..." />
-            <marker date="1445910710656" expanded="true" signature="1349:1505" placeholder="{...}" />
-            <marker date="1445910710656" expanded="true" signature="1368:1500" placeholder="..." />
-            <marker date="1445910710656" expanded="true" signature="1511:2003" placeholder=" Retrieves a list of models based on the current search/filter conditions. ..." />
-            <marker date="1445910710656" expanded="true" signature="2031:2487" placeholder="{...}" />
-            <marker date="1445910710656" expanded="true" signature="2452:2481" placeholder="..." />
-            <marker date="1445910710656" expanded="true" signature="2493:2746" placeholder=" Returns the static model of the specified AR class. ..." />
-            <marker date="1445910710656" expanded="true" signature="2800:2842" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/models/EnterpriseDialLog.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33421752">
-          <caret line="72" column="12" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/models/Enterprise.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.91511935">
-          <caret line="116" column="53" selection-start-line="116" selection-start-column="53" selection-end-line="116" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/EnterpriseController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7249135">
-          <caret line="2636" column="31" selection-start-line="2636" selection-start-column="31" selection-end-line="2636" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/GroupController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36851212">
-          <caret line="1367" column="35" selection-start-line="1367" selection-start-column="35" selection-end-line="1367" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/components/PublicController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.92746115">
-          <caret line="633" column="20" selection-start-line="633" selection-start-column="20" selection-end-line="633" selection-end-column="20" />
-          <folding>
-            <marker date="1454067647386" expanded="true" signature="58:103" placeholder=" 用户验证 ..." />
-            <marker date="1454067647386" expanded="true" signature="138:767" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="343:492" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="582:738" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="775:822" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="869:997" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="1006:1026" placeholder=" 优选账号规则 ..." />
-            <marker date="1454067647386" expanded="true" signature="1072:3412" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="1212:1247" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="1398:1433" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="1529:1564" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="1719:1754" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="1901:1936" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="2063:2098" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="2287:2443" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="2334:2397" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="2470:2505" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="2655:2811" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="2702:2765" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="2838:2873" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="3022:3178" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="3069:3132" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="3205:3240" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="3349:3384" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="3421:3463" placeholder=" @return array(省市代码信息) ..." />
-            <marker date="1454067647386" expanded="true" signature="3494:5166" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="3555:3606" placeholder="SELECT bid,a..area..." />
-            <marker date="1454067647386" expanded="true" signature="3789:3899" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="3976:4033" placeholder="SELECT bid,a..area..." />
-            <marker date="1454067647386" expanded="true" signature="4193:4299" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="4376:4433" placeholder="SELECT bid,a..area..." />
-            <marker date="1454067647386" expanded="true" signature="4593:4699" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="4776:4833" placeholder="SELECT bid,a..area..." />
-            <marker date="1454067647386" expanded="true" signature="4995:5103" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="5175:5199" placeholder=" 根据ID获取省市信息 ..." />
-            <marker date="1454067647386" expanded="true" signature="5238:5529" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="5265:5300" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="5356:5408" placeholder="SELECT bid,a..area..." />
-            <marker date="1454067647386" expanded="true" signature="5566:6296" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="5678:6055" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="5716:5774" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="5809:5863" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="5898:5952" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="5989:6045" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="6140:6264" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="6182:6254" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="6305:6358" placeholder=" @return array(行业代码信息)--v1使用，v2废弃 ..." />
-            <marker date="1454067647386" expanded="true" signature="6395:7189" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="6456:6504" placeholder="SELECT id,na..industry..." />
-            <marker date="1454067647386" expanded="true" signature="6687:6790" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="6867:6923" placeholder="SELECT id,na..industry..." />
-            <marker date="1454067647386" expanded="true" signature="7083:7142" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="7197:7387" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="7427:7714" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="7488:7552" placeholder="SELECT id,na..." />
-            <marker date="1454067647386" expanded="true" signature="7722:7742" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="7776:8081" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="7831:7902" placeholder="SELECT id,na..." />
-            <marker date="1454067647386" expanded="true" signature="7831:7920" placeholder="SELECT bid a..." />
-            <marker date="1454067647386" expanded="true" signature="8091:8141" placeholder=" 根据ID获取行业信息 ..." />
-            <marker date="1454067647386" expanded="true" signature="8185:8494" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="8212:8247" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="8303:8373" placeholder="SELECT id,na..." />
-            <marker date="1454067647386" expanded="true" signature="8503:8569" placeholder=" 根据ID获取行业信息(多个) ..." />
-            <marker date="1454067647386" expanded="true" signature="8608:9094" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="8713:8824" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="8751:8814" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="8929:9057" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="8976:9047" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="9127:9277" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="9318:9421" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="9355:9390" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="9429:9484" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="9525:10408" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="9601:10331" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="9680:10269" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="9705:9845" placeholder="select a.id,..number_train..." />
-            <marker date="1454067647386" expanded="true" signature="10049:10195" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="10095:10177" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="10203:10255" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="10277:10321" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="10339:10375" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="10417:10435" placeholder=" 添加积分 ..." />
-            <marker date="1454067647386" expanded="true" signature="10500:17580" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="10539:10735" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="10907:11699" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="11028:11065" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="11073:11689" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="11170:11674" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="11724:12213" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="12238:13029" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="12316:12403" placeholder="SELECT count..member_integral_log..." />
-            <marker date="1454067647386" expanded="true" signature="12555:13019" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="13054:14703" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="13132:13247" placeholder="SELECT count..member_integral_log..." />
-            <marker date="1454067647386" expanded="true" signature="13446:13910" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="13932:14044" placeholder="SELECT count..member_integral_log..." />
-            <marker date="1454067647386" expanded="true" signature="14243:14692" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="14728:15647" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="14808:14923" placeholder="SELECT count..member_integral_log..." />
-            <marker date="1454067647386" expanded="true" signature="15122:15637" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="15672:16538" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="15750:15865" placeholder="SELECT count..member_integral_log..." />
-            <marker date="1454067647386" expanded="true" signature="16064:16528" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="16563:17350" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="16635:16722" placeholder="SELECT count..member_integral_log..." />
-            <marker date="1454067647386" expanded="true" signature="16876:17340" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="17478:17572" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="17632:18009" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="17785:17843" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="17878:17935" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="17943:18002" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="18081:18287" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="18117:18262" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="18205:18252" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="18362:19428" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="18396:18447" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="18466:18529" placeholder="select id,gr..group_contact..." />
-            <marker date="1454067647386" expanded="true" signature="18690:18807" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="18741:18797" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="18844:19182" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="18865:19070" placeholder="select b.is_..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="19273:19393" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="19311:19383" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="19489:20798" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="19551:19602" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="19621:19684" placeholder="select id,gr..group_contact..." />
-            <marker date="1454067647386" expanded="true" signature="19845:19962" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="19896:19952" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="19999:20403" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="20020:20291" placeholder="select c.id,..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="20494:20763" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="20532:20753" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="20561:20657" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="20665:20738" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="20863:20962" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="21020:21650" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="21082:21133" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="21151:21319" placeholder="select b.id,..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="21481:21619" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="21513:21609" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="21658:21678" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="21721:22482" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="21774:21862" placeholder="select b.ben..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="21774:21904" placeholder="select b.ben..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="21774:21906" placeholder="select b.ben..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="21774:21950" placeholder="select b.ben..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="21774:21970" placeholder="select b.ben..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="22104:22247" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="22314:22452" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="22346:22442" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="22491:22607" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="22661:24211" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="22690:22865" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="22799:22855" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="22899:23245" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="22925:23234" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="23625:24203" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="24219:24288" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="24337:25686" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="24528:24707" placeholder="select b.is_..group_contact_info..." />
-            <marker date="1454067647386" expanded="true" signature="24848:24951" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="24979:25449" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25003:25121" placeholder="select id,be..member..." />
-            <marker date="1454067647386" expanded="true" signature="25277:25341" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25386:25439" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25476:25517" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25540:25575" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25598:25634" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25642:25679" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25721:25955" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="25826:25923" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="25963:26144" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="26190:26776" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="26246:26730" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="26317:26434" placeholder="select b.ben..number_train..." />
-            <marker date="1454067647386" expanded="true" signature="26623:26694" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="26738:26769" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="26784:26984" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="27079:27622" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="27262:27426" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="27630:27726" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="27803:28227" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="27867:28031" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="28235:28255" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="28340:28764" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="28404:28568" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="28772:28817" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="28895:29552" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="28927:29091" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="29560:29690" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="29771:30310" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="29803:29967" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="30318:30371" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="30406:30716" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="30438:30602" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="30724:30753" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="30805:32342" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="30834:31513" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="30945:31223" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31100:31150" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31158:31209" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31229:31503" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31380:31430" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31438:31489" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31535:32292" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31723:32001" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31878:31928" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="31936:31987" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32008:32282" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32159:32209" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32217:32268" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32300:32335" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32350:32401" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32450:33171" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32555:32640" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="32726:32882" placeholder="select * fro..number_train..." />
-            <marker date="1454067647386" expanded="true" signature="33013:33059" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33097:33142" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33180:33197" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33235:33434" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33313:33369" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33444:33462" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33500:33700" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33578:33635" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33709:33731" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="33775:34715" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="34197:34330" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="34768:37654" placeholder="{...}" />
-            <marker date="1454067647386" expanded="true" signature="37709:38507" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="37737:38239" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="38282:38501" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="38313:38353" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="38404:38446" placeholder="..." />
-            <marker date="1454067647386" expanded="true" signature="38452:38491" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/TestController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.38687393">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/BuyController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44385964">
-          <caret line="599" column="37" selection-start-line="599" selection-start-column="37" selection-end-line="599" selection-end-column="37" />
-          <folding>
-            <marker date="1456126474446" expanded="true" signature="50:30731" placeholder="{...}" />
-            <marker date="1456126474446" expanded="true" signature="82:98" placeholder=" 我的我要买及搜索 ..." />
-            <marker date="1456126474446" expanded="true" signature="133:4834" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="486:532" placeholder="update buy s..." />
-            <marker date="1456126474446" expanded="true" signature="663:2149" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="699:757" placeholder="select item_..quote..." />
-            <marker date="1456126474446" expanded="true" signature="1072:1210" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="1106:1205" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="1237:2116" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="1693:2110" placeholder="select b.id ..buy..." />
-            <marker date="1456126474446" expanded="true" signature="2122:2141" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="2155:3198" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="2509:2814" placeholder="select b.id ..buy..." />
-            <marker date="1456126474446" expanded="true" signature="2847:2945" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="3216:3303" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="3323:4702" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="3379:3589" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="3508:3584" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="3670:4440" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="3684:3886" placeholder="select a.ite..quote..." />
-            <marker date="1456126474446" expanded="true" signature="4038:4402" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="4134:4395" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="4519:4698" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="4842:4857" placeholder=" 我的我要买搜索 ..." />
-            <marker date="1456126474446" expanded="true" signature="4894:7628" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="5175:7497" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="5187:5581" placeholder="select b.id ..buy..." />
-            <marker date="1456126474446" expanded="true" signature="5602:6049" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="5615:6043" placeholder="select b.id ..buy..." />
-            <marker date="1456126474446" expanded="true" signature="6151:7494" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="6207:6318" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="6399:7201" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="6413:6615" placeholder="select a.ite..quote..." />
-            <marker date="1456126474446" expanded="true" signature="6767:7163" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="6863:7156" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="7280:7490" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="7636:7652" placeholder=" 我要买列表及搜索 ..." />
-            <marker date="1456126474446" expanded="true" signature="7685:12256" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="8180:8226" placeholder="update buy s..." />
-            <marker date="1456126474446" expanded="true" signature="8331:8662" placeholder="select b.id ..buy..." />
-            <marker date="1456126474446" expanded="true" signature="8729:8823" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="8843:8890" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="8906:8945" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="8961:9000" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="9021:9069" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="9265:12120" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="9321:9564" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="9653:10026" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="9667:9781" placeholder="select count..quote..." />
-            <marker date="1456126474446" expanded="true" signature="9922:10021" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="9960:10015" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="10056:11218" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="10073:10285" placeholder="select a.acc..quote..." />
-            <marker date="1456126474446" expanded="true" signature="10437:11180" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="10552:11173" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="11297:11658" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="11546:11605" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="11690:12116" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="11777:11972" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="11816:11966" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="11859:11958" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="12015:12111" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="12264:12279" placeholder=" 我要买列表搜索 ..." />
-            <marker date="1456126474446" expanded="true" signature="12314:15006" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="12599:14875" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="12611:12982" placeholder="select b.id ..buy..." />
-            <marker date="1456126474446" expanded="true" signature="13003:13427" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="13016:13421" placeholder="select b.id ..buy..." />
-            <marker date="1456126474446" expanded="true" signature="13529:14872" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="13585:13696" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="13777:14579" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="13791:13993" placeholder="select a.ite..quote..." />
-            <marker date="1456126474446" expanded="true" signature="14145:14541" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="14241:14534" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="14658:14868" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="15014:15027" placeholder=" 我要买发布 ..." />
-            <marker date="1456126474446" expanded="true" signature="15062:16926" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="15899:16620" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="16421:16571" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="16433:16566" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="16644:16797" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="16933:16946" placeholder=" 我要买报价 ..." />
-            <marker date="1456126474446" expanded="true" signature="16981:20892" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="17420:17529" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="17551:17657" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="17746:17856" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="17914:18027" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="18078:18191" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="18289:18399" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="18425:18536" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="18565:18676" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="18712:18823" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="18847:18919" placeholder="select count..quote..." />
-            <marker date="1456126474446" expanded="true" signature="19065:19178" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="19266:20733" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="19550:20653" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="19703:19868" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="19717:19862" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="20096:20194" placeholder="insert into news..." />
-            <marker date="1456126474446" expanded="true" signature="20754:20889" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="20900:20913" placeholder=" 我要买详情 ..." />
-            <marker date="1456126474446" expanded="true" signature="20948:23837" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="21039:21148" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="21269:21509" placeholder="select a.id,..buy..." />
-            <marker date="1456126474446" expanded="true" signature="21625:21692" placeholder="select name,..number_train..." />
-            <marker date="1456126474446" expanded="true" signature="21810:21920" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="21943:22243" placeholder="select a.id,..quote..." />
-            <marker date="1456126474446" expanded="true" signature="22367:22900" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="22479:22669" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="22537:22664" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="22564:22657" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="23026:23128" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="23043:23123" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="23636:23731" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="23737:23803" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="23845:23860" placeholder=" 我要买接受报价 ..." />
-            <marker date="1456126474446" expanded="true" signature="23895:25830" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="24035:24144" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="24148:24293" placeholder="//..." />
-            <marker date="1456126474446" expanded="true" signature="24316:24422" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="24516:24625" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="24709:24821" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="24878:25725" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="25272:25370" placeholder="insert into news..." />
-            <marker date="1456126474446" expanded="true" signature="25731:25796" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="25836:25851" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="25886:27624" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="26026:26135" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="26139:26284" placeholder="//..." />
-            <marker date="1456126474446" expanded="true" signature="26307:26413" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="26506:26615" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="26672:27519" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="27066:27164" placeholder="insert into news..." />
-            <marker date="1456126474446" expanded="true" signature="27525:27590" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="27631:27644" placeholder=" 我要买申诉 ..." />
-            <marker date="1456126474446" expanded="true" signature="27679:28807" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="27850:27959" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="27982:28090" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="28145:28255" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="28351:28463" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="28641:28703" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="28709:28773" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="28815:28828" placeholder=" 我要买举报 ..." />
-            <marker date="1456126474446" expanded="true" signature="28863:30025" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="29037:29144" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="29167:29276" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="29347:29455" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="29457:29679" placeholder="//..." />
-            <marker date="1456126474446" expanded="true" signature="29858:29920" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="29926:29991" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="30033:30048" placeholder=" 我要买交易关闭 ..." />
-            <marker date="1456126474446" expanded="true" signature="30082:30726" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="30171:30285" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="30371:30481" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="30558:30620" placeholder="..." />
-            <marker date="1456126474446" expanded="true" signature="30626:30692" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/StoreCommentController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.1298246">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1452756533464" expanded="true" signature="60:9352" placeholder="{...}" />
-            <marker date="1452756533464" expanded="true" signature="98:152" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="203:2993" placeholder="{...}" />
-            <marker date="1452756533464" expanded="true" signature="376:526" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="651:983" placeholder="select a.*,b..store_comment..." />
-            <marker date="1452756533464" expanded="true" signature="864:934" placeholder="select comme..store_comment..." />
-            <marker date="1452756533464" expanded="true" signature="1103:2828" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="1169:1890" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="1213:1876" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="1266:1857" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="1958:2818" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="2003:2804" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="2040:2785" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="3001:3025" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="3069:6170" placeholder="{...}" />
-            <marker date="1452756533464" expanded="true" signature="3205:3355" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="3480:3812" placeholder="select a.*,b..store_comment..." />
-            <marker date="1452756533464" expanded="true" signature="3693:3763" placeholder="select comme..store_comment..." />
-            <marker date="1452756533464" expanded="true" signature="3932:5808" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="3998:4719" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="4042:4705" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="4095:4686" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="4808:5798" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="4853:5784" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="4890:5635" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="5712:5766" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="6178:6232" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="6279:9350" placeholder="{...}" />
-            <marker date="1452756533464" expanded="true" signature="6440:6590" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="6804:6858" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="6984:7339" placeholder="select a.*,b..store_comment..." />
-            <marker date="1452756533464" expanded="true" signature="7220:7290" placeholder="select comme..store_comment..." />
-            <marker date="1452756533464" expanded="true" signature="7460:9185" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="7526:8247" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="7570:8233" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="7623:8214" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="8315:9175" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="8360:9161" placeholder="..." />
-            <marker date="1452756533464" expanded="true" signature="8397:9142" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="0.5147541">
+          <caret line="5511" column="12" selection-start-line="5511" selection-start-column="12" selection-end-line="5511" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/StoreController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33684212">
-          <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
+        <state vertical-scroll-proportion="3.032967">
+          <caret line="615" column="30" selection-start-line="615" selection-start-column="30" selection-end-line="615" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/views/layouts/admin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.0555556">
+          <caret line="32" column="12" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/lib/global.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35243055">
+          <caret line="161" column="10" selection-start-line="161" selection-start-column="10" selection-end-line="161" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/PrizeSettingController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7378472">
+          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/views/storeChargeAdmin/_form.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.7986111">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/views/storeChargeAdmin/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4496528">
+          <caret line="7" column="32" selection-start-line="0" selection-start-column="0" selection-end-line="256" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/views/notice/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39756945">
+          <caret line="62" column="22" selection-start-line="62" selection-start-column="22" selection-end-line="62" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/models/News.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.578125">
+          <caret line="21" column="31" selection-start-line="0" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/models/Promotion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.6614583">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/framework/db/schema/CDbCriteria.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35243055">
+          <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
           <folding>
-            <marker date="1456210343576" expanded="true" signature="53:77735" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="125:162" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="172:193" placeholder=" 号码直通车搜索 ..." />
-            <marker date="1456210343576" expanded="true" signature="230:12021" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="1288:1489" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="1549:3750" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="1637:3446" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="2047:2292" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="2383:2862" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="2582:2656" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="2682:2844" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="2957:3432" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="3160:3234" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="3256:3414" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="3799:3897" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="3920:4002" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4025:4107" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4132:4189" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4255:4374" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4380:4465" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4530:6022" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4673:5145" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4723:5131" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4766:5027" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="4918:5005" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="5035:5113" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="5151:5212" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="5427:5929" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="5564:5649" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="5655:5915" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="5804:5897" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="5935:6012" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="6195:6722" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="6267:6395" placeholder="select count..number_train..." />
-            <marker date="1456210343576" expanded="true" signature="6539:6712" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="6748:7150" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="6819:7139" placeholder="select membe..." />
-            <marker date="1456210343576" expanded="true" signature="7158:7551" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="7183:7282" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="7304:7540" placeholder="select membe..." />
-            <marker date="1456210343576" expanded="true" signature="7704:7903" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="8018:8066" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="8458:8916" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="8506:8906" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="8592:8742" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="8748:8892" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="8937:9022" placeholder="select b.id,..member..." />
-            <marker date="1456210343576" expanded="true" signature="9163:9230" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="9344:11410" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10100:10543" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10323:10426" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10434:10529" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10602:11400" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10700:11153" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10827:11135" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10864:10948" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="10954:11113" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="11159:11260" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="11426:11831" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="11454:11830" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="11549:11755" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="11601:11648" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="11654:11741" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="11762:11820" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="12030:12055" placeholder=" 号码直通车添加(修改) ..." />
-            <marker date="1456210343576" expanded="true" signature="12089:20828" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="13372:13629" placeholder="//..." />
-            <marker date="1456210343576" expanded="true" signature="13704:13960" placeholder="//..." />
-            <marker date="1456210343576" expanded="true" signature="14049:18135" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14112:14397" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14165:14230" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14301:14383" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14403:14737" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14524:14723" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14780:15396" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14906:15305" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="14946:15287" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15007:15088" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15167:15265" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15440:15488" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15520:15580" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15613:15801" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15650:15787" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15678:15769" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15828:15878" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15909:15967" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="15975:16025" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16055:16111" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16141:16197" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16223:16271" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16297:16345" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16373:16425" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16450:16496" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16521:16567" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16592:16638" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16667:16721" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16754:16816" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16850:18009" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16914:17172" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="16945:17005" placeholder="insert into number_train_attachment..." />
-            <marker date="1456210343576" expanded="true" signature="17335:17533" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="17395:17515" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="17667:17994" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="18017:18125" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="18143:20784" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="18174:18343" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="18456:18629" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="19476:20661" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="19632:19844" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="19673:19826" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="19705:19804" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="19883:20140" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="19914:19974" placeholder="insert into number_train_attachment..." />
-            <marker date="1456210343576" expanded="true" signature="20275:20646" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="20669:20774" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="20837:20860" placeholder=" 号码直通车信息完善 ..." />
-            <marker date="1456210343576" expanded="true" signature="20895:26311" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="21481:23128" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="21608:23118" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="21637:21701" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="21734:21804" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="21837:21907" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="21940:22010" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22041:22107" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22141:22213" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22243:22307" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22337:22401" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22433:22501" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22547:22976" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22691:22957" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="22984:23104" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="23136:26268" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="23171:23340" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="23376:23550" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="23586:23760" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="24402:26142" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="24449:25301" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="25881:26127" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="26150:26258" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="26319:26343" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="26386:33956" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="26810:33813" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="26984:27256" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="27078:27242" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="27117:27224" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="27367:28239" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="27640:27690" placeholder="select ${{$d..." />
-            <marker date="1456210343576" expanded="true" signature="27854:28225" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="28026:28111" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="28119:28207" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="28577:28624" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="28665:28736" placeholder="select count..number_train_collect..." />
-            <marker date="1456210343576" expanded="true" signature="29004:29045" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="29163:29209" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="29215:29261" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="29375:30781" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="29588:30767" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="29736:30748" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="30828:31055" placeholder="select a.com..store_comment..." />
-            <marker date="1456210343576" expanded="true" signature="31227:31331" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="31271:31317" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="31454:33802" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="33821:33915" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="33966:33989" placeholder=" 号码直通车查看详情 ..." />
-            <marker date="1456210343576" expanded="true" signature="34026:42348" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="34339:34491" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="34554:34611" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="34787:42203" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="34961:35233" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="35055:35219" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="35094:35201" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="35344:36216" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="35617:35667" placeholder="select ${{$d..." />
-            <marker date="1456210343576" expanded="true" signature="35831:36202" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="36003:36088" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="36096:36184" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="36290:36380" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="36717:36764" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="36805:36876" placeholder="select count..number_train_collect..." />
-            <marker date="1456210343576" expanded="true" signature="37259:37300" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="37418:39122" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="37572:39108" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="37847:39090" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="38003:39067" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="39128:39174" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="39221:39448" placeholder="select a.com..store_comment..." />
-            <marker date="1456210343576" expanded="true" signature="39620:39724" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="39664:39710" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="39847:42192" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="42211:42305" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="42357:42378" placeholder=" 我的号码直通车 ..." />
-            <marker date="1456210343576" expanded="true" signature="42417:45886" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="42630:45739" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="42796:43068" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="42887:43054" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="42927:43036" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="43212:43358" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="43621:43707" placeholder="select count..broadcasting_log..." />
-            <marker date="1456210343576" expanded="true" signature="43815:43881" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="43911:43968" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="44090:45728" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="45747:45843" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="45895:45916" placeholder=" 号码直通车收藏 ..." />
-            <marker date="1456210343576" expanded="true" signature="45954:49196" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="46060:46212" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="46346:46499" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="46552:46708" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="46852:49050" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="47062:49040" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="47522:47902" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="47942:48326" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="48362:48978" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="49058:49153" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="49205:49228" placeholder=" 号码直通车取消收藏 ..." />
-            <marker date="1456210343576" expanded="true" signature="49272:50412" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="49378:49530" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="49664:49817" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="49942:50266" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="50274:50369" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="50421:50444" placeholder=" 号码直通车收藏列表 ..." />
-            <marker date="1456210343576" expanded="true" signature="50486:51877" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="50824:51103" placeholder="select a.id,..number_train..." />
-            <marker date="1456210343576" expanded="true" signature="51261:51718" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="51391:51708" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="51885:51930" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="51973:54012" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="52152:52310" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="52424:52502" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="52508:52605" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="52935:52966" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="52972:53003" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53094:53308" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53214:53253" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53259:53298" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53314:53345" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53388:53602" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53508:53547" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53553:53592" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="53608:53639" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="54021:54042" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="54084:55387" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="54263:55242" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="54346:54417" placeholder="select count..number_train_collect..." />
-            <marker date="1456210343576" expanded="true" signature="54607:54653" placeholder="select count..number_train_collect..." />
-            <marker date="1456210343576" expanded="true" signature="55248:55381" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="55397:55420" placeholder=" 号码直通车信息完善 ..." />
-            <marker date="1456210343576" expanded="true" signature="55456:58981" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="55562:55714" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="55916:56069" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="56108:56157" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="56165:56992" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="56328:56942" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="56351:56579" placeholder="select count..store_order_info..." />
-            <marker date="1456210343576" expanded="true" signature="56727:56928" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="57032:58834" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="57076:58689" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="57143:57531" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="57571:57963" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="57999:58627" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="58842:58939" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="58990:59196" placeholder=" 计算距离 ..." />
-            <marker date="1456210343576" expanded="true" signature="59289:59812" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="59820:59863" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="59901:64644" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="60407:60554" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="60655:60806" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="60909:62758" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="60967:61146" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="61188:61364" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="61644:61835" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="61860:62047" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="62078:62437" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="62109:62324" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="62355:62423" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="62443:62714" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="62491:62700" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="62766:64533" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="62828:62995" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="63053:63310" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="63109:63296" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="63796:63911" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="64077:64523" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="64652:64711" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="64749:66015" placeholder="{...}" />
-            <marker date="1456210343576" expanded="true" signature="64920:65750" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="65060:65739" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="65756:65904" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="66023:66063" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="66105:67390" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="66493:67245" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="66862:66936" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="66962:67028" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="67034:67094" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="67399:67467" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="67517:70466" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="67726:67873" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="67977:68134" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="68288:68452" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="68624:68785" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="68930:69093" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="69428:70318" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="69611:70073" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="70324:70460" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="70475:70517" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="70563:72308" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="70725:70872" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="71004:71154" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="71248:72163" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="71442:71839" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="72169:72302" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="72317:72359" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="72404:77220" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="72566:72713" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="72845:72995" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="73103:73837" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="73152:73336" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="73388:73567" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="73639:73789" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="73701:73775" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="73974:74068" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="74074:74227" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="74461:74597" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="74645:75732" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="74708:74960" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="74850:74946" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="75023:75272" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="75163:75258" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="75314:75687" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="75387:75673" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="75547:75655" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="75873:75917" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="76030:76176" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="76236:77075" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="76351:76749" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="77081:77214" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="77229:77252" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="77290:77731" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="77466:77699" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="77506:77689" placeholder="..." />
-            <marker date="1456210343576" expanded="true" signature="77543:77675" placeholder="..." />
+            <marker date="1445910917362" expanded="false" signature="9:212" placeholder=" CDbCriteria class file. ..." />
+            <marker date="1445910917362" expanded="true" signature="219:691" placeholder=" CDbCriteria represents a query criteria, such as conditions, ordering by, limit/offset. ..." />
+            <marker date="1445910917362" expanded="true" signature="730:23123" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="765:917" placeholder=" @var integer the global counter for anonymous binding parameters. ..." />
+            <marker date="1445910917362" expanded="true" signature="954:1200" placeholder=" @var mixed the columns being selected. This refers to the SELECT clause in an SQL ..." />
+            <marker date="1445910917362" expanded="true" signature="1228:1374" placeholder=" @var boolean whether to select distinct rows of data only. If this is set true, ..." />
+            <marker date="1445910917362" expanded="true" signature="1406:1544" placeholder=" @var string query condition. This refers to the WHERE clause in an SQL statement. ..." />
+            <marker date="1445910917362" expanded="true" signature="1574:1723" placeholder=" @var array list of query parameter values indexed by parameter placeholders. ..." />
+            <marker date="1445910917362" expanded="true" signature="1755:1852" placeholder=" @var integer maximum number of records to be returned. If less than 0, it means no limit. ..." />
+            <marker date="1445910917362" expanded="true" signature="1878:2013" placeholder=" @var integer zero-based offset from where the records are to be returned. If less than 0, it means starting from the beginning. ..." />
+            <marker date="1445910917362" expanded="true" signature="2040:2146" placeholder=" @var string how to sort the query results. This refers to the ORDER BY clause in an SQL statement. ..." />
+            <marker date="1445910917362" expanded="true" signature="2172:2330" placeholder=" @var string how to group the query results. This refers to the GROUP BY clause in an SQL statement. ..." />
+            <marker date="1445910917362" expanded="true" signature="2356:2528" placeholder=" @var string how to join with other tables. This refers to the JOIN clause in an SQL statement. ..." />
+            <marker date="1445910917362" expanded="true" signature="2553:2674" placeholder=" @var string the condition to be applied with GROUP-BY clause. ..." />
+            <marker date="1445910917362" expanded="true" signature="2701:3530" placeholder=" @var mixed the relational query criteria. This is used for fetching related objects in eager loading fashion. ..." />
+            <marker date="1445910917362" expanded="true" signature="3552:3639" placeholder=" @var string the alias name of the table. If not set, it means the alias is 't'. ..." />
+            <marker date="1445910917362" expanded="true" signature="3662:4427" placeholder=" @var boolean whether the foreign tables should be joined with the primary table in a single SQL. ..." />
+            <marker date="1445910917362" expanded="true" signature="4453:4657" placeholder=" @var string the name of the AR attribute whose value should be used as index of the query result array. ..." />
+            <marker date="1445910917362" expanded="true" signature="4680:5780" placeholder=" @var mixed scopes to apply ..." />
+            <marker date="1445910917362" expanded="true" signature="5805:5908" placeholder=" Constructor. ..." />
+            <marker date="1445910917362" expanded="true" signature="5954:6018" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="6024:6118" placeholder=" Remaps criteria parameters on unserialize to prevent name collisions. ..." />
+            <marker date="1445910917362" expanded="true" signature="6148:6834" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="6228:6436" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="6276:6365" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="6373:6403" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="6456:6806" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="6492:6579" placeholder="..." />
+            <marker date="1445910917362" expanded="true" signature="6625:6802" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="6840:7553" placeholder=" Appends a condition to the existing {@link condition}. ..." />
+            <marker date="1445910917362" expanded="true" signature="7613:7923" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="7643:7760" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="7929:9137" placeholder=" Appends a search condition to the existing {@link condition}. ..." />
+            <marker date="1445910917362" expanded="true" signature="9235:9558" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="9564:10223" placeholder=" Appends an IN condition to the existing {@link condition}. ..." />
+            <marker date="1445910917362" expanded="true" signature="10290:10970" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="10426:10665" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="10520:10661" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="10672:10915" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="10726:10854" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="10976:11672" placeholder=" Appends an NOT IN condition to the existing {@link condition}. ..." />
+            <marker date="1445910917362" expanded="true" signature="11742:12356" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="11803:12047" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="11901:12043" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="12054:12301" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="12108:12236" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="12362:13037" placeholder=" Appends a condition for matching the given list of column values. ..." />
+            <marker date="1445910917362" expanded="true" signature="13123:13471" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="13182:13389" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="13247:13385" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="13477:16274" placeholder=" Adds a comparison expression to the {@link condition} property. ..." />
+            <marker date="1445910917362" expanded="true" signature="16370:17124" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="16396:16505" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="16602:16653" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="16728:16925" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="17130:17993" placeholder=" Adds a between condition to the {@link condition} property. ..." />
+            <marker date="1445910917362" expanded="true" signature="18079:18441" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="18447:19084" placeholder=" Merges with another criteria. ..." />
+            <marker date="1445910917362" expanded="true" signature="19140:22775" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="19307:19747" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="19410:19743" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="19794:19991" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="20323:20477" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="20516:20658" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="20695:20830" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="20871:21047" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="21355:21811" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="21462:21606" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="21637:21781" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="21903:22772" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="21987:22768" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="22073:22729" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="22148:22481" placeholder="{...}" />
+            <marker date="1445910917362" expanded="true" signature="22781:22843" placeholder=" @return array the array representation of the criteria ..." />
+            <marker date="1445910917362" expanded="true" signature="22872:23121" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/views/v1/setting/help.php">
+    <entry file="file://$PROJECT_DIR$/website/admin/components/LeftWidge.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.0277777">
+          <caret line="182" column="4" selection-start-line="182" selection-start-column="4" selection-end-line="182" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/StorePriceAdminController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.7708333">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/models/StoreOrderInfo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.984375">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/models/Pay.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7517361">
+          <caret line="109" column="55" selection-start-line="109" selection-start-column="55" selection-end-line="109" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/NoticeController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.3958333">
+          <caret line="2" column="45" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/StoreChargeAdminController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41666666">
+          <caret line="66" column="59" selection-start-line="64" selection-start-column="7" selection-end-line="66" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/components/BaseController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.2118056">
+          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/protected/config/params.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.734375">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/config/params.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5138889">
+          <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/protected/config/main.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9357639">
+          <caret line="99" column="43" selection-start-line="99" selection-start-column="43" selection-end-line="99" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/lib/alipay/alipay.config.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4496528">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/lib/alipay/alipayapi.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.3958335">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/lib/alipay/Submit.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.736111">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/protected/controllers/AlipayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.9270834">
+          <caret line="30" column="61" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/config/main.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6805556">
+          <caret line="114" column="67" selection-start-line="114" selection-start-column="57" selection-end-line="114" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/views/pay/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.421875">
+          <caret line="236" column="9" selection-start-line="236" selection-start-column="9" selection-end-line="236" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/AlipayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7708333">
+          <caret line="73" column="33" selection-start-line="73" selection-start-column="24" selection-end-line="73" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Admin/View/Salary/withdrawCash.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.578125">
+          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin/controllers/PayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0017361111">
+          <caret line="169" column="50" selection-start-line="169" selection-start-column="50" selection-end-line="169" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/protected/views/v1/lottery/lotterydraw.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1447983375071" expanded="true" signature="31:4846" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="38:346" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="353:4338" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="376:2921" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="411:2910" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="428:735" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="643:656" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="699:710" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="752:1053" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="961:974" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="1017:1028" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="1070:1549" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="1152:1412" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="1457:1470" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="1513:1524" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="1566:1842" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="1750:1763" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="1806:1817" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="1859:2239" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="2147:2160" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="2203:2214" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="2256:2544" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="2452:2465" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="2508:2519" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="2561:2896" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="2816:2829" placeholder="..." />
-            <marker date="1447983375071" expanded="false" signature="2872:2883" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="2944:4330" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="2979:4319" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="4423:4838" placeholder="..." />
-            <marker date="1447983375071" expanded="true" signature="4462:4827" placeholder="{...}" />
-            <marker date="1447983375071" expanded="true" signature="4531:4731" placeholder="{...}" />
-            <marker date="1447983375071" expanded="true" signature="4580:4721" placeholder="{...}" />
-          </folding>
+          <caret line="0" column="42" selection-start-line="0" selection-start-column="42" selection-end-line="0" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/views/v1/setting/registerprotocol.php">
+    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/LotteryController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1445910709924" expanded="true" signature="5:508" placeholder="..." />
-            <marker date="1445910709924" expanded="true" signature="12:459" placeholder="..." />
-            <marker date="1445910709924" expanded="true" signature="467:500" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="0.6840278">
+          <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/protected/views/v1/store/declaration.php">
+    <entry file="file://$PROJECT_DIR$/website/protected/views/v1/lottery/lotteryLog.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39298245">
-          <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+        <state vertical-scroll-proportion="1.6701388">
+          <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
           <folding>
-            <element signature="n#style#0;n#h2#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1458140859038" expanded="true" signature="21:3050" placeholder="..." />
+            <marker date="1458140859038" expanded="true" signature="28:313" placeholder="..." />
+            <marker date="1458140859038" expanded="true" signature="337:497" placeholder="..." />
+            <marker date="1458140859038" expanded="true" signature="344:373" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="504:3042" placeholder="..." />
+            <marker date="1458140859038" expanded="true" signature="537:548" placeholder="..." />
+            <marker date="1458140859038" expanded="true" signature="761:3033" placeholder="..." />
+            <marker date="1458140859038" expanded="true" signature="783:1289" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="984:1090" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="1094:1258" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="1320:3022" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="1500:3009" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="1602:3005" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="1983:2197" placeholder="{...}" />
+            <marker date="1458140859038" expanded="true" signature="2201:2441" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/website/protected/controllers/v1/ContactController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6043956">
+          <caret line="1193" column="55" selection-start-line="1193" selection-start-column="49" selection-end-line="1193" selection-end-column="55" />
+          <folding>
+            <marker date="1458186909751" expanded="true" signature="769:917" placeholder="select a.id,..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="1212:1284" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="4319:4427" placeholder="select benbe..member..." />
+            <marker date="1458186909751" expanded="true" signature="7170:7274" placeholder="insert into group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="15429:15514" placeholder="insert into group_contact_phone..." />
+            <marker date="1458186909751" expanded="true" signature="19683:19752" placeholder="insert into group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="20738:20856" placeholder="select benbe..member..." />
+            <marker date="1458186909751" expanded="true" signature="21229:21414" placeholder="select phone..group_contact_phone..." />
+            <marker date="1458186909751" expanded="true" signature="23627:23731" placeholder="insert into group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="25695:25883" placeholder="select a.pos..number_train..." />
+            <marker date="1458186909751" expanded="true" signature="26362:26554" placeholder="select a.pos..friend_league..." />
+            <marker date="1458186909751" expanded="true" signature="37743:37878" placeholder="select a.id,..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="42142:42236" placeholder="insert into group_contact_phone..." />
+            <marker date="1458186909751" expanded="true" signature="44435:44532" placeholder="select id,so..group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="45331:45455" placeholder="select id,gr..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="46389:46539" placeholder="select a.id,..member..." />
+            <marker date="1458186909751" expanded="true" signature="47042:47629" placeholder="select a.id,..group_contact_phone..." />
+            <marker date="1458186909751" expanded="true" signature="50471:50597" placeholder="SELECT area_..area..." />
+            <marker date="1458186909751" expanded="true" signature="55548:55813" placeholder="select a.id,..number_train..." />
+            <marker date="1458186909751" expanded="true" signature="63432:63529" placeholder="select id,so..group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="64476:64713" placeholder="select a.gro..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="65629:65837" placeholder="select a.id ..member..." />
+            <marker date="1458186909751" expanded="true" signature="69015:69280" placeholder="select a.id,..number_train..." />
+            <marker date="1458186909751" expanded="true" signature="72441:72510" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="72678:72734" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="73039:73113" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="78203:78254" placeholder="select id fr..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="78596:78664" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="78983:79057" placeholder="select id fr..group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="79845:79893" placeholder="delete from ..." />
+            <marker date="1458186909751" expanded="true" signature="80122:80211" placeholder="delete from ..." />
+            <marker date="1458186909751" expanded="true" signature="80525:80599" placeholder="select id fr..group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="81559:81633" placeholder="select id fr..group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="84367:84437" placeholder="select id fr..group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="84557:84631" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="84792:84867" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="85983:86058" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="87202:87252" placeholder="select phone..member..." />
+            <marker date="1458186909751" expanded="true" signature="87453:87504" placeholder="select phone..bxapply..." />
+            <marker date="1458186909751" expanded="true" signature="91119:91322" placeholder="select a.id ..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="98926:99091" placeholder="select a.id ..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="101410:101512" placeholder="SELECT area_..area..." />
+            <marker date="1458186909751" expanded="true" signature="105501:105550" placeholder="update group..." />
+            <marker date="1458186909751" expanded="true" signature="114602:114659" placeholder="select id,me..group_contact..." />
+            <marker date="1458186909751" expanded="true" signature="114800:115089" placeholder="select a.id,..group_contact_phone..." />
+            <marker date="1458186909751" expanded="true" signature="115222:115351" placeholder="select a.id ..group_contact_info..." />
+            <marker date="1458186909751" expanded="true" signature="115847:115980" placeholder="select id, h..member..." />
+            <marker date="1458186909751" expanded="true" signature="116221:116390" placeholder="delete from ..." />
+            <marker date="1458186909751" expanded="true" signature="117129:117185" placeholder="delete from ..." />
+            <marker date="1458186909751" expanded="true" signature="118112:118275" placeholder="select id,ni..member..." />
+            <marker date="1458186909751" expanded="true" signature="118315:118380" placeholder="select id,ni..member..." />
+            <marker date="1458186909751" expanded="true" signature="119455:119727" placeholder="select a.id ..group_contact_phone..." />
+            <marker date="1458186909751" expanded="true" signature="120285:120423" placeholder="select nick_..member..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
