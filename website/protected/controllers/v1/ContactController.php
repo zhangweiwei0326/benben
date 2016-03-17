@@ -1190,7 +1190,8 @@ class ContactController extends PublicController
         $m->addServer('localhost', 11211);
 
         //用户百姓网状态变化情况
-        $ownbx = Bxapply::model()->count("phone = '{$user->phone}' and status = 3");//自己是否是百姓用户
+        $ownbxInfo = Bxapply::model()->find("phone = '{$user->phone}' and status = 3");//自己是否是百姓用户
+        $ownbx=$ownbxInfo['enterprise_id'];
         if ($m->get("bxapply:" . $user['id']) != $ownbx) {
             $m->set("bxapply:" . $user['id'], $ownbx);
             $old = $m->get("addrsversion:" . $user['id']);
@@ -1352,6 +1353,7 @@ class ContactController extends PublicController
 
         //通讯录数据查询
         $benbenArr = array();
+        $phoneArr=array();
         $contactArr = array();
         $activeContact = array();
         $userTrainInfo = array();
@@ -1361,6 +1363,11 @@ class ContactController extends PublicController
             left join group_contact_phone as b on a.id=b.contact_info_id where a.member_id={$user['id']}";
         $resultAddress = $connection->createCommand($sqlAddress)->queryAll();
         foreach ($resultAddress as $k => $v) {
+            if($v['phone']){
+                if(!in_array($v['phone'],$phoneArr)){
+                    $phoneArr[]=$v['phone'];
+                }
+            }
             if ($v['is_benben']) {
                 if (!in_array($v['is_benben'], $benbenArr)) {
                     $benbenArr[] = $v['is_benben'];
@@ -1387,6 +1394,16 @@ class ContactController extends PublicController
         } else {
             $resultTrain = array();
         }
+
+        if($phoneArr){
+            $bInfo=Bxapply::model()->findAll("status=3 and phone in (".implode(",",$phoneArr).")");
+            foreach($bInfo as $k=>$v) {
+                $phoneInfo[$v['phone']]=$v['enterprise_id'];
+            }
+        }else{
+            $phoneInfo=array();
+        }
+
         foreach ($resultTrain as $kt => $vt) {
             $userTrainInfo[$vt['benben_id']] = $vt;
         }
@@ -1422,7 +1439,7 @@ class ContactController extends PublicController
                         "name" => $va['name'],
                         "pinyin" => $va['pinyin'],
                         "is_benben" => $va['is_benben'],
-                        "is_baixing"=> $ownbx ? $va['is_baixing'] : 0,
+                        "is_baixing"=> $phoneInfo[$va['phone']]?(($ownbx==$phoneInfo[$va['phone']]) ? $va['is_baixing'] : 0):0,
                         "created_time" => $va['created_time'],
                         "nick_name" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['nick_name'] ? $userTrainInfo[$va['is_benben']]['nick_name'] : $va['name']) : $va['name'],
                         "huanxin_username" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['huanxin_username'] ? $userTrainInfo[$va['is_benben']]['huanxin_username'] : "") : "",
