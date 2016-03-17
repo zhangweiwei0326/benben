@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'bxapply':
  * @property integer $id
+ * @property integer $enterprise_id
  * @property integer $member_id
  * @property string $phone
  * @property string $name
@@ -15,6 +16,9 @@
  * @property integer $street
  * @property integer $status
  * @property integer $created_time
+ * @property integer $cancel_time
+ * @property integer $join_time
+ * @property string $backidcard
  */
 class Bxapply extends CActiveRecord
 {
@@ -35,12 +39,12 @@ class Bxapply extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('phone, name, created_time', 'required'),
-			array('member_id, province, city, area, street, status, created_time', 'numerical', 'integerOnly'=>true),
+			array('member_id, enterprise_id, province, city, area, street, status, created_time, cancel_time, join_time', 'numerical', 'integerOnly'=>true),
 			array('phone', 'length', 'max'=>11),
-			array('name, short_phone', 'length', 'max'=>20),
+			array('name, short_phone, backidcard', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, member_id, phone, name, short_phone, province, city, area, street, status, created_time', 'safe', 'on'=>'search'),
+			array('id, member_id, enterprise_id, backidcard, phone, name, short_phone, province, city, area, street, status, created_time, cancel_time, join_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +67,8 @@ class Bxapply extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'member_id' => 'Member',
+			'enterprise_id' => 'Enterprise Id',
+			'backidcard' => 'Backidcard',
 			'phone' => 'Phone',
 			'name' => 'Name',
 			'short_phone' => 'Short Phone',
@@ -72,6 +78,8 @@ class Bxapply extends CActiveRecord
 			'street' => 'Street',
 			'status' => 'Status',
 			'created_time' => 'Created Time',
+			'cancel_time' => 'Cancel Time',
+			'join_time' => 'Join Time',
 		);
 	}
 
@@ -95,6 +103,7 @@ class Bxapply extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('member_id',$this->member_id);
+		$criteria->compare('enterprise_id',$this->enterprise_id);
 		$criteria->compare('phone',$this->phone,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('short_phone',$this->short_phone,true);
@@ -104,6 +113,8 @@ class Bxapply extends CActiveRecord
 		$criteria->compare('street',$this->street);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('created_time',$this->created_time);
+		$criteria->compare('cancel_time',$this->cancel_time);
+		$criteria->compare('join_time',$this->join_time);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -3,6 +3,29 @@ class BxapplyController extends PublicController
 {
 	public $layout = false;
 	/**
+	 * 所有百姓网的选择
+	 */
+	public function actionAllBx(){
+		$this->check_key();
+		$user=$this->check_user();
+
+		$einfo=Enterprise::model()->findAll("type=3");
+		$bx=array();
+		if($einfo){
+			foreach($einfo as $k=>$v) {
+				$bx[] = array(
+						'name' => $v['name'],
+						'id' => $v['id']
+				);
+			}
+		}
+		$result['bx']=$bx;
+		$result['ret_num'] = 0;
+		$result['ret_msg'] = '操作成功！';
+		echo json_encode( $result );
+	}
+
+	/**
 	 * 自己加入百姓网
 	 */
 	public function actionJoin(){
@@ -10,7 +33,8 @@ class BxapplyController extends PublicController
 		$this->check_key();
 		$phone = Frame::getStringFromRequest('phone');
 		$name = Frame::getStringFromRequest('name');
-		
+		$enterprise_id = Frame::getIntFromRequest('enterprise_id');
+
 		$province = Frame::getIntFromRequest('province');
 		$city = Frame::getIntFromRequest('city');
 		$area = Frame::getIntFromRequest('area');
@@ -94,16 +118,18 @@ class BxapplyController extends PublicController
 		}else{
 			//不存在
 			$info = new Bxapply();
-				$info->member_id = $user->id;
-				$info->phone = $phone;
-				$info->name = $name;
-				$info->province = $province;
-				$info->city = $city;
-				$info->area = $area;
-				$info->street = $street;
-				$info->created_time = time();
-				$update_flag = $info->save();
-			
+			$info->member_id = $user->id;
+			$info->phone = $phone;
+			$info->name = $name;
+			$info->province = $province;
+			$info->city = $city;
+			$info->area = $area;
+			$info->street = $street;
+			$info->created_time = time();
+			if($enterprise_id) {
+				$info->enterprise_id = $enterprise_id;
+			}
+			$update_flag = $info->save();
 		}
 				
 		if($update_flag){
@@ -197,7 +223,10 @@ class BxapplyController extends PublicController
 		//$pinfo = $this->pcinfo();
 		$result1 = array();
 		$connection = Yii::app()->db;
-		$sql = "select a.id,a.phone,a.short_phone, a.name,a.status,a.province,a.city,a.area,a.street,b.id_card,b.poster1,b.poster2, c.reason from bxapply a left join apply_complete b on a.id = b.apply_id  left join bxapply_record c on a.id = c.apply_id where a.phone = '{$phone}' and a.status<>4 order by c.id desc";
+		$sql = "select a.id, a.enterprise_id, a.phone,a.short_phone, a.name,a.status,a.province,
+		a.city,a.area,a.street,b.id_card,b.poster1,b.poster2, c.reason, e.name as bx_name from bxapply a
+		left join apply_complete b on a.id = b.apply_id left join enterprise e on e.id=a.enterprise_id  left join bxapply_record c
+		on a.id = c.apply_id where a.phone = '{$phone}' and a.status<>4 order by c.id desc";
 		$command = $connection->createCommand($sql);
 		$result1 = $command->queryAll();
 		//省市

@@ -31,11 +31,11 @@ class EnterpriseController extends PublicController
 
             if ($enterprise) {
                 foreach ($enterprise as $value) {
-                    if ($value['type'] == 2 && $value['origin'] == 1) {
-                        $type = "虚拟";
-                    } else if ($value['origin'] == 2) {
+                    if($value['type']==3){
                         $type = "百姓网";
-                    } else if ($value['type'] == 1) {
+                    }elseif($value['type'] == 2){
+                        $type = "虚拟";
+                    }elseif($value['type'] == 1){
                         $type = "企业";
                     }
                     $enterp = array(
@@ -182,9 +182,9 @@ class EnterpriseController extends PublicController
                 } else {
                     $in = 0;
                 }
-                if ($value['type'] == 2 && $value['origin'] == 1) {
+                if ($value['type'] == 2) {
                     $tag = "虚拟";
-                } else if ($value['origin'] == 2) {
+                } else if ($value['type'] == 3) {
                     $tag = "百姓网";
                 } else if ($value['type'] == 1) {
                     $tag = "企业";
