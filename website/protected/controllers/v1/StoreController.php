@@ -221,6 +221,14 @@ class StoreController extends PublicController
         //计算距离
         $industry_arr = $this->Industry($result0);
         foreach ($result0 as $key => $value) {
+            //查看是否是会员号
+            $is_exist=PromotionManageAttach::model()->find("store_id={$value['id']} and is_member_ico=1 and overdue_date>".time());
+            if($is_exist){
+                $vip_store=1;
+            }else{
+                $vip_store=0;
+            }
+
             $result0[$key]['place']=100;//初始化拍卖置顶位置信息
             $result0[$key]['shop'] = $member[$value['member_id']] ? $member[$value['member_id']] : "";
             $result0[$key]['industry'] = $industry_arr[$value['industry']] ? $industry_arr[$value['industry']] : "";
@@ -228,6 +236,7 @@ class StoreController extends PublicController
             $result0[$key]['description'] = $value['description'] ? $value['description'] : "";
             $storeVipInfo=PromotionManage::model()->find("store_id={$value['id']}");
             $result0[$key]['auth_grade']=$storeVipInfo ? $storeVipInfo['vip_type']+1 : 0;
+            $result0[$key]['vip_store']=$vip_store;
             $result0[$key]['is_valid']=$this->storevip($value['member_id'])?1:0;
             if ($latitude && $longitude) {
                 //$distance = $this->getDistanceBetweenPointsNew($latitude, $longitude, $value['lat'], $value['lng']);
