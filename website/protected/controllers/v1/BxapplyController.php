@@ -748,6 +748,9 @@ class BxapplyController extends PublicController
 		$sqlinfo = array();
 		$invite_phone = array();
 		$invite_update_data = array();
+
+		//获取用户所在的百姓网
+		$own=Bxapply::model()->find("phone={$user['phone']}");
 		foreach ($arr_namephone as $value){
 			if($value){
 				$bxinfo = explode("::", $value);
@@ -816,7 +819,7 @@ class BxapplyController extends PublicController
 				}
 				$ainfo = implode(",",$bxinfo);
 				// $sqlinfo .= "(".$user->id.",".$ainfo.",".time()."),";
-				$sqlinfo[] = "(".$user->id.",".$ainfo.",".time().")";
+				$sqlinfo[] = "(".$user->id.",".$ainfo.",".time().",".$own['enterprise_id'].")";
 			}			
 		}
 		
@@ -843,7 +846,7 @@ class BxapplyController extends PublicController
 		}
 		
 		if (count($sqlinfo) > 0) {
-			$sql = "insert into bxapply (member_id,name,phone,province,city,area,street,created_time) values ".implode(",", $sqlinfo);
+			$sql = "insert into bxapply (member_id,name,phone,province,city,area,street,created_time,enterprise_id) values ".implode(",", $sqlinfo);
 			$command = $connection->createCommand($sql);
 			$flag = $command->execute() && $flag;
 		}
