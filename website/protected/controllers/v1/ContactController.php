@@ -1262,6 +1262,7 @@ class ContactController extends PublicController
             }
             //取通讯录分组表中的分组名和编号
             $dbContacts = $this->searchAddressBook($user, $ownbx, $connection);
+//            $result ['test']= json_encode($dbContacts);
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
             $result['delete'] = (object)array();
@@ -1453,7 +1454,7 @@ class ContactController extends PublicController
             $phone[$va['contact_info_id']][] = array(
                 "id" => $va['id'],
                 "phone" => $va['phone'],
-                "is_baixing" => $ownbx ? $va['is_baixing'] : 0,
+                "is_baixing" => $phoneInfo[$va['phone']]?(($ownbx==$phoneInfo[$va['phone']]) ? $va['is_baixing'] : 0):0,
                 "train_id" => $va['is_benben'] ? ($userTrainInfo[$va['is_benben']]['train_id'] ? $userTrainInfo[$va['is_benben']]['train_id'] : "") : "",
             );
         }
