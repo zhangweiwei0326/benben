@@ -277,7 +277,9 @@ class BxapplyController extends PublicController
 		//$pinfo = $this->pcinfo();
 		$result1 = array();
 		$connection = Yii::app()->db;
-		$sql = "select a.id,a.phone,a.short_phone, a.name,a.status,a.province,a.city,a.area,a.street,b.id_card,b.poster1,b.poster2, c.reason from bxapply a left join apply_complete b on a.id = b.apply_id  left join bxapply_record c on a.id = c.apply_id where a.id = '{$id}' order by c.id desc";
+		$sql = "select a.id,a.enterprise_id,e.name as bx_name,a.phone,a.short_phone, a.name,a.status,a.province,a.city,a.area,a.street,
+		b.id_card,b.poster1,b.poster2, c.reason from bxapply a left join apply_complete b on a.id = b.apply_id
+		left join bxapply_record c on a.id = c.apply_id left join enterprise as e on e.id=a.enterprise_id where a.id = '{$id}' order by c.id desc";
 		$command = $connection->createCommand($sql);
 		$result1 = $command->queryAll();
 		//省市
@@ -318,6 +320,7 @@ class BxapplyController extends PublicController
 		$city = Frame::getIntFromRequest('city');
 		$area = Frame::getIntFromRequest('area');
 		$street = Frame::getIntFromRequest('street');
+		$enterprise_id = Frame::getIntFromRequest('enterprise_id');
 		$user = $this->check_user();
 		// $apply_info = ApplyComplete::model()->find("member_id = {$user->id} and type = 1");
 		$apply_info = ApplyComplete::model()->find("phone = {$phone} and type = 1");
@@ -355,6 +358,9 @@ class BxapplyController extends PublicController
 			if($name){
 				$apply_info->name = $name;
 				$apply_in->name = $name;
+			}
+			if($enterprise_id){
+				$apply_in->enterprise_id=$enterprise_id;
 			}
 			if($id_card){
 				$apply_info->id_card = $id_card;	

@@ -567,7 +567,10 @@ class UserController extends PublicController
                     $inArray[] = $va->type;
                 }
             }
-
+            $ownbx=Bxapply::model()->find("member_id=".$user->id." and status=3");
+            if($ownbx) {
+                $einfo = Enterprise::model()->find("id={$ownbx['enterprise_id']} and type=3 and status=0");
+            }
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
             $result['user'] = array(
@@ -598,7 +601,9 @@ class UserController extends PublicController
                 "ProCity" => $pro_arr[$user->province] . ' ' . $pro_arr[$user->city],
                 "ZhiTongChe" => $zhitongche,
                 "league" => $league,
-                "group_list" => $this->getmygroup($user)
+                "group_list" => $this->getmygroup($user),
+                "bx_name"=>$einfo?$einfo['name']:"",
+                "bx_id"=>$einfo?$einfo['id']:"",
             );
 
         }
@@ -708,6 +713,10 @@ class UserController extends PublicController
                 }
             }
 
+            $ownbx=Bxapply::model()->find("member_id=".$user->id." and status=3");
+            if($ownbx) {
+                $einfo = Enterprise::model()->find("id={$ownbx['enterprise_id']} and type=3 and status=0");
+            }
             $result ['ret_num'] = 0;
             $result ['ret_msg'] = '操作成功';
             $result['user'] = array(
@@ -738,7 +747,9 @@ class UserController extends PublicController
                 "ProCity" => $pro_arr[$user->province] . ' ' . $pro_arr[$user->city],
                 "ZhiTongChe" => $zhitongche,
                 "league" => $league,
-                "group_list" => $this->getmygroup($user)
+                "group_list" => $this->getmygroup($user),
+                "bx_name"=>$einfo?$einfo['name']:"",
+                "bx_id"=>$einfo?$einfo['id']:"",
             );
         } else {
             $result ['ret_num'] = 2002;
