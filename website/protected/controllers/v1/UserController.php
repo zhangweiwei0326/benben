@@ -567,7 +567,7 @@ class UserController extends PublicController
                     $inArray[] = $va->type;
                 }
             }
-            $ownbx=Bxapply::model()->find("member_id=".$user->id." and status=3");
+            $ownbx=Bxapply::model()->find("phone=".$user->phone." and status=3");
             if($ownbx) {
                 $einfo = Enterprise::model()->find("id={$ownbx['enterprise_id']} and type=3 and status=0");
             }
@@ -713,7 +713,7 @@ class UserController extends PublicController
                 }
             }
 
-            $ownbx=Bxapply::model()->find("member_id=".$user->id." and status=3");
+            $ownbx=Bxapply::model()->find("phone=".$user->phone." and status=3");
             if($ownbx) {
                 $einfo = Enterprise::model()->find("id={$ownbx['enterprise_id']} and type=3 and status=0");
             }
@@ -1929,7 +1929,7 @@ class UserController extends PublicController
                 "allpinyin" => $own_result->allpinyin,
                 "created_time" => $own_result->created_time,
                 "is_benben" => $add_user->benben_id,
-                "is_baixing" => $addbxid,
+                "is_baixing" => ($own_bx['enterprise_id']==$add_bx['enterprise_id'])?$addbxid:0,
                 "poster" => $add_user->poster ? URL . $add_user->poster : "",
                 "huanxin_username" => $add_user->huanxin_username,
                 "phone" => array(
@@ -1947,7 +1947,7 @@ class UserController extends PublicController
                         "short_name" => $traininfo['short_name'] ? $traininfo['short_name'] : "",
                         "tag" => $traininfo['tag'] ? $traininfo['tag'] : "",
                         "is_benben" => $add_user->benben_id,
-                        "is_baixing" => $addbxid,
+                        "is_baixing" =>  ($own_bx['enterprise_id']==$add_bx['enterprise_id'])?$addbxid:0,
                         "nick_name" => $add_user->nick_name,
                         "phone" => "",
                         "id" => $own_phone['id']
@@ -2449,9 +2449,9 @@ class UserController extends PublicController
         $member_id = Frame::getIntFromRequest('member_id');
         $member_info = Member::model()->findByPk($member_id);
 
-        $mybaixing = Bxapply::model()->count("member_id={$user->id} and status=3");
+        $mybaixing = Bxapply::model()->find("phone={$user->phone} and status=3");
         if ($mybaixing) {
-            $hisbaixing = Bxapply::model()->find("member_id=$member_id and status=3");
+            $hisbaixing = Bxapply::model()->find("phone={$member_info['phone']} and status=3");
         } else {
             $hisbaixing = 0;
         }
@@ -2512,7 +2512,7 @@ class UserController extends PublicController
                 $result['phone'] = array();
                 $result['nick_name'] = $member_info->nick_name;
                 $result['name'] = $member_info->name ? $member_info->name : "";
-                $result['is_baixing'] = $hisbaixing ? $hisbaixing['short_phone'] : 0;
+                $result['is_baixing'] = ($mybaixing['enterprise_id']==$hisbaixing['enterprise_id']) ? $hisbaixing['short_phone'] : 0;
                 $result['huanxin_username'] = $member_info->huanxin_username;
                 $result['poster'] = URL . $member_info->poster;
                 $result['created_time'] = time();

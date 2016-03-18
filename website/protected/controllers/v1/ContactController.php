@@ -2741,7 +2741,7 @@ class ContactController extends PublicController
         }
         $connection = Yii::app()->db;
         //用户百姓网状态变化情况
-        $ownbx = Bxapply::model()->count("phone = '{$user->phone}' and status = 3");//自己是否是百姓用户
+        $ownbx = Bxapply::model()->find("phone = '{$user->phone}' and status = 3");//自己是否是百姓用户
         //查出好友在自己通讯录里的名字
         $sql2 = "select a.id as phoneid,a.phone,a.is_benben,a.is_baixing,a.contact_info_id,a.is_active,b.name,b.pinyin,b.id,b.allpinyin,b.group_id from group_contact_phone a left join group_contact_info b on a.contact_info_id = b.id
 		where b.member_id = {$user->id} and a.contact_info_id={$infoid}";
@@ -2774,6 +2774,11 @@ class ContactController extends PublicController
                     $res2[$krr]['poster'] = $contactsInfo[$vrr['is_benben']]['poster'] ? $contactsInfo[$vrr['is_benben']]['poster'] : "";
                     $res2[$krr]['huanxin_username'] = $contactsInfo[$vrr['is_benben']]['huanxin_username'] ? $contactsInfo[$vrr['is_benben']]['huanxin_username'] : "";
                     $res2[$krr]['member_id'] = $contactsInfo[$vrr['is_benben']]['id'] ? $contactsInfo[$vrr['is_benben']]['id'] : "";
+                    if($vrr['is_baixing']){
+                        $hisbx=Bxapply::model()->find("short_phone=".$vrr['is_baixing']);
+                    }else{
+                        $hisbx=array();
+                    }
                     //找出激活项，没有则取第一个奔犇号
                     if ($flagIn != 1) {
                         if ($vrr['is_active']) {
@@ -2781,7 +2786,7 @@ class ContactController extends PublicController
                             $activeArr['nick_name'] = $res2[$krr]['nick_name'];
                             $activeArr['poster'] = $res2[$krr]['poster'];
                             $activeArr['is_benben'] = $vrr['is_benben'];
-                            $activeArr['is_baixing'] = $ownbx ? $vrr['is_baixing'] : "0";
+                            $activeArr['is_baixing'] = ($ownbx['enterprise_id']==$hisbx['enterprise_id']) ? $vrr['is_baixing'] : "0";
                             $activeArr['huanxin_username'] = $res2[$krr]['huanxin_username'];
                             $flagIn = 1;
                         } elseif ($vrr['is_benben']) {
@@ -2789,7 +2794,7 @@ class ContactController extends PublicController
                             $activeArr['nick_name'] = $res2[$krr]['nick_name'];
                             $activeArr['poster'] = $res2[$krr]['poster'];
                             $activeArr['is_benben'] = $vrr['is_benben'];
-                            $activeArr['is_baixing'] = $ownbx ? $vrr['is_baixing'] : "0";
+                            $activeArr['is_baixing'] = ($ownbx['enterprise_id']==$hisbx['enterprise_id']) ? $vrr['is_baixing'] : "0";
                             $activeArr['huanxin_username'] = $res2[$krr]['huanxin_username'];
                             $flagIn = 1;
                         }
@@ -2823,13 +2828,19 @@ class ContactController extends PublicController
         $phone = array();
         if (count($res2)) {
             foreach ($res2 as $v) {
+                if($v['is_baixing']){
+                    $herbx=Bxapply::model()->find("short_phone={$v['is_baixing']}");
+                }else{
+                    $herbx=array();
+                }
+
                 $phone[] = array(
                     "infoid" => $v['id'],
                     "id" => $v['phoneid'],
                     "nick_name" => $v['nick_name'] ? $v['nick_name'] : "",
                     "poster" => $v['poster'] ? URL . $v['poster'] : "",
                     "is_benben" => $v['is_benben'] ? $v['is_benben'] : "0",
-                    "is_baixing" => $ownbx ? ($v['is_baixing'] ? $v['is_baixing'] : "0") : "0",
+                    "is_baixing" => ($ownbx['enterprise_id']==$herbx['enterprise_id']) ? ($v['is_baixing'] ? $v['is_baixing'] : "0") : "0",
                     "phone" => $v['phone'] ? $v['phone'] : "",
                     "huanxin_username" => $v['huanxin_username'] ? $v['huanxin_username'] : "",
                     "is_active" => $v['is_active'] ? $v['is_active'] : "0",
