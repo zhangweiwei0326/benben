@@ -59,7 +59,7 @@ class ContactController extends PublicController
             //$phone ="15555142507#18888888888::你好你噶|13333333333#13333333334+测试";
             $user = $this->check_user();
             //是否是百姓网用户
-            $info = Bxapply::model()->count("phone = '{$user->phone}' and status = 3");
+            $info = Bxapply::model()->find("phone = '{$user->phone}' and status = 3");
 
             if (!$group) {
                 $arr_group = array("朋友", "家人", "同事", "未分组");
@@ -251,14 +251,16 @@ class ContactController extends PublicController
 
                                 $is_benben = 0;
                                 $is_baixing = 0;
+                                $otherbx=[];
                                 if (isset($baixing_phone_id[$each_phone])) {
                                     $is_baixing = $baixing_phone_id[$each_phone]['baixing'];
                                     $is_baixing = intval($is_baixing);
                                     if (!$baixing) {
                                         $baixing = $is_baixing;
+                                        $otherbx=Bxapply::model()->find("short_phone={$baixing}");
                                     }
                                 }
-                                if (!$info) {
+                                if ($info['enterprise_id']!=$otherbx['enterprise_id']) {
                                     $is_baixing = 0;
                                     $baixing = 0;
                                 }
@@ -393,7 +395,7 @@ class ContactController extends PublicController
         $PinYin = new tpinyin();
         $user = $this->check_user();
         //是否是百姓网用户
-        $info = Bxapply::model()->count("phone = '{$user->phone}' and status = 3");
+        $info = Bxapply::model()->find("phone = '{$user->phone}' and status = 3");
 
         //记录同步历史	
         // $log = $user->id.'  == '.$phone;
@@ -667,14 +669,16 @@ class ContactController extends PublicController
 
                     $is_benben = $benben_phone_id[$each_phone]['benben_id'] ? $benben_phone_id[$each_phone]['benben_id'] : 0;
                     $is_baixing = 0;
+                    $otherbx=[];
                     if (isset($baixing_phone_id[$each_phone])) {
                         $is_baixing = $baixing_phone_id[$each_phone]['baixing'];
                         $is_baixing = intval($is_baixing);
                         if (!$baixing) {
                             $baixing = $is_baixing;
+                            $otherbx=Bxapply::model()->find("short_phone={$baixing}");
                         }
                     }
-                    if (!$info) {
+                    if ($info['enterprise_id']!=$otherbx['enterprise_id']) {
                         $is_baixing = 0;
                         $baixing = 0;
                     }
@@ -858,10 +862,10 @@ class ContactController extends PublicController
                                     $huanxin = $meminfo['huanxin_username'] ? $meminfo['huanxin_username'] : "";
                                     $poster = $meminfo['poster'] ? URL . $meminfo['poster'] : "";
                                     //自己百姓号存在才能查询其他人
-                                    $ownbaixing = Bxapply::model()->find("member_id={$user['id']} and status=3");
+                                    $ownbaixing = Bxapply::model()->find("phone={$user['phone']} and status=3");
                                     if ($ownbaixing) {
-                                        $baixinginfo = Bxapply::model()->find("member_id={$meminfo['id']} and status=3");
-                                        if ($baixinginfo) {
+                                        $baixinginfo = Bxapply::model()->find("phone={$meminfo['phone']} and status=3");
+                                        if ($baixinginfo['enterprise_id']==$ownbaixing['enterprise_id']) {
                                             $is_baixing = $baixinginfo['short_phone'];
                                         } else {
                                             $is_baixing = 0;
@@ -2152,6 +2156,8 @@ class ContactController extends PublicController
             $poster = "";
             $huanxin_username = "";
         }
+        //自己是否是百姓网用户
+        $ownbxinfo=Bxapply::model()->find("phone = {$user['phone']} and status = 3");
         //该号码是否是百姓网用户
         $binfo = Bxapply::model()->find("phone = '{$phone}' and status = 3");
         if ($binfo) {
@@ -2191,7 +2197,7 @@ class ContactController extends PublicController
                 "pinyin" => $py,
                 "allpinyin" => $allpy,
                 "is_benben" => $is_benben,
-                "is_baixing" => $is_baixing,
+                "is_baixing" => ($ownbxinfo['enterprise_id']==$binfo['enterprise_id'])?$is_baixing:0,
                 "created_time" => time(),
                 "huanxin_username" => $info ? $info->huanxin_username : "",
                 "phone" => array(
@@ -2208,7 +2214,7 @@ class ContactController extends PublicController
                         "pic" => $pic,
                         "short_name" => $shortname,
                         "tag" => $tag,
-                        "is_baixing" => $is_baixing,
+                        "is_baixing" => ($ownbxinfo['enterprise_id']==$binfo['enterprise_id'])?$is_baixing:0,
                         "is_benben" => $is_benben,
                         "nick_name" => $info ? $info->nick_name : "",
                         "phone" => $phone,
@@ -2248,7 +2254,7 @@ class ContactController extends PublicController
             die();
         }
         //自己是否是百姓网用户
-        $owninfo = Bxapply::model()->find("member_id = {$user['id']} and status = 3");
+        $owninfo = Bxapply::model()->find("phone = {$user['phone']} and status = 3");
         if ($owninfo) {
             //该号码是否是百姓网用户
             $binfo = Bxapply::model()->find("phone = '{$phone}' and status = 3");
@@ -2350,7 +2356,7 @@ class ContactController extends PublicController
                     "contact_info_id" => $contactphone->contact_info_id ? $contactphone->contact_info_id : $id,
                     "phone" => $phone,
                     "is_benben" => $is_benben,
-                    "is_baixing" => $is_baixing ? $is_baixing : 0,
+                    "is_baixing" => ($owninfo['enterprise_id']==$binfo['enterprise_id'])? $is_baixing : 0,
                     "poster" => $poster,
                     "huanxin_username" => $huanxin_username,
                     "is_active" => 0,
@@ -2372,7 +2378,7 @@ class ContactController extends PublicController
                     "allpinyin" => $contact->allpinyin,
                     "created_time" => $contact->created_time,
                     "is_benben" => $or_info ? $or_info->benben_id : $is_benben,
-                    "is_baixing" => $is_baixing ? $is_baixing : 0,
+                    "is_baixing" => ($owninfo['enterprise_id']==$binfo['enterprise_id'])? $is_baixing : 0,
                     "poster" => $or_info ? ($or_info->poster ? URL . $or_info->poster : "") : $poster,
                     "huanxin_username" => $or_info ? $or_info->huanxin_username : $huanxin_username,
                     /*"phone"=>array(
