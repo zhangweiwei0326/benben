@@ -208,7 +208,24 @@ class BuyController extends PublicController
 			$sql .= "and a.area = {$area} ";
 		}
 		 if ($industry) {
-		 	$sql .= "and a.industry = {$industry}";
+			 $industry_arr=array();
+			 $level1=Industry::model()->find("id=$industry");
+			 if($level1['last']!=1&&$level1){
+				 $level2=Industry::model()->findAll("parent_id={$industry}");
+				 foreach($level2 as $k) {
+					 if ($level2 && $k['last'] != 1) {
+						 $level3 = Industry::model()->findAll("parent_id={$k['id']}");
+						 foreach ($level3 as $k3) {
+							 $industry_arr[] = $k3['id'];
+						 }
+					 } else {
+						 $industry_arr[] = $k['id'];
+					 }
+				 }
+			 }else{
+				 $industry_arr[]=$industry;
+			 }
+		 	$sql .= "and a.industry in (".implode(",",$industry_arr).")";
 		 }
 		$start = $page*10;
 		$sql .= " order by a.is_close asc,a.created_time desc limit {$start},10";
