@@ -157,10 +157,10 @@ class EnterpriseController extends PublicController
         $connection = Yii::app()->db;
 
         if ($keyword) {
-            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,a.description,b.enterprise_apply from enterprise as a
+            $sql = "select a.id,a.name,a.max_num,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,a.description,b.enterprise_apply from enterprise as a
             left join enterprise_role as b on a.id=b.enterprise_id  where a.name like '%{$keyword}%' and a.status = 0 order by a.created_time desc limit 50";
         } else {
-            $sql = "select a.id,a.name,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,a.description,b.enterprise_apply from enterprise as a
+            $sql = "select a.id,a.name,a.max_num,a.short_name,a.member_id,a.number,a.type,a.created_time,a.origin,a.description,b.enterprise_apply from enterprise as a
             left join enterprise_role as b on a.id=b.enterprise_id  where a.status = 0 order by a.created_time desc limit 50";
         }
         $command = $connection->createCommand($sql);
@@ -195,6 +195,7 @@ class EnterpriseController extends PublicController
                     "short_name" => $value['short_name'],
                     "member_id" => $value['member_id'],
                     "number" => $value['number'],
+                    "max_num" => $value['max_num'],
                     "in" => $in,
                     "type" => $value['type'],
                     "origin" => $value['origin'],
@@ -281,6 +282,7 @@ class EnterpriseController extends PublicController
         $enterprise_info->street = $street;
         $enterprise_info->description = $description;
         $enterprise_info->number = 1;
+        $enterprise_info->max_num = MAX_COMPANY;
         $enterprise_info->status = 0;
         $enterprise_info->created_time = time();
         $enterprise_info->short_length = strlen($short_phone);
@@ -317,6 +319,7 @@ class EnterpriseController extends PublicController
                 "description" => $enterprise_info->description,
                 "status" => $enterprise_info->status,
                 "number" => $enterprise_info->number,
+                "max_num" => $enterprise_info->max_num,
                 "created_time" => $enterprise_info->created_time
             );
         } else {
@@ -950,12 +953,12 @@ class EnterpriseController extends PublicController
     public function actionMemberSearch()
     {
         $maxShow = 50;
-        $maxCompany = 500;
         $this->check_key();
         $user = $this->check_user();
         $enterpriseid = Frame::getIntFromRequest('enterpriseid');
         $keyword = Frame::getStringFromRequest('keyword');
         $enterprise = Enterprise::model()->findByPk($enterpriseid);
+        $maxCompany = $enterprise['max_num'];
         if (empty($enterprise)) {
             $result['ret_num'] = 504;
             $result['ret_msg'] = '通讯录ID不存在';
@@ -1845,8 +1848,8 @@ class EnterpriseController extends PublicController
                     $num++;
                 }
             }
-            //判断总人数，不能超过500人
-            if ($enterprise->number + $num > 500) {
+            //判断总人数，不能超过上限人数
+            if ($enterprise->number + $num > $enterprise->max_num) {
                 $result['ret_num'] = 1700;
                 $result['ret_msg'] = '已经达到政企数量上限,⽆法添加';
                 echo json_encode($result);
@@ -1938,6 +1941,12 @@ class EnterpriseController extends PublicController
             echo json_encode($result);
             die ();
         }
+        if($einfo['max_num']<=$einfo['number']){
+            $result['ret_num'] = 2305;
+            $result['ret_msg'] = '政企人数已达上限！';
+            echo json_encode($result);
+            die ();
+        }
         $enterinfo=EnterpriseRole::model()->find("enterprise_id={$enterpriseid}");
         if(!$enterinfo){
             $result['ret_num'] = 1101;
@@ -1986,6 +1995,18 @@ class EnterpriseController extends PublicController
         if (empty($enterprise)) {
             $result['ret_num'] = 1005;
             $result['ret_msg'] = '该政企通讯录不存在';
+            echo json_encode($result);
+            die ();
+        }
+        if($enterprise['type']==3){
+            $result['ret_num'] = 2225;
+            $result['ret_msg'] = '百姓网不允许直接加入！';
+            echo json_encode($result);
+            die ();
+        }
+        if($enterprise['max_num']<=$enterprise['number']){
+            $result['ret_num'] = 1215;
+            $result['ret_msg'] = '该政企通讯录人数已到上限';
             echo json_encode($result);
             die ();
         }
@@ -2207,8 +2228,8 @@ class EnterpriseController extends PublicController
                     }
                 }
             }
-            //判断总人数，不能超过500人
-            if ($enterprise->number + $num > 500) {
+            //判断总人数，不能超过上限人数
+            if ($enterprise->number + $num > $enterprise->max_num) {
                 $result['ret_num'] = 1700;
                 $result['ret_msg'] = '已经达到政企数量上限,⽆法添加';
                 echo json_encode($result);
@@ -2414,7 +2435,12 @@ class EnterpriseController extends PublicController
             echo json_encode($result);
             die ();
         }
-
+        if($enterprise['max_num']<=$enterprise['number']){
+            $result['ret_num'] = 1125;
+            $result['ret_msg'] = '政企人数已达上限';
+            echo json_encode($result);
+            die ();
+        }
         //被动加入
         $contactinfoArray = explode("||", $contactinfoA);
         if ($contactinfoArray[0]) {
@@ -2495,8 +2521,8 @@ class EnterpriseController extends PublicController
                 }
             }
 
-            //判断总人数，不能超过500人
-            if ($enterprise->number + $num > 500) {
+            //判断总人数，不能超过上限人数
+            if ($enterprise->number + $num > $enterprise->max_num) {
                 $result['ret_num'] = 1700;
                 $result['ret_msg'] = '已经达到政企数量上限,⽆法添加';
                 echo json_encode($result);
@@ -2567,6 +2593,12 @@ class EnterpriseController extends PublicController
         if (empty($enterprise)) {
             $result['ret_num'] = 1005;
             $result['ret_msg'] = '该政企通讯录不存在';
+            echo json_encode($result);
+            die ();
+        }
+        if($enterprise['max_num']<=$enterprise['number']){
+            $result['ret_num'] = 1125;
+            $result['ret_msg'] = '政企人数已达上限';
             echo json_encode($result);
             die ();
         }

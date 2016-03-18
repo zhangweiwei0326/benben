@@ -15,10 +15,12 @@
  * @property string $description
  * @property integer $member_id
  * @property integer $number
+ * @property integer $max_num
  * @property integer $status
  * @property integer $created_time
  * @property integer $short_length
  * @property integer $origin
+ * @property integer $out_num
  */
 class Enterprise extends CActiveRecord
 {
@@ -39,7 +41,7 @@ class Enterprise extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, created_time', 'required'),
-			array('type, province, city, area, street, member_id, number, status, created_time, short_length, origin, out_num', 'numerical', 'integerOnly'=>true),
+			array('type, province, city, area, street, member_id, number, status, created_time, short_length, origin, out_num, max_num', 'numerical', 'integerOnly'=>true),
 			array('name, short_name', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
@@ -81,6 +83,7 @@ class Enterprise extends CActiveRecord
 			'short_length' => 'Short Length',
 			'origin' => 'Origin',
 			'out_num'=>'Out Num',
+			'max_num'=>'Max Num',
 		);
 	}
 
@@ -118,6 +121,7 @@ class Enterprise extends CActiveRecord
 		$criteria->compare('short_length',$this->short_length);
 		$criteria->compare('origin',$this->origin);
 		$criteria->compare('out_num',$this->out_num);
+		$criteria->compare('max_num',$this->max_num);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

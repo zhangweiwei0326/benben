@@ -8,6 +8,7 @@ define('MAXUSER', 600);
 define("MAX_CHIEF",3);
 define("MAX_WORK",100);
 define("MAX_HERO",300);
+define("MAX_COMPANY",5000);
 
 //环信
 define("CLIENT_ID","YXA6hYUeUMCoEeSLzs9YqkHScQ");
