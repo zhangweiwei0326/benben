@@ -133,36 +133,6 @@ class PayController extends BaseController
      * 支付宝支付
      */
     public function actionCashOut(){
-        include_once('lib/alipay/Corefunction.php');
-        include_once('lib/alipay/Md5function.php');
-        include_once('lib/alipay/Rsafunction.php');
-        include_once('lib/alipay/Notify.php');
-        include_once('lib/alipay/Submit.php');
-
-        header("Content-type:text/html;charset=utf-8");
-        $alipay_config = Yii::app()->params['alipay_config'];
-
-        /**************************请求参数**************************/
-
-        //服务器异步通知页面路径
-        $notify_url = Yii::app()->params['alipay']['cash_notify_url'];
-        //需http://格式的完整路径，不允许加?id=123这类自定义参数
-        //付款账号
-        $email = Yii::app()->params['alipay']['seller_email'];
-        //必填
-
-        //付款账户名"杭州"
-        $account_name = Yii::app()->params['alipay']['account_name'];
-        //必填，个人支付宝账号是真实姓名公司支付宝账号是公司名称
-
-        //付款当天日期
-        $pay_date = date("Ymd",  time());
-        //必填，格式：年[4位]月[2位]日[2位]，如：20100801
-
-        //批次号
-        $batch_no = $pay_date.time();
-        //必填，格式：当天日期[8位]+序列号[3至16位]，如：201008010000001
-        //type=1支付宝
         $payinfo=Pay::model()->findAll("status=0 and type=1 limit 1000");
         $total=0.00;
         $detail=array();
@@ -170,47 +140,89 @@ class PayController extends BaseController
             $detail[]=($v['id'])."^".$v['account']."^".$v['pay_name']."^".$v['fee']."^工资";
             $total+=$v['fee'];
             $changestatus['status']=3;//转账中
-            Pay::model()->updateAll(array("status"=>3),"id={$v['id']}");
+            Pay::model()->updateAll(array("status"=>1),"id={$v['id']}");
         }
-
-        $num=count($detail);
-        $more=  implode("|", $detail);
-
-        //付款总金额
-        $batch_fee = $total;
-        //必填，即参数detail_data的值中所有金额的总和
-
-        //付款笔数
-        $batch_num = $num;
-        //必填，即参数detail_data的值中，“|”字符出现的数量加1，最大支持1000笔（即“|”字符出现的数量999个）
-
-        //付款详细数据
-        $detail_data = $more;
-        //必填，格式：流水号1^收款方帐号1^真实姓名^付款金额1^备注说明1|流水号2^收款方帐号2^真实姓名^付款金额2^备注说明2....
-
-
-        /************************************************************/
-
-        //构造要请求的参数数组，无需改动
-        $parameter = array(
-            "service" => "batch_trans_notify",
-            "partner" => trim($alipay_config['partner']),
-            "notify_url"	=> $notify_url,
-            "email"	=> $email,
-            "account_name"	=> $account_name,
-            "pay_date"	=> $pay_date,
-            "batch_no"	=> $batch_no,
-            "batch_fee"	=> $batch_fee,
-            "batch_num"	=> $batch_num,
-            "detail_data"	=> $detail_data,
-            "_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
-        );
-
-        //建立请求
-        $alipaySubmit = new \AlipaySubmit($alipay_config);
-        $html_text = $alipaySubmit->buildRequestForm($parameter,"post", "处理中，请勿点击！");
-        echo $html_text;
+        $this->redirect('index');
     }
+//    public function actionCashOut(){
+//        include_once('lib/alipay/Corefunction.php');
+//        include_once('lib/alipay/Md5function.php');
+//        include_once('lib/alipay/Rsafunction.php');
+//        include_once('lib/alipay/Notify.php');
+//        include_once('lib/alipay/Submit.php');
+//
+//        header("Content-type:text/html;charset=utf-8");
+//        $alipay_config = Yii::app()->params['alipay_config'];
+//
+//        /**************************请求参数**************************/
+//
+//        //服务器异步通知页面路径
+//        $notify_url = Yii::app()->params['alipay']['cash_notify_url'];
+//        //需http://格式的完整路径，不允许加?id=123这类自定义参数
+//        //付款账号
+//        $email = Yii::app()->params['alipay']['seller_email'];
+//        //必填
+//
+//        //付款账户名"杭州"
+//        $account_name = Yii::app()->params['alipay']['account_name'];
+//        //必填，个人支付宝账号是真实姓名公司支付宝账号是公司名称
+//
+//        //付款当天日期
+//        $pay_date = date("Ymd",  time());
+//        //必填，格式：年[4位]月[2位]日[2位]，如：20100801
+//
+//        //批次号
+//        $batch_no = $pay_date.time();
+//        //必填，格式：当天日期[8位]+序列号[3至16位]，如：201008010000001
+//        //type=1支付宝
+//        $payinfo=Pay::model()->findAll("status=0 and type=1 limit 1000");
+//        $total=0.00;
+//        $detail=array();
+//        foreach ($payinfo as $k => $v) {
+//            $detail[]=($v['id'])."^".$v['account']."^".$v['pay_name']."^".$v['fee']."^工资";
+//            $total+=$v['fee'];
+//            $changestatus['status']=3;//转账中
+//            Pay::model()->updateAll(array("status"=>3),"id={$v['id']}");
+//        }
+//
+//        $num=count($detail);
+//        $more=  implode("|", $detail);
+//
+//        //付款总金额
+//        $batch_fee = $total;
+//        //必填，即参数detail_data的值中所有金额的总和
+//
+//        //付款笔数
+//        $batch_num = $num;
+//        //必填，即参数detail_data的值中，“|”字符出现的数量加1，最大支持1000笔（即“|”字符出现的数量999个）
+//
+//        //付款详细数据
+//        $detail_data = $more;
+//        //必填，格式：流水号1^收款方帐号1^真实姓名^付款金额1^备注说明1|流水号2^收款方帐号2^真实姓名^付款金额2^备注说明2....
+//
+//
+//        /************************************************************/
+//
+//        //构造要请求的参数数组，无需改动
+//        $parameter = array(
+//            "service" => "batch_trans_notify",
+//            "partner" => trim($alipay_config['partner']),
+//            "notify_url"	=> $notify_url,
+//            "email"	=> $email,
+//            "account_name"	=> $account_name,
+//            "pay_date"	=> $pay_date,
+//            "batch_no"	=> $batch_no,
+//            "batch_fee"	=> $batch_fee,
+//            "batch_num"	=> $batch_num,
+//            "detail_data"	=> $detail_data,
+//            "_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
+//        );
+//
+//        //建立请求
+//        $alipaySubmit = new \AlipaySubmit($alipay_config);
+//        $html_text = $alipaySubmit->buildRequestForm($parameter,"post", "处理中，请勿点击！");
+//        echo $html_text;
+//    }
 
     /**
      * Creates a new model.
