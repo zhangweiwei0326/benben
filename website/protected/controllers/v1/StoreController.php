@@ -38,10 +38,12 @@ class StoreController extends PublicController
         $distance_order = "";
 
         //默认位置信息
-        if(empty($latitude)&&empty($longitude)&&empty($province)&&empty($city)&&empty($area)&&($street)){
+        if(empty($latitude)&&empty($longitude)&&empty($province)&&empty($city)&&empty($area)&&empty($street)){
             //没有位置默认浙江省杭州市上杭区
-            $asql .= "province = 33 and city = 3301 and area = 330102 and ";
-            $auctionSqlAddr.="province = 33 and city = 3301 and area = 330102 and ";
+            $longitude='120.206627';
+            $latitude='30.335841';
+//            $asql .= "province = 33 and city = 3301 and area = 330102 and ";
+//            $auctionSqlAddr.="province = 33 and city = 3301 and area = 330102 and ";
         }
 
         //地理位置距离查询
