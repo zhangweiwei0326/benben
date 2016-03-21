@@ -92,6 +92,10 @@ function getSubMenu() {
 			5 => array (
 				'name' => '百姓网统计',
 				'uri' => '/statistic/bx',
+			),
+			6=>array(
+				'name' => '百姓网新增',
+				'uri' => '/bxapply/newbx',
 			)
 		) ,
 		3 => array (

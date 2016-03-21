@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'bxapply':
  * @property integer $id
  * @property integer $member_id
+ * @property integer $enterprise_id
  * @property string $phone
  * @property string $name
  * @property string $short_phone
@@ -43,12 +44,12 @@ class Bxapply extends CActiveRecord
 		// will receive user inputs.
 		//array('phone, name, created_time', 'required'),
 		return array(
-			array('member_id, province, city, area, street, status, created_time', 'numerical', 'integerOnly'=>true),
+			array('member_id, enterprise_id, province, city, area, street, status, created_time', 'numerical', 'integerOnly'=>true),
 			array('phone', 'length', 'max'=>11),
 			array('name, short_phone', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, member_id, phone, name, short_phone, province, city, area, street, status, created_time', 'safe', 'on'=>'search'),
+			array('id, member_id,enterprise_id, phone, name, short_phone, province, city, area, street, status, created_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,6 +72,7 @@ class Bxapply extends CActiveRecord
 		return array(
 			'id' => 'id',
 			'member_id' => '提交人',
+			'enterprise_id' => '百姓网段',
 			'phone' => '手机号码',
 			'name' => '姓名',
 			'short_phone' => '百姓网号',
@@ -103,6 +105,7 @@ class Bxapply extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('member_id',$this->member_id);
+		$criteria->compare('enterprise_id',$this->enterprise_id);
 		$criteria->compare('phone',$this->phone,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('short_phone',$this->short_phone,true);

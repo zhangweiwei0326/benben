@@ -47,11 +47,52 @@
 				<div class="form-group">
 					<?php echo $form->labelEx($model,'name', array("class"=>"col-sm-2 control-label"));?>
 					<div class="col-sm-8">
-						<?php echo $form->textField($model,'name',array('class'=>'form-control','size'=>'20','maxlength'=>'20',  'readonly' => readonly)); ?>
+						<?php echo $form->textField($model,'name',array('class'=>'form-control','size'=>'20','maxlength'=>'20',)); ?>
 					</div>
 				</div>
-				
-				<div class="form-group">
+				 <div class="form-group">
+					<?php echo $form->labelEx($model,'province', array("class"=>"col-sm-2 control-label"));?>
+					<div style="width:126px" class="col-sm-8">
+					<select class="form-control" name="Bxapply[province]" id="province">
+						<option value="0">未知</option>
+					<?php foreach ($province['province'] as $prv){?>
+						<option value="<?php echo $prv->bid?>"  <?php if($model->province == $prv->bid) echo 'selected = "selected"';?>><?php echo $prv->area_name?></option>
+					<?php  }?>
+					</select>
+						<?php //echo $form->listBox($model,'province',array(0=>$areas['province']),array('class'=>'form-control','size'=>1)); ?>
+					</div>
+					<?php echo $form->labelEx($model,'city', array("class"=>"col-sm-12 control-label","style"=>"width: 60px;"));?>
+					<div style="width:126px" class="col-sm-8">
+					<select class="form-control" name="Bxapply[city]" id="city">
+						<option value="0">未知</option>
+					<?php foreach ($province['city'] as $prv){?>			
+						<option value="<?php echo $prv['bid']?>"  <?php if($model->city == $prv['bid']) echo 'selected = "selected"';?>><?php echo $prv['area_name']?></option>
+					<?php  }?>
+					</select>
+						<?php //echo $form->listBox($model,'city',array(0=>$areas['city']),array('class'=>'form-control','size'=>1)); ?>
+					</div>
+					<?php echo $form->labelEx($model,'area', array("class"=>"col-sm-12 control-label","style"=>"width: 60px;"));?>
+					<div style="width:126px" class="col-sm-8">
+					<select class="form-control" name="Bxapply[area]" id="area">
+						<option value="0">未知</option>
+					<?php foreach ($province['area'] as $prv){?>
+						<option value="<?php echo $prv['bid']?>"  <?php if($model->area == $prv['bid']) echo 'selected = "selected"';?>><?php echo $prv['area_name']?></option>
+					<?php  }?>
+					</select>
+						<?php //echo $form->listBox($model,'area',array(0=>$areas['area']),array('class'=>'form-control','size'=>1)); ?>
+					</div>
+					<!--<?php echo $form->labelEx($model,'street', array("class"=>"col-sm-12 control-label","style"=>"width: 60px;"));?>
+					<div style="width:126px" class="col-sm-8">
+					<select class="form-control" name="Bxapply[street]" id="street">
+						<option value="0">未知</option>
+					<?php foreach ($province['street'] as $prv){?>
+						<option value="<?php echo $prv['bid']?>"  <?php if($model->street == $prv['bid']) echo 'selected = "selected"';?>><?php echo $prv['area_name']?></option>
+					<?php  }?>
+					</select>
+						<?php //echo $form->listBox($model,'street',array(0=>$areas['street']),array('class'=>'form-control','size'=>1)); ?>
+					</div>-->
+				</div>
+				<!-- <div class="form-group">
 				    <div style="width:192px;text-align: right;" class="col-sm-8">
 				        <label for="Member_province" >地区</label>
 				    </div>
@@ -67,12 +108,12 @@
 					<div style="width:126px" class="col-sm-8">
 					<label for="Member_province" ><?php echo $areas['street']; ?></label>
 					</div>					
-				</div>
+				</div> -->
 				
 				<div class="form-group">
 					<label class="col-sm-2 control-label" for="Bxapply_card_id">身份证号</label>
 					<div class="col-sm-8">
-						<input id="Bxapply_card_id" class="form-control" type="text" value="<?php echo $id_card?>" name="Bxapply[id_card]" readonly="readonly">
+						<input id="Bxapply_card_id" class="form-control" type="text" value="<?php echo $id_card?>" name="Bxapply[id_card]">
 					</div>
 				</div>
 				<div class="form-group">
@@ -129,9 +170,21 @@
 <script>
  var shortphone0 = $("#Bxapply_short_phone").val();
  var input0 = $("input[name='Bxapply[status]']:checked").val();
+ var name = $("input[name='Bxapply[name]']").val();
+ var id_card = $("input[name='Bxapply[id_card]']").val();
+ var province = $("select[name='Bxapply[province]']").val();
+ var city = $("select[name='Bxapply[city]']").val();
+ var area = $("select[name='Bxapply[area]']").val();
+ var street = $("select[name='Bxapply[street]']").val();
  $(".btn-lg1").click(function(){
 	     var shortphone2 = $("#Bxapply_short_phone").val();
 	     var shortphone = $("#Bxapply_short_phone").val();
+	     var name1 = $("input[name='Bxapply[name]']").val();		 
+		 var id_card1 = $("input[name='Bxapply[id_card]']").val();
+		 var province1 = $("select[name='Bxapply[province]']").val();
+		 var city1 = $("select[name='Bxapply[city]']").val();
+		 var area1 = $("select[name='Bxapply[area]']").val();
+		 var street1 = $("select[name='Bxapply[street]']").val();
 	     // shortphone = parseInt(shortphone);
 	     var input = $("input[name='Bxapply[status]']:checked").val();	
 		 var text = $("#Member_reason").val();
@@ -145,7 +198,8 @@
 		    alert("请先删除百姓网号");	
 			return false;
 		 }else{
-		     if((input0 != input) || (shortphone0 !=shortphone)){
+		     if((input0 != input) || (shortphone0 !=shortphone)|| (name != name1) ||
+		    		 (id_card != id_card1) || (province != province1) || (city != city1) || (area != area1) || (street != street1)){
 		    	 if(window.confirm('请确认对以上信息进行修改')){
 		    		 $("#bxapply-form").submit();
 		    		return true;

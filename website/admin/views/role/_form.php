@@ -72,7 +72,7 @@ table{background:none}
 								<td></td>
 							</tr>
 							<tr>
-								<td rowspan="4">百姓网管理</td>
+								<td rowspan="5">百姓网管理</td>
 								<td>
 									<span id="Role_dobaixing0">
 										<input id="Role_dobaixing_0" value="1" type="checkbox" <?php if(($model->dobaixing & 1) && ($model->dobaixing & 2) && ($model->dobaixing & 32)) echo "checked=checked ";?>name="Role[dobaixing][editall]"> 
@@ -120,9 +120,18 @@ table{background:none}
 									</span>
 								</td>
 								<td></td>
-							</tr>							
+							</tr>
 							<tr>
-								<td rowspan="3">通讯录管理</td>
+								<td>
+									<span id="Role_dobaixing6">
+										<input id="Role_dobaixing_6" value="1" type="checkbox" <?php if($model->dobaixing & 64) echo "checked=checked ";?>name="Role[dobaixing][newbx]">
+										<label for="Role_dobaixing_6">百姓网新增</label>
+									</span>
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td rowspan="4">通讯录管理</td>
 								<td>
 									<span id="Role_domember0">
 										<input id="Role_doenterprise_0" value="1" type="checkbox" <?php if(($model->doenterprise & 1) && ($model->doenterprise & 2) && ($model->doenterprise & 4)) echo "checked=checked ";?>name="Role[doenterprise][editall]"> 
@@ -174,6 +183,15 @@ table{background:none}
 										<label for="Role_domember_1">用户统计权限</label>
 									</span>									
 								</td>
+							</tr>
+							<tr>
+								<td>
+									<span id="Role_domember0">
+										<input id="" value="1" type="checkbox" <?php if($model->doapplyregister & 1) echo "checked=checked ";?>name="Role[doapplyregister][editall]"> 
+										<label for="Role_domember_0">申请审核</label>
+									</span>
+								</td>
+								<td></td>
 							</tr>
 							<tr>
 								<td rowspan="5">发现管理</td>

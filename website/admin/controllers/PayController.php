@@ -17,13 +17,13 @@ class PayController extends BaseController
      * @var int the define the index for the menu
      */
 
-    public $menuIndex = 81;
+    public $menuIndex = 80;
 
     /**
      * Lists all models.
      */
     public function actionIndex(){
-        $this->insert_log(81);
+        $this->insert_log(80);
         $model = Pay::model();
         $cri = new CDbCriteria();
         $cri->select="t.*";

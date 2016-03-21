@@ -276,6 +276,7 @@ class RoleController extends BaseController
 					if($baixing_arr['putapply']) $dobaixing += 4;
 					if($baixing_arr['input']) $dobaixing += 8;
 					if($baixing_arr['statistic']) $dobaixing += 16;
+					if($baixing_arr['newbx']) $dobaixing += 64;
 					//var_dump($dobaixing);exit;
 					$model->dobaixing= $dobaixing;
 				}

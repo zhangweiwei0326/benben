@@ -83,6 +83,7 @@ class LeftWidge extends CWidget {
 			if($dobaixing & 8) $subMenu['2']['3']['role'] =1;
 			$subMenu['2']['4']['role'] =1;
 			if($dobaixing & 16) $subMenu['2']['5']['role'] =1;
+			if($dobaixing & 64) $subMenu['2']['6']['role'] =1;
 		}
 
 		//系统管理
