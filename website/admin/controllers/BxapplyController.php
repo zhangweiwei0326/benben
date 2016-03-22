@@ -46,6 +46,9 @@ class BxapplyController extends BaseController
 	{
 		$model=$this->loadModel($id);
 
+		//获取百姓网id
+		$binfo=Bxapply::model()->find("id={$id}");
+		$bxid=$binfo['enterprise_id'];
 		//获取身份证
 		$apply = new ApplyComplete();
 		$sql = "SELECT id_card, poster1, poster2 from apply_complete where apply_id = $id  and type = 1 limit 1";
@@ -81,8 +84,6 @@ class BxapplyController extends BaseController
 
 		$areas = array();
 		$areas = array("province" => $province, "city" => $city, "area" => $area, "street" => $street);
-
-		
 
 		//创建人
 		$member = new Member();
@@ -161,19 +162,19 @@ class BxapplyController extends BaseController
 							$info_id = $info->id;
 						}
 						//更新enterprise_member表short_phone,136	
-						$in = EnterpriseMember::model()->count("phone = '{$model->phone}' and contact_id = ".BXID);
+						$in = EnterpriseMember::model()->count("phone = '{$model->phone}' and contact_id = ".$bxid);
 						if($in){
-							$sql = "update enterprise_member set short_phone = {$_POST['Bxapply']['short_phone']} where phone = '{$model->phone}' and contact_id = ".BXID;
+							$sql = "update enterprise_member set short_phone = {$_POST['Bxapply']['short_phone']} where phone = '{$model->phone}' and contact_id = ".$bxid;
 							$command = $connection->createCommand($sql);
 							$result2 = $command->execute();
 						}else{
 							$t = time();
 							$sql = "insert into enterprise_member (contact_id,member_id,short_phone,remark_name,created_time,phone,name,invite_id)
-									values(".BXID.",{$info_id},{$_POST['Bxapply']['short_phone']},'',{$t},{$model->phone},'{$model->name}',0)";
+									values(".$bxid.",{$info_id},{$_POST['Bxapply']['short_phone']},'',{$t},{$model->phone},'{$model->name}',0)";
 							$command = $connection->createCommand($sql);
 							$result2 = $command->execute();
 							if($result2){
-								$einfo = Enterprise::model()->findByPk(BXID);
+								$einfo = Enterprise::model()->findByPk($bxid);
 								$einfo->number = $einfo->number + 1;
 								$einfo->update();
 							}
@@ -188,22 +189,22 @@ class BxapplyController extends BaseController
 					$model->status = $_POST['Bxapply']['status'];
 					if ($model->status == 4) {
 						//获取id
-						$sql2 = "select id,member_id from enterprise_member where phone = '{$model->phone}' and contact_id = ".BXID;
+						$sql2 = "select id,member_id from enterprise_member where phone = '{$model->phone}' and contact_id = ".$bxid;
 						$command = $connection->createCommand($sql2);
 						$re2 = $command->queryAll();
 
 						//更新enterprise_member表,136
-						$sql = "delete from enterprise_member where phone = '{$model->phone}' and contact_id = ".BXID;
+						$sql = "delete from enterprise_member where phone = '{$model->phone}' and contact_id = ".$bxid;
 						$command = $connection->createCommand($sql);
 						$result2 = $command->execute();
 						if($result2){
 							//更新enterprise_display_member表
-							$sql = "delete from enterprise_display_member where member_id = {$re2[0]['id']} and enterprise_id = ".BXID;
+							$sql = "delete from enterprise_display_member where member_id = {$re2[0]['id']} and enterprise_id = ".$bxid;
 							$command = $connection->createCommand($sql);
 							$result2 = $command->execute();
 
 							//删除enterprise_membe_log记录
-							$sql33 = "delete from enterprise_display_member_log where member_id = {$re2[0]['member_id']} and enterprise_id = ".BXID;
+							$sql33 = "delete from enterprise_display_member_log where member_id = {$re2[0]['member_id']} and enterprise_id = ".$bxid;
 							$command = $connection->createCommand($sql33);
 							$result33 = $command->execute();
 
@@ -221,11 +222,11 @@ class BxapplyController extends BaseController
 								$result55	 = $command->execute();
 							}
 
-							$sql22 = "delete from enterprise_display_member where user_id = {$re2[0]['member_id']} and enterprise_id = ".BXID;
+							$sql22 = "delete from enterprise_display_member where user_id = {$re2[0]['member_id']} and enterprise_id = ".$bxid;
 							$command = $connection->createCommand($sql22);
 							$result22 = $command->execute();
 
-							$einfo = Enterprise::model()->findByPk(BXID);
+							$einfo = Enterprise::model()->findByPk($bxid);
 							$einfo->number = $einfo->number - 1;
 							$einfo->update();
 						}
