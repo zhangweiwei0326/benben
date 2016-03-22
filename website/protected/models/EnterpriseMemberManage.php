@@ -18,6 +18,7 @@ class EnterpriseMemberManage extends CActiveRecord
 {
     public $manage_name;
     public $available;
+    public $smember_id;
 	/**
 	 * @return string the associated database table name
 	 */

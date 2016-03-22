@@ -958,6 +958,14 @@ class EnterpriseController extends PublicController
         $enterpriseid = Frame::getIntFromRequest('enterpriseid');
         $keyword = Frame::getStringFromRequest('keyword');
         $enterprise = Enterprise::model()->findByPk($enterpriseid);
+        //判断是否为后台创建的，才有分权限查看的可能性
+        if(($enterprise['type']==1||$enterprise['type']==2)&&$enterprise['origin']==2){
+            $is_back=1;
+            $emInfo=EnterpriseMember::model()->find("contact_id={$enterpriseid} and member_id={$user['id']}");
+            $readLevel=EnterpriseMemberManage::model()->find("member_id={$emInfo['id']}");
+        }else{
+            $is_back=0;
+        }
         $maxCompany = $enterprise['max_num'];
         if (empty($enterprise)) {
             $result['ret_num'] = 504;
@@ -980,6 +988,20 @@ class EnterpriseController extends PublicController
         //判断搜索结果中，哪些已经是常用联系人
         $commonId = array();
         for ($i = 0; $i < count($result); $i++) {
+            //阅读权限只能N+1级及以下
+            if($readLevel) {
+                $info = EnterpriseMemberManage::model()->find("member_id={$result[$i]['id']}");
+                if($info['access_level']>$readLevel['access_level']+1){
+                    unset($result[$i]);
+                    continue;
+                }
+            }elseif($is_back){
+                $info = EnterpriseMemberManage::model()->find("member_id={$result[$i]['id']}");
+                if($info['access_level']>2){
+                    unset($result[$i]);
+                    continue;
+                }
+            }
             $commonId[] = $result[$i]['member_id'];
         }
         $inCommon = array();
@@ -2346,7 +2368,7 @@ class EnterpriseController extends PublicController
         $pinyin = new tpinyin();
         //如果是添加虚拟网用户，必须得要有短号
         if ($enterpriseType == 2) {
-            $createdMember = EnterpriseMember::model()->find("contact_id = '{$enterpriseid}' and member_id = {$enterprise['member_id']}");
+            $createdMember = EnterpriseMember::model()->find("contact_id = '{$enterpriseid}' and (member_id = {$enterprise['member_id']} or member_id = -1)");
             if ($enterprise['short_length'] != strlen($shortphone)) {
                 $result['ret_num'] = 1012;
                 $result['ret_msg'] = '虚拟通讯录短号格式非法,请重新输入';
