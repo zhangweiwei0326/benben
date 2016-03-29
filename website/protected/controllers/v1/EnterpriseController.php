@@ -2275,6 +2275,17 @@ class EnterpriseController extends PublicController
                     $result2 = $command->execute();
                     $lastid = Yii::app()->db->getLastInsertID();
                     if ($lastid > 0) {
+                        //判断是否是后台创建的政企,是则加入enterprise_member_manage，权限表
+                        if($enterprise['type']!=3&&$enterprise['origin']==2){
+                            $is_emm=EnterpriseMemberManage::model()->count("member_id={$lastid}");
+                            if($is_emm==0){
+                                $enterMM=new EnterpriseMemberManage();
+                                $enterMM->member_id=$lastid;
+                                $enterMM->access_level=1;
+                                $enterMM->created_time=time();
+                                $enterMM->save();
+                            }
+                        }
                         //插入常用联系人
                         if (count($insertArray) > $i) {
                             $display_value = $insertArray[$i];
@@ -2330,6 +2341,17 @@ class EnterpriseController extends PublicController
                 $guser->phone = $user->phone;
                 $guser->created_time = time();
                 if ($guser->save()) {
+                    //判断是否是后台创建的政企,是则加入enterprise_member_manage，权限表
+                    if($enterprise['type']!=3&&$enterprise['origin']==2) {
+                        $is_emm = EnterpriseMemberManage::model()->count("member_id={$guser->id}");
+                        if ($is_emm == 0) {
+                            $enterMM = new EnterpriseMemberManage();
+                            $enterMM->member_id = $guser->id;
+                            $enterMM->access_level = 1;
+                            $enterMM->created_time = time();
+                            $enterMM->save();
+                        }
+                    }
                     $enterprise->number = $enterprise->number + 1;
                     $enterprise->update();
                     $result['ret_num'] = 0;
