@@ -25,7 +25,11 @@ class EnterpriseController extends PublicController
         }
         $enterpriseall = array();
         if ($eid) {
-            $sql = "select a.id,a.name,a.short_name,a.member_id,a.bulletin,a.number,a.type,a.status,a.created_time,a.origin, b.sort,b.id as enterprise_id from enterprise as a left join enterprise_member as b on a.id=b.contact_id where a.id in (" . implode(",", $eid) . ") and b.member_id = {$user->id} order by b.sort asc";//and status = 0
+            $sql = "select a.id,a.name,a.short_name,a.member_id,a.bulletin,a.number,a.type,
+            a.status,a.created_time,a.origin, b.sort,b.id as enterprise_id
+            from enterprise as a left join enterprise_member as b on a.id=b.contact_id
+            where a.id in (" . implode(",", $eid) . ") and b.member_id = {$user->id}
+            order by b.sort asc";//and status = 0
             $command = $connection->createCommand($sql);
             $enterprise = $command->queryAll();
 

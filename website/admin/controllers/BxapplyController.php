@@ -187,7 +187,7 @@ class BxapplyController extends BaseController
 
 					$model->short_phone = $_POST['Bxapply']['short_phone'];
 					$model->status = $_POST['Bxapply']['status'];
-					if ($model->status == 4) {
+					if ($model->status == 4||$model->status == 2||$model->status == 1) {
 						//获取id
 						$sql2 = "select id,member_id from enterprise_member where phone = '{$model->phone}' and contact_id = ".$bxid;
 						$command = $connection->createCommand($sql2);
