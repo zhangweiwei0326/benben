@@ -256,7 +256,7 @@ class PromotionController extends PublicController
 
         //判断是否达到模版限制
         $pminfo = PromotionManage::model()->find("member_id={$user['id']}");
-        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']}");
+        $pinfo = Promotion::model()->findAll("pm_id={$pminfo['id']} and type=0");
         $now = time();
         $off = 0;//下线模版数量
         $on = 0;//上线模版数量
