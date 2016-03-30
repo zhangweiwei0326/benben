@@ -844,6 +844,7 @@ class BxapplyController extends PublicController
 				$upstring .= ',city='.$value['city'];
 				$upstring .= ',area='.$value['area'];
 				$upstring .= ',street='.$value['street'];
+				$upstring .= ',member_id='.$user['id'];
 
 				$sql2 = "update bxapply set {$upstring} where id={$value['id']}";
 				$command = $connection->createCommand($sql2);
