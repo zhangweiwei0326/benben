@@ -43,9 +43,15 @@ class BxapplyController extends PublicController
 		$id_card = Frame::getStringFromRequest('id_card');
 		$poster1 = Frame::saveImage('poster1');
 		$poster2 = Frame::saveImage('poster2');
-		
+
+		if(!is_numeric($phone)){
+			$result['ret_num'] = 1003;
+			$result['ret_msg'] = '手机号格式错误！';
+			echo json_encode( $result );
+			die ();
+		}
 		if (empty( $name )) {
-			$result['ret_num'] = 1105;
+			$result['ret_num'] = 1004;
 			$result['ret_msg'] = '姓名为空';
 			echo json_encode( $result );
 			die ();
@@ -74,11 +80,28 @@ class BxapplyController extends PublicController
 		$update_flag = false;
 		if($info){
 			if($info->status == 1){
-				//未通过，不能再申请
-				$result['ret_num'] = 1267;
-				$result['ret_msg'] = '您不符合加入百姓网条件';
-				echo json_encode( $result );
-				die ();
+				if($enterprise_id==$info['enterprise_id']) {
+					//未通过，且申请原号码直通车 =>  不能再申请
+					$result['ret_num'] = 1267;
+					$result['ret_msg'] = '您不符合加入百姓网条件';
+					echo json_encode($result);
+					die ();
+				}else{
+					$info->status = 0;
+					$info->member_id = $user->id;
+					$info->phone = $phone;
+					$info->name = $name;
+					$info->province = $province;
+					$info->city = $city;
+					$info->area = $area;
+					if($enterprise_id) {
+						$info->enterprise_id = $enterprise_id;
+					}
+					$info->short_phone = '';
+					$info->street = $street;
+					$info->created_time = time();
+					$update_flag = $info->save();
+				}
 			}else if ($info->status == 3){
 				//已通过
 				$result['ret_num'] = 1227;
@@ -110,6 +133,9 @@ class BxapplyController extends PublicController
 				$info->province = $province;
 				$info->city = $city;
 				$info->area = $area;
+				if($enterprise_id) {
+					$info->enterprise_id = $enterprise_id;
+				}
 				$info->short_phone = '';
 				$info->street = $street;
 				$info->created_time = time();
@@ -322,6 +348,12 @@ class BxapplyController extends PublicController
 		$street = Frame::getIntFromRequest('street');
 		$enterprise_id = Frame::getIntFromRequest('enterprise_id');
 		$user = $this->check_user();
+		if(!is_numeric($phone)){
+			$result['ret_num'] = 111;
+			$result['ret_msg'] = '手机号码格式错误！';
+			echo json_encode( $result );
+			die ();
+		}
 		// $apply_info = ApplyComplete::model()->find("member_id = {$user->id} and type = 1");
 		$apply_info = ApplyComplete::model()->find("phone = {$phone} and type = 1");
 		if($apply_info){
@@ -663,6 +695,12 @@ class BxapplyController extends PublicController
 		$command = $connection->createCommand($sql1);
 		$result1 = $command->queryAll();
 		$result_group = array();
+		//获取用户自己的百姓网
+		$own=Bxapply::model()->find("phone={$user['phone']} and status=3");
+		if(!$own){
+			$result ['ret_num'] = 100;
+			$result ['ret_msg'] = '您非百姓网用户，无权限操作！';
+		}
 		if($result1){
 			$temp = "";
 			$aphone="";
@@ -701,7 +739,7 @@ class BxapplyController extends PublicController
 			$aphone = trim($aphone);
 			$aphone =trim($aphone,',');
 			if($aphone){
-				$sql4 = "select id,phone from bxapply  where phone in ({$aphone}) and (status = 3 or status = 1 or status = 0)";
+				$sql4 = "select id,phone from bxapply  where phone in ({$aphone}) and (status = 3 or (status = 1 and enterprise_id={$own['enterprise_id']}) or status = 0)";
 				$command = $connection->createCommand($sql4);
 				$result4 = $command->queryAll();
 				foreach ($result4 as $ve){
@@ -756,7 +794,13 @@ class BxapplyController extends PublicController
 		$invite_update_data = array();
 
 		//获取用户所在的百姓网
-		$own=Bxapply::model()->find("phone={$user['phone']}");
+		$own=Bxapply::model()->find("phone={$user['phone']} and status=3");
+		if(!$own){
+			$result['ret_num'] = 205;
+			$result['ret_msg'] = '您不是百姓网用户！';
+			echo json_encode( $result );
+			die ();
+		}
 		foreach ($arr_namephone as $value){
 			if($value){
 				$bxinfo = explode("::", $value);
@@ -795,8 +839,8 @@ class BxapplyController extends PublicController
 
 					$back_phone[] = $va;
 					$back_phone_array[] = $itenphone;
-				}else {
-					//待审核、未通过、已通过
+				}elseif($va['status'] == 0||$va['status'] == 3||($va['status'] == 1 && $va['enterprise_id']==$own['enterprise_id'])) {
+					//待审核、未通过且是同一个百姓网、已通过，禁止再邀请
 					$apply_array[] = $va;
 				}
 			}
@@ -845,6 +889,7 @@ class BxapplyController extends PublicController
 				$upstring .= ',area='.$value['area'];
 				$upstring .= ',street='.$value['street'];
 				$upstring .= ',member_id='.$user['id'];
+				$upstring .= ',enterprise_id='.$own['enterprise_id'];
 
 				$sql2 = "update bxapply set {$upstring} where id={$value['id']}";
 				$command = $connection->createCommand($sql2);

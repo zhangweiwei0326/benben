@@ -18,21 +18,24 @@ class UserIdentity extends CUserIdentity {
 	public $userid;
 	public $role;
 	public $username;
+	public $disable;
 	public function authenticate() {
 		$pwd = md5 ( $this->password );
 		$user = User::model ()->find ( "username = '{$this->username}' and password = '$pwd'" );
 		if (empty ( $user )) {
 			return false;
 		} else {
-			$model=User::model()->findBySql("select id from user where username = '".$this->username."' and password = '$pwd'");
-			
+			$model=User::model()->findBySql("select id,username,role,disable from user where username = '".$this->username."' and password = '$pwd'");			
 			$model->last_login = time();
+			$en = $model->id.$model->last_login;
+			$model->login_id = md5($en);
 			$model->save();
 			
 			$this->userid = $user->id;
 			$this->role = $user->role;
 			$this->username = $user->username;
-			$this->setState ( 'userInfo', $user );
+			$this->disable = $model->disable;
+			$this->setState ( 'userInfo', $model );
 			return true;
 		}
 	}
