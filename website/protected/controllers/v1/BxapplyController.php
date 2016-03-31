@@ -393,6 +393,9 @@ class BxapplyController extends PublicController
 				}
 			}
 
+			//为了退回，修改成提交人新增
+			$apply_in->member_id=$user['id'];
+
 			if($name){
 				$apply_info->name = $name;
 				$apply_in->name = $name;
