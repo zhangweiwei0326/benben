@@ -1135,8 +1135,8 @@ class StoreController extends PublicController
                 $result['ret_msg'] = "收藏成功！";
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
-                $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $snapshot = $m->get(ADDRESS_VERSION . $user['id']);
+                $m->set(ADDRESS_VERSION . $user['id'],($snapshot+1));
                 $phone = array(
                     "id" => "",
                     "contact_info_id" => $number_info->id + 1000000,
@@ -1208,8 +1208,8 @@ class StoreController extends PublicController
             $result['ret_msg'] = "操作成功";
             $m = new Memcached();
             $m->addServer('localhost', 11211);
-            $snapshot = $m->get("addrsversion:" . $user['id']);
-            $m->set("addrsversion:" . $user['id'],($snapshot+1));
+            $snapshot = $m->get(ADDRESS_VERSION . $user['id']);
+            $m->set(ADDRESS_VERSION . $user['id'],($snapshot+1));
         } else {
             $result['ret_num'] = 5232;
             $result['ret_msg'] = "没有收藏该号码直通车";

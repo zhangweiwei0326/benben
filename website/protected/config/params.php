@@ -10,6 +10,13 @@ define("MAX_WORK",100);
 define("MAX_HERO",300);
 define("MAX_COMPANY",5000);
 
+//通讯录版本缓存标记
+define("ADDRESS_VERSION",'addrsversion_for_test:');
+//百姓版本缓存标记
+define("BX_VERSION",'bxapply_for_test:');
+//通讯录内容缓存标记
+define("CONTACTS",'contacts_for_test:');
+
 //环信
 define("CLIENT_ID","YXA6hYUeUMCoEeSLzs9YqkHScQ");
 define("CLIENT_SECRET","YXA6fC_v-if7CLg62Ti-kt9zqsOzdDo");

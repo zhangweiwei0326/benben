@@ -349,8 +349,8 @@ class UserController extends PublicController
                         }
                     }
                     foreach($memberArray as $k=>$v){
-                        $snapshot = $m->get("addrsversion:" . $v);
-                        $m->set("addrsversion:" . $v,($snapshot+1));
+                        $snapshot = $m->get(ADDRESS_VERSION . $v);
+                        $m->set(ADDRESS_VERSION . $v,($snapshot+1));
                     }
                     //更新benben_id
                     if (count($infoArray) > 0) {
@@ -2025,8 +2025,8 @@ class UserController extends PublicController
             $result['friend_info'] = $friend_info;
             $m = new Memcached();
             $m->addServer('localhost', 11211);
-            $snapshot = $m->get("addrsversion:" . $user['id']);
-            $m->set("addrsversion:" . $user['id'],($snapshot+1));
+            $snapshot = $m->get(ADDRESS_VERSION . $user['id']);
+            $m->set(ADDRESS_VERSION . $user['id'],($snapshot+1));
         } else {
             $result ['ret_num'] = 5082;
             $result ['ret_msg'] = '添加好友失败';
@@ -2498,8 +2498,8 @@ class UserController extends PublicController
 
                 $m = new Memcached();
                 $m->addServer('localhost', 11211);
-                $snapshot = $m->get("addrsversion:" . $user['id']);
-                $m->set("addrsversion:" . $user['id'],($snapshot+1));
+                $snapshot = $m->get(ADDRESS_VERSION . $user['id']);
+                $m->set(ADDRESS_VERSION . $user['id'],($snapshot+1));
 
                 $result['ret_num'] = 0;
                 $result['ret_msg'] = '操作成功';

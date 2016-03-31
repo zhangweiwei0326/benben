@@ -359,6 +359,12 @@ class BxapplyController extends PublicController
 		if($apply_info){
 			//查找关联申请信息
 			$apply_in = Bxapply::model()->find("id = {$apply_info->apply_id} and (status = 1 or status = 2)");
+			if($apply_in['enterprise_id']==$enterprise_id){
+				$result['ret_num'] = 1506;
+				$result['ret_msg'] = '您不符合加入百姓网的条件';
+				echo json_encode( $result );
+				exit();
+			}
 			if(!$apply_in){
 				//修复关联信息
 				$apply_in = Bxapply::model()->find("phone={$phone} and (status = 1 or status = 2)");
