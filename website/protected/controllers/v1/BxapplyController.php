@@ -266,10 +266,10 @@ class BxapplyController extends PublicController
 		if(isset($result1[0])){
 			$result1[0]['short_phone'] = $result1[0]['short_phone'] ? $result1[0]['short_phone'] : "";
 			$result1[0]['id_card'] = $result1[0]['id_card'] ? $result1[0]['id_card'] : "";
-			if ($result1[0]['id_card'] && $result1[0]['status'] != 2) {
+			if ($result1[0]['id_card'] && $result1[0]['status'] != 2 && $result1[0]['status'] != 1) {
 				$result1[0]['id_card'] = substr($result1[0]['id_card'], 0, 6)."******".substr($result1[0]['id_card'], strlen($result1[0]['id_card'])-4);
 			}
-			if ($result1[0]['phone'] && $result1[0]['status'] != 2) {
+			if ($result1[0]['phone'] && $result1[0]['status'] != 2 && $result1[0]['status'] != 1) {
 				$result1[0]['phone'] = substr($result1[0]['phone'], 0, 4)."***".substr($result1[0]['phone'], strlen($result1[0]['phone'])-4);
 			}
 		}
