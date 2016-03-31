@@ -977,7 +977,7 @@ class LeagueController extends PublicController
 						if (count($result_all)) {
 							$exist=LeagueMember::model()->find("league_id={$enterpriseid} and member_id={$result_all['id']}");
 							if($exist){
-								$result['ret_num'] = 2015;
+								$result['ret_num'] = 2016;
 								$result['ret_msg'] = '该用户已添加过';
 								echo json_encode($result);
 								die ();
