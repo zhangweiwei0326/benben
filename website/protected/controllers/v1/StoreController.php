@@ -853,6 +853,12 @@ class StoreController extends PublicController
             $id = $this->changeTrain($storeid);
         }
         $number_info = NumberTrain::model()->findByPk($id);
+        if($number_info['status']!=0||$number_info['is_close']==1){
+            $result['ret_num'] = 123;
+            $result['ret_msg'] = '号码直通车已关闭';
+            echo json_encode($result);
+            die ();
+        }
         $shopnum=NumberTrain::model()->count("pid={$id} and is_close=0 and status=0");
         if ($number_info) {
             $connection = Yii::app()->db;
