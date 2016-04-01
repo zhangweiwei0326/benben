@@ -69,6 +69,7 @@ class CollectGoodsController extends PublicController{
                     "valid_left"=>$vc['valid_left'],
                     "valid_right"=>$vc['valid_right'],
                     "is_close"=>$vc['is_close'],
+                    'price'=>$vc['promotion_price']
                 );
             }
         }
