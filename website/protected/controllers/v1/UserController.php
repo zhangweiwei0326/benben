@@ -2566,8 +2566,8 @@ class UserController extends PublicController
         }
         //账户余额
         $fee=$user['fee'];
-        //我的订单（未发货，未收货,除电脑版未付款订单）
-        $order_num=StoreOrderInfo::model()->count("(shipping_status=0 or shipping_status=1) and (extension_code!=3 or (extension_code=3 and pay_status=2)) and member_id={$user['id']} ");
+        //我的订单（未发货，未收货,除电脑版订单和商城订单）
+        $order_num=StoreOrderInfo::model()->count("(shipping_status=0 or shipping_status=1) and extension_code!=3 and extension_code!=4 and member_id={$user['id']} ");
         //我的收藏
         $collect_goods=CollectGoods::model()->findAll("member_id={$user['id']}");
         $collect_num=count($collect_goods);
@@ -2590,13 +2590,14 @@ class UserController extends PublicController
 
     /*
      * 我的账单
-     * pay_log
+     * order_info和order_goods
      */
     public function actionMyPayLog(){
         $this->check_key();
         $user = $this->check_user();
         $connection=Yii::app()->db;
-        $sql="select a.*,c.goods_name,b.pay_time from store_order_info where member_id={$user['id']} and pay_status=1 order by pay_time Desc";
+        $sql="select a.pay_time,b.goods_name,a.order_amount,a.extension_code from store_order_info as a left join store_order_goods as b
+        on a.order_id=b.order_id where a.member_id={$user['id']} and a.pay_status=2";
         $command = $connection->createCommand($sql);
         $result1 = $command->queryAll();
         foreach($result1 as $k=>$v){
@@ -2604,7 +2605,7 @@ class UserController extends PublicController
                 "time"=>$v['pay_time']?$v['pay_time']:0,
                 "content"=>$v['goods_name']?$v['goods_name']:"",
                 "fee"=>$v['order_amount']?$v['order_amount']:"",
-                "order_type"=>$v['order_type']?$v['order_type']:0,
+                "order_type"=>$v['extension_code']?0:0,
             );
         }
         $result['ret_num'] = 0;

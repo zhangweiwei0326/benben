@@ -260,36 +260,36 @@ class OrderController extends PublicController
             //具体状态数据,非取消的订单和退货的
             $where = " where a.member_id=" . $user['id'] . " and a.shipping_status=" . $status . " and a.order_status!=2 and a.order_status!=4";
         }
-        //除去未付款的电脑版订单
-        $where .= " and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
+        //除去电脑版的订单和手机版商城订单
+        $where .= " and a.extension_code!=3 and a.extension_code!=4";
         $sql_num = "select count(1) as num from store_order_info as a " . $where;
         $command = $connection->createCommand($sql_num);
         $num_tpl = $command->queryAll();
         $num = $num_tpl[0]['num'];//总数据条数
         $allpage = ceil($num / $maxnum);//总页数
 
-        //全部订单（除去未付款的电脑版订单）
-        $sql_num00 = "select count(1) as num from store_order_info as a where a.member_id={$user['id']} and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
+        //全部订单（除去电脑版的订单和手机版商城订单）
+        $sql_num00 = "select count(1) as num from store_order_info as a where a.member_id={$user['id']} and a.extension_code!=3 and a.extension_code!=4";
         $command = $connection->createCommand($sql_num00);
         $num00_tpl = $command->queryAll();
 
         //获取已下单未发货的数量
-        $sql_num0 = "select count(1) as num from store_order_info as a where a.shipping_status=0 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4 and (a.extension_code!=3 or (a.extension_code=3 and a.pay_status=2))";
+        $sql_num0 = "select count(1) as num from store_order_info as a where a.shipping_status=0 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4 and a.extension_code!=3 and a.extension_code!=4";
         $command = $connection->createCommand($sql_num0);
         $num0_tpl = $command->queryAll();
 
         //获取已发货的=待收货的数量
-        $sql_num1 = "select count(1) as num from store_order_info as a where a.shipping_status=1 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4";
+        $sql_num1 = "select count(1) as num from store_order_info as a where a.shipping_status=1 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4 and a.extension_code!=3 and a.extension_code!=4";
         $command = $connection->createCommand($sql_num1);
         $num1_tpl = $command->queryAll();
 
         //获取已收货待评价的数量
-        $sql_num2 = "select count(1) as num from store_order_info as a where a.shipping_status=2 and a.order_status=5 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4";
+        $sql_num2 = "select count(1) as num from store_order_info as a where a.shipping_status=2 and a.order_status=5 and a.member_id={$user['id']} and a.order_status!=2 and a.order_status!=4 and a.extension_code!=3 and a.extension_code!=4";
         $command = $connection->createCommand($sql_num2);
         $num2_tpl = $command->queryAll();
 
         //获取已退货的数量
-        $sql_num3 = "select count(1) as num from store_order_info as a where a.order_status=4 and a.member_id={$user['id']} and a.order_status!=2";
+        $sql_num3 = "select count(1) as num from store_order_info as a where a.order_status=4 and a.member_id={$user['id']} and a.order_status!=2 and a.extension_code!=3 and a.extension_code!=4";
         $command = $connection->createCommand($sql_num3);
         $num3_tpl = $command->queryAll();
 
