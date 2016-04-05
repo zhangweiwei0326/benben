@@ -2566,8 +2566,8 @@ class UserController extends PublicController
         }
         //账户余额
         $fee=$user['fee'];
-        //我的订单（未发货，未收货）
-        $order_num=StoreOrderInfo::model()->count("(shipping_status=0 or shipping_status=1) and member_id={$user['id']}");
+        //我的订单（未发货，未收货,除电脑版未付款订单）
+        $order_num=StoreOrderInfo::model()->count("(shipping_status=0 or shipping_status=1) and (extension_code!=3 or (extension_code=3 and pay_status=2)) and member_id={$user['id']} ");
         //我的收藏
         $collect_goods=CollectGoods::model()->findAll("member_id={$user['id']}");
         $collect_num=count($collect_goods);
@@ -2596,8 +2596,7 @@ class UserController extends PublicController
         $this->check_key();
         $user = $this->check_user();
         $connection=Yii::app()->db;
-        $sql="select a.*,c.goods_name,b.pay_time from pay_log as a left join store_order_info as b on a.order_id=b.order_id left join store_order_goods as c on c.order_id=a.order_id
-         where b.member_id={$user['id']} and a.is_paid=1 order by log_id Desc";
+        $sql="select a.*,c.goods_name,b.pay_time from store_order_info where member_id={$user['id']} and pay_status=1 order by pay_time Desc";
         $command = $connection->createCommand($sql);
         $result1 = $command->queryAll();
         foreach($result1 as $k=>$v){
