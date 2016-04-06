@@ -492,8 +492,42 @@ class UserController extends PublicController
                 echo json_encode($result);
                 die ();
             }
-            //生成Token
+            //首次未注册成功环信，进行补注册
+            if(!$user['huanxin_username']){
+                //注册环信用户
+                $username = md5($user['benben_id']. $user['created_time']);
+                $password = $user['phone'];
+                $nickname = $user['nick_name'];
 
+                $resulh = $this->openResiter($username, $password, $nickname);
+                $reh = json_decode($resulh, true);
+                if ($reh['error']) {
+                    if($reh['error']=="duplicate_unique_property_exists") {
+                        $rename = $this->getAccount($username);
+                        $user->huanxin_username = $rename['entities'][0]['username'];
+                        $user->huanxin_uuid = $rename['entities'][0]['uuid'];
+                        $user->huanxin_password = $user['phone'];
+                    }else {
+                        //账户出错
+                        $err = new HuanxinError();
+                        $err->error_info = $reh['error'];
+                        $err->created_time = time();
+                        $err->member_id = $user->id;
+                        $err->save();
+                        $result ['ret_num'] = 2008;
+                        $result ['ret_msg'] = $reh['error'];
+                        echo json_encode($result);
+                        die ();
+                    }
+                } else {
+                    $user->huanxin_username = $reh['entities'][0]['username'];
+                    $user->huanxin_uuid = $reh['entities'][0]['uuid'];
+                    $user->huanxin_password = $user['phone'];
+                }
+                $user->save();
+            }
+
+            //生成Token
             $token = md5($key . time()) . md5($key . $user->id);
             $user->token = $token;
             $user->phone_model = $this->getmodel($phone_model);;
