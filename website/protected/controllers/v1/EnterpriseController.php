@@ -1993,13 +1993,13 @@ class EnterpriseController extends PublicController
         $enterinfo=EnterpriseRole::model()->find("enterprise_id={$enterpriseid}");
         if(!$enterinfo){
             $result['ret_num'] = 1101;
-            $result['ret_msg'] = '该政企通讯录不需要申请加入！';
+            $result['ret_msg'] = '该政企通讯录不允许申请加入！';
             echo json_encode($result);
             die ();
         }
         if($enterinfo['enterprise_apply']==1||$enterinfo['enterprise_apply']==3){
             $result['ret_num'] = 1105;
-            $result['ret_msg'] = '该政企通讯录不需要申请加入！';
+            $result['ret_msg'] = '该政企通讯录不允许申请加入！';
             echo json_encode($result);
             die ();
         }

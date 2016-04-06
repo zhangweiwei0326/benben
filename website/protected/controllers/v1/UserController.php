@@ -2595,22 +2595,34 @@ class UserController extends PublicController
     public function actionMyPayLog(){
         $this->check_key();
         $user = $this->check_user();
+        $p=Frame::getIntFromRequest("p");
+        //设置默认页数1页
+        $p=$p?$p:1;
+        //总数据数
+        $max_num=StoreOrderInfo::model()->count("member_id={$user['id']} and pay_status=2");
+        $per_page=10;
+        $page=ceil($max_num/$per_page);
+
         $connection=Yii::app()->db;
-        $sql="select a.pay_time,b.goods_name,a.order_amount,a.extension_code from store_order_info as a left join store_order_goods as b
-        on a.order_id=b.order_id where a.member_id={$user['id']} and a.pay_status=2";
+        $sql="select a.pay_time,a.fee,a.coin,b.goods_name,a.order_amount,a.extension_code from store_order_info as a left join store_order_goods as b
+        on a.order_id=b.order_id where a.member_id={$user['id']} and a.pay_status=2 order by a.pay_time desc limit ".($p-1)*$per_page.",".$per_page;
         $command = $connection->createCommand($sql);
         $result1 = $command->queryAll();
+
         foreach($result1 as $k=>$v){
             $info[]=array(
                 "time"=>$v['pay_time']?$v['pay_time']:0,
                 "content"=>$v['goods_name']?$v['goods_name']:"",
                 "fee"=>$v['order_amount']?$v['order_amount']:"",
-                "order_type"=>$v['extension_code']?0:0,
+                "remain"=>$v['fee']?$v['fee']:"",
+                "coin"=>$v['coin']?$v['coin']:"",
+                "order_type"=>$v['extension_code']?0:0
             );
         }
         $result['ret_num'] = 0;
         $result['ret_msg'] = '操作成功';
         $result['info'] = $info?$info:array();
+        $result['ap'] =$page;
         echo json_encode($result);
     }
 
