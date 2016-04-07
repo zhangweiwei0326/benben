@@ -1134,7 +1134,7 @@ class OrderController extends PublicController
         $info = $command->queryAll();
         foreach ($info as $k => $v) {
             //如果是在线支付，到店消费隐藏订单号
-            if($v['pay_id']==2&&$v['shipping_status']==0){
+            if(($v['pay_id']==2||$v['pay_id']==3)&&$v['shipping_status']==0){
                 $info[$k]['order_sn']='';
             }
             //商品信息
