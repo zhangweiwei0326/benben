@@ -337,7 +337,7 @@ class CrontabscriptController extends Controller
 		$connection = Yii::app()->db;
 		$now=strtotime(date("Y-m-d",time())." 0:0:0");
 		$yestoday=$now-86400;
-		$sql="update store_order_info set order_status=5 ,shipping_status=2 ,confirm_time=add_time where pay_status=2 and
+		$sql="update store_order_info set order_status=5 ,shipping_status=2 ,confirm_time=add_time where pay_status=2 and shipping_status=1 and
 		shipping_time+extend_shipping_time*86400>".$yestoday." and shipping_time+extend_shipping_time*86400<=".$now;
 		$command=$connection->createCommand($sql);
 		$re=$command->execute();
