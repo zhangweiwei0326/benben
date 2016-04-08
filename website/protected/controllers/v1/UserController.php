@@ -1724,9 +1724,14 @@ class UserController extends PublicController
             $fri[] = $v['benben_id'];
         }
         $fri = array_flip(array_flip($fri));
-        $sql = "select id,nick_name,poster,huanxin_username,created_time, benben_id from member where ((benben_id = '{$keyword}') or (nick_name like '%{$keyword}%')) ";
+        if(is_numeric($keyword)){
+            $where="((benben_id = '{$keyword}') or (nick_name like '%{$keyword}%'))";
+        }else{
+            $where="(nick_name like '%{$keyword}%')";
+        }
+        $sql = "select id,nick_name,poster,huanxin_username,created_time, benben_id from member where ".$where;
         if ($last_time) {
-            $sql = "select id,nick_name,poster,huanxin_username,created_time, benben_id from member where ((benben_id = '{$keyword}') or (nick_name like '%{$keyword}%')) and created_time<{$last_time} ";
+            $sql = "select id,nick_name,poster,huanxin_username,created_time, benben_id from member where ".$where." and created_time<{$last_time} ";
         }
         $sql .= "and id <> {$user->id} order by created_time desc";
         $command = $connection->createCommand($sql);
