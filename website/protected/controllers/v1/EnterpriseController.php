@@ -1968,18 +1968,20 @@ class EnterpriseController extends PublicController
             die ();
         }
 
-        //判断是否是政企预留号码，是则直接加入
-        $eminfo=EnterpriseMember::model()->find("contact_id={$enterpriseid} and short_phone={$remark_name} and member_id=0");
-        if($eminfo&&$eminfo['member_id']==0){
-            $eminfo->remark_name=$user['nick_name'];
-            $eminfo->remark_name=$user['name'];
-            $eminfo->phone=$user['phone'];
-            $eminfo->member_id=$user['id'];
-            if($eminfo->save()){
-                $result['ret_num'] = 1888;
-                $result['ret_msg'] = '加入成功！';
-                echo json_encode($result);
-                die ();
+        if($remark_name) {
+            //判断是否是政企预留号码，是则直接加入
+            $eminfo = EnterpriseMember::model()->find("contact_id={$enterpriseid} and short_phone={$remark_name} and member_id=0");
+            if ($eminfo && $eminfo['member_id'] == 0) {
+                $eminfo->remark_name = $user['nick_name'];
+                $eminfo->remark_name = $user['name'];
+                $eminfo->phone = $user['phone'];
+                $eminfo->member_id = $user['id'];
+                if ($eminfo->save()) {
+                    $result['ret_num'] = 1888;
+                    $result['ret_msg'] = '加入成功！';
+                    echo json_encode($result);
+                    die ();
+                }
             }
         }
 
