@@ -74,9 +74,9 @@
 				</div>
 				<div class="form-group">
 					    <div class="form-group" style="padding: 0 0 0 5px;">
-                        	<label  for="guarantee" style="float:left;margin-top:7px;">保证金类型:</label>
+                        	<label  for="guarantee" style="float:left;margin-top:7px;">保证金:</label>
                         	<input style="margin-left: 25px;border:1px solid #CCC;" name="guarantee" id="guarantee" value="<?php echo $item[0]->guarantee?>" />
-                   			<label  for="guarantee" style="margin-top:7px;margin-top:7px;font-family: cursive;color: cadetblue;">(1,2,3分别代表保证金的类型)</label>
+<!--                   			<label  for="guarantee" style="margin-top:7px;margin-top:7px;font-family: cursive;color: cadetblue;">(1,2,3分别代表保证金的类型)</label>-->
                     	</div>				
                  </div>
 				<div class="form-group">

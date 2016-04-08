@@ -49,11 +49,14 @@ $url = "province={$_GET['province']}&city={$_GET['city']}&area={$_GET['area']}";
                                         ?>
                                     </select>
                                 </div>
-                            </div>         
-                            <li style="float:right;text-align:right;width:100px;padding-right:200px;">
+                            </div>
+                            <li style="float:right;text-align:right;width:100px;padding-right:100px;">
+                                <a href="<?php echo Yii::app()->createUrl("topAuction/create")?>" class="btn btn-primary">新建</a>
+                            </li>
+                            <li style="float:right;text-align:right;width:100px;padding-right:100px;">
                                  <span type="submit" class="btn btn-primary" id="search_clear">清空</span>
                             </li>
-                            <li style="float:right;text-align:right;width:100px;padding-right:120px;">
+                            <li style="float:right;text-align:right;width:100px;padding-right:100px;">
                                  <input type="submit" class="btn btn-primary" value="查询" id="submit_search">
                             </li>
                              <li>

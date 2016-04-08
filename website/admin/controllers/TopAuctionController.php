@@ -15,14 +15,14 @@ class TopAuctionController extends BaseController
      * @var int the define the index for the menu
      */
 
-    public $menuIndex = 91;
+    public $menuIndex = 110;
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionIndex()
     {
-        $this->insert_log(91);
+        $this->insert_log(110);
         $model = TopAuction::model();
         $result = array();
         $cri = new CDbCriteria();
@@ -111,14 +111,13 @@ class TopAuctionController extends BaseController
         //数据查询
         $cri->select = "t.*,auction_log.price as price";
         $cri->join = "left join auction_log on auction_log.auction_id = t.auction_id";
-        $cri->order = "auction_id";
+        $cri->order = "t.auction_id";
         $pages = new CPagination();
         $pages->itemCount = $model->count($cri);
         $pages->pageSize = 10;
         $pages->applyLimit($cri);
         $items = $model->findAll($cri);
 
-        // var_dump($items);
         $areaInfo = array();
         if ($items) {
             //地区
@@ -139,6 +138,75 @@ class TopAuctionController extends BaseController
         $this->render('index', array('items'=>$items,'result' => $result,'res' => $res, 'res2' => $res2,'province' => $province,'areaInfo' => $areaInfo,'industryInfo' => $industryInfo,'pages'=> $pages,'status'=>$status));
     }
 
+    public function actionCreate(){
+        //城市
+        $province = $this->getProvince();
+        //行业
+        $info =  Industry::model ()->findAll ('level=1');
+        $industryInfo = array();
+        foreach ($info as $key => $value) {
+            $industryInfo[$value['id']] = $value['name'];
+        }
+        $this->render('create',array('province'=>$province,'industryInfo'=>$industryInfo));
+    }
+
+    public function actionNew(){
+        $start_time=strtotime(Frame::getStringFromRequest("start_time"));
+        $end_time=strtotime(Frame::getStringFromRequest("end_time"));
+        $top_start_period=strtotime(Frame::getStringFromRequest("top_start_period"));
+        $top_end_period=strtotime(Frame::getStringFromRequest("top_end_period"));
+        $province=Frame::getStringFromRequest("province");
+        $city=Frame::getStringFromRequest("city");
+        $area=Frame::getStringFromRequest("area");
+        $industry=Frame::getStringFromRequest("industry");
+        $start_price=Frame::getStringFromRequest("start_price");
+        $add_step=Frame::getStringFromRequest("add_step");
+        $guarantee=Frame::getStringFromRequest("guarantee");
+        $is_close=Frame::getStringFromRequest("is_close");
+        $is_paid=Frame::getStringFromRequest("is_paid");
+
+        $industry=$industry>0?$industry:0;
+
+        $tainfo=new TopAuction();
+        $tainfo->pid=0;
+        $tainfo->place=0;
+        $tainfo->industry=$industry;
+        $tainfo->province=$province;
+        $tainfo->city=$city;
+        $tainfo->area=$area;
+        $tainfo->start_time=$start_time;
+        $tainfo->end_time=$end_time;
+        $tainfo->start_price=$start_price;
+        $tainfo->add_step=$add_step;
+        $tainfo->guarantee=$guarantee;
+        $tainfo->top_start_period=$top_start_period;
+        $tainfo->top_end_period=$top_end_period;
+        $tainfo->is_close=$is_close;
+        $tainfo->is_paid=$is_paid;
+        if($tainfo->save()){
+            for($i=0;$i<3;$i++){
+                $tts=new TopAuction();
+                $tts->pid=$tainfo->auction_id;
+                $tts->place=$i+1;
+                $tts->industry=$industry;
+                $tts->province=$province;
+                $tts->city=$city;
+                $tts->area=$area;
+                $tts->start_time=$start_time;
+                $tts->end_time=$end_time;
+                $tts->start_price=$start_price;
+                $tts->add_step=$add_step;
+                $tts->guarantee=$guarantee;
+                $tts->top_start_period=$top_start_period;
+                $tts->top_end_period=$top_end_period;
+                $tts->is_close=$is_close;
+                $tts->is_paid=$is_paid;
+                $tts->save();
+            }
+        }
+        $this->redirect("index");
+    }
+
     public function actionCloseAuction(){
         $auction_id = Frame::getIntFromRequest('auction_id');
         
@@ -146,9 +214,9 @@ class TopAuctionController extends BaseController
         
         //访问数据库操作
         $ret = TopAuction::model()->updateAll (array (
-                                        'end_time' =>strtotime(time())-1,
+                                        'end_time' =>time(),
                                         'is_close' => 1
-                                ), "auction_id=" . $auction_id);
+                                ), "auction_id=" . $auction_id." or pid=".$auction_id);
         if($ret){
             $result['status']=1;
             $result['url']= $edit_url;
@@ -170,7 +238,7 @@ class TopAuctionController extends BaseController
         //访问数据库操作
         $ret = TopAuction::model()->updateAll (array (
                                         'is_close' => 0
-                                ), "auction_id=" . $auction_id);
+                                ), "auction_id=" . $auction_id." or pid=".$auction_id);
         if($ret){
             $result['status']=1;
             $result['url']= $edit_url;
@@ -187,9 +255,8 @@ class TopAuctionController extends BaseController
 
     public function actionEdit()
     {
-        $this->insert_log(91);
+        $this->insert_log(111);
         $model = TopAuction::model();
-        $result = array();
         $cri = new CDbCriteria();
         $province = $this->getProvince();
         //获取参数
@@ -217,18 +284,15 @@ class TopAuctionController extends BaseController
             foreach ($areaResult as $key => $value) {
                 $areaInfo[$value['bid']] = $value['area_name'];
             }
-            //行业
-            if($industry > 0){
-                $result['industry'] = $industry;
-            }
+
             $info =  Industry::model ()->findAll ('parent_id = 0');
             $industryInfo = array();
             foreach ($info as $key => $value) {
                 $industryInfo[$value['id']] = $value['name'];
             }
         }
-        $this->render('edit', array('auction_id'=>$auction_id,'item'=>$item, 'province' => $province,'res' => $res, 'res2' => $res2,
-               'areaInfo' => $areaInfo,'industryInfo' => $industryInfo,'status'=>$status));
+        $this->render('edit', array('auction_id'=>$auction_id,'item'=>$item, 'province' => $province,
+               'areaInfo' => $areaInfo,'industryInfo' => $industryInfo));
     }
 
     public function actionSaveAuction(){
@@ -246,6 +310,7 @@ class TopAuctionController extends BaseController
         $is_close = Frame::getIntFromRequest('is_close');
         $is_paid = Frame::getIntFromRequest('is_paid');
 
+        $edit_url=Yii::app()->createUrl('topAuction/index');
         //访问数据库操作
         $ret = TopAuction::model()->updateAll (array (
                                         'start_time' => $start_time,
@@ -258,7 +323,7 @@ class TopAuctionController extends BaseController
                                         'top_end_period' => $top_end_period,
                                         'is_close' => $is_close,
                                         'is_paid' => $is_paid,
-                                ), "auction_id={$auction_id}");
+                                ), "auction_id={$auction_id} or pid={$auction_id}");
         if($ret >=0 ){
             $result['status']=1;
             // $result['start_time']=$start_time;
