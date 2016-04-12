@@ -1067,7 +1067,7 @@ class BxapplyController extends BaseController
                 $short_phone = trim($_POST['short_phone']);
                 $reason = $_POST['reason'];
                 $model = Bxapply::model();
-                $info = $model->find("phone = '{$phone}' and status <> 4 order by id desc ");
+                $info = $model->find("phone = '{$phone}' and enterprise_id={$this->ownbx} and status <> 4 order by id desc ");
                 // var_dump($info);die();
                 if ($info) {
                     $info->status = $status;
@@ -1085,7 +1085,7 @@ class BxapplyController extends BaseController
                             exit;
                         }
                         $info->join_time = time();
-                        $enterpriseInfo = EnterpriseMember::model()->find('contact_id = ' . $this->dongyang . ' and phone = ' . $phone);
+                        $enterpriseInfo = EnterpriseMember::model()->find('contact_id = ' . $this->ownbx . ' and phone = ' . $phone);
                         if (!$enterpriseInfo) {
                             $memberFind = Member::model()->find("phone = {$phone}");
                             $info_id = 0;
@@ -1093,7 +1093,7 @@ class BxapplyController extends BaseController
                                 $info_id = $memberFind->id;
                             }
                             $enterpriseM = new EnterpriseMember();
-                            $enterpriseM->contact_id = $this->dongyang;
+                            $enterpriseM->contact_id = $this->ownbx;
                             $enterpriseM->member_id = $info_id;
                             $enterpriseM->short_phone = $short_phone;
                             $enterpriseM->phone = $phone;
@@ -1101,17 +1101,17 @@ class BxapplyController extends BaseController
                             $enterpriseM->created_time = time();
                             $enterpriseM->invite_id = 0;
                             $enterpriseM->save();
-                            $enterprise = Enterprise::model()->findByPk($this->dongyang);
+                            $enterprise = Enterprise::model()->findByPk($this->ownbx);
                             $enterprise->number = $enterprise->number + 1;
                             $enterprise->save();
                         }
 
                     } else {
                         $info->short_phone = '';
-                        $enterpriseInfo = EnterpriseMember::model()->find('contact_id = ' . $this->dongyang . ' and phone = ' . $phone);
+                        $enterpriseInfo = EnterpriseMember::model()->find('contact_id = ' . $this->ownbx . ' and phone = ' . $phone);
                         if ($enterpriseInfo) {
                             $enterpriseInfo->delete();
-                            $enterprise = Enterprise::model()->findByPk($this->dongyang);
+                            $enterprise = Enterprise::model()->findByPk($this->ownbx);
                             $enterprise->number = $enterprise->number - 1;
                             $enterprise->save();
                         }
@@ -1243,7 +1243,8 @@ class BxapplyController extends BaseController
     {
         $phone = addslashes($_GET['phone']);
         if ($phone) {
-            $info = Bxapply::model()->find("phone = '{$phone}' and status <> 4 order by id desc ");
+            //找到对应百姓网的用户
+            $info = Bxapply::model()->find("phone = '{$phone}' and status <> 4 and enterprise_id={$this->ownbx} order by id desc ");
             if ($info) {
                 $status = array("0" => "等待审核", "1" => "未通过", "2" => "退回重申", "3" => "已经通过", "4" => "撤消");
                 echo '手机用户当前状态为' . $status[$info->status] . "。确认要调整？？";
@@ -1352,7 +1353,7 @@ class BxapplyController extends BaseController
                 // $putInfo->save();
                 // $submitId =  $putInfo->id;
                 //            }
-                $re = Bxapply::model()->find("phone = '{$phone}' order by id desc");
+                $re = Bxapply::model()->find("phone = '{$phone}' and enterprise_id={$this->ownbx} order by id desc");
                 $currentInfo = array();
                 $currentInfo['putPhone'] = $putPhone;
                 $currentInfo['putName'] = $putName;
@@ -1367,11 +1368,13 @@ class BxapplyController extends BaseController
                 $currentInfo['is_update'] = 1;
                 $currentInfo['phoneis_update'] = 1;
                 if (($status == 3) && !$short_phone) {
+                    //通过但没给短号，不更新
                     $currentInfo['is_update'] = 0;
                 }
                 if ($short_phone) {
                     $re2 = Bxapply::model()->find("short_phone = '{$short_phone}'");
                     if ($re2) {
+                        //短号重复，不更新
                         $currentInfo['is_update'] = 0;
                     }
                 }
@@ -1385,7 +1388,8 @@ class BxapplyController extends BaseController
                     } else if (($re2->status == 3) && ($status == 3) && ($re2->phone == $phone)) {
                         $currentInfo['phoneis_update'] = 0;
                     }
-                    $res2 = Bxapply::model()->find("phone = '{$phone}' or short_phone = '{$short_phone}' order by id desc");
+                    //本百姓网才有权撤销
+                    $res2 = Bxapply::model()->find("phone = '{$phone}' or short_phone = '{$short_phone}' and enterprise_id={$this->ownbx} order by id desc");
                     if (($status == 4) && (($res2->phone == $phone) || ($res2->short_phone == $short_phone))) {
                         $currentInfo['apply_id'] = $re2->id;
                         $currentInfo['phoneis_update'] = 1;
@@ -1565,7 +1569,7 @@ class BxapplyController extends BaseController
     {
         $result = json_decode($_POST['data'], true);
         if (count($result) > 0) {
-            //将所有批量导入的数据加入到东阳百姓网中
+            //将所有批量导入的数据加入到百姓网中
             $addEnterprisePhone = array();
             $removeEnterprisePhone = array();
             $addEnterpriseInfo = array();
@@ -1638,6 +1642,7 @@ class BxapplyController extends BaseController
                         $submitId = $putInfo->id;
                     }
                     $model = new Bxapply;
+                    $model->enterprise_id=$this->ownbx;
                     $model->phone = $phone;
                     $model->name = $name;
                     $model->short_phone = $short_phone;
@@ -1681,7 +1686,7 @@ class BxapplyController extends BaseController
 
             if (count($addEnterprisePhone)) {
                 $connection = Yii::app()->db;
-                $sql = "select phone from enterprise_member where contact_id=" . $this->dongyang . " and phone in (" . implode(",", $addEnterprisePhone) . ")";
+                $sql = "select phone from enterprise_member where contact_id=" . $this->ownbx . " and phone in (" . implode(",", $addEnterprisePhone) . ")";
                 $command = $connection->createCommand($sql);
                 $resultc = $command->queryAll();
                 $havePhone = array();
@@ -1696,7 +1701,7 @@ class BxapplyController extends BaseController
                         continue;
                     }
                     $enterpriseM = new EnterpriseMember();
-                    $enterpriseM->contact_id = $this->dongyang;
+                    $enterpriseM->contact_id = $this->ownbx;
                     $memberFind = Member::model()->find("phone = {$k}");
                     $info_id = 0;
                     if ($memberFind) {
@@ -1713,7 +1718,7 @@ class BxapplyController extends BaseController
                     }
 
                 }
-                $enterprise = Enterprise::model()->findByPk($this->dongyang);
+                $enterprise = Enterprise::model()->findByPk($this->ownbx);
                 $enterprise->number = $enterprise->number + $addNumber;
                 $enterprise->save();
 
@@ -1722,13 +1727,13 @@ class BxapplyController extends BaseController
             if ($removeEnterprisePhone) {
                 $deleteNumber = 0;
                 foreach ($removeEnterprisePhone as $e) {
-                    $haveData = EnterpriseMember::model()->find("phone = '{$e}' and contact_id = " . $this->dongyang);
+                    $haveData = EnterpriseMember::model()->find("phone = '{$e}' and contact_id = " . $this->ownbx);
                     if ($haveData) {
                         $haveData->delete();
                         $deleteNumber++;
                     }
                 }
-                $enterprise = Enterprise::model()->findByPk($this->dongyang);
+                $enterprise = Enterprise::model()->findByPk($this->ownbx);
                 $enterprise->number = $enterprise->number - $deleteNumber;
                 $enterprise->save();
             }
