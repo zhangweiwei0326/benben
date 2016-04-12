@@ -33,7 +33,7 @@ class UserIdentity extends CUserIdentity {
 		if (empty ( $user )) {
 			return false;
 		} else {
-			$model=User::model()->findBySql("select id,username,role,disable from user where username = '".$this->username."' and password = '$pwd'");			
+			$model=User::model()->findBySql("select id,username,role,disable,enterprise_id from user where username = '".$this->username."' and password = '".$pwd."' and enterprise_id=".$this->enterprise_id);
 			$model->last_login = time();
 			$en = $model->id.$model->last_login;
 			$model->login_id = md5($en);
@@ -42,6 +42,7 @@ class UserIdentity extends CUserIdentity {
 			$this->userid = $user->id;
 			$this->role = $user->role;
 			$this->username = $user->username;
+			$this->enterprise_id = $user->enterprise_id;
 			$this->disable = $model->disable;
 			$this->setState ( 'userInfo', $model );
 			return true;

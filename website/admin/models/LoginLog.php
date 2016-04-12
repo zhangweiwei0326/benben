@@ -14,6 +14,7 @@
  * @property string $ipport
  * @property integer $userid
  * @property integer $type
+ * @property integer $enterprise_id
  */
 class LoginLog extends CActiveRecord
 {
@@ -33,13 +34,13 @@ class LoginLog extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('logintime, status, loginauth, userid, type', 'numerical', 'integerOnly'=>true),
+			array('logintime, status, loginauth, userid, type, enterprise_id', 'numerical', 'integerOnly'=>true),
 			array('username, password', 'length', 'max'=>30),
 			array('loginip', 'length', 'max'=>20),
 			array('ipport', 'length', 'max'=>6),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, username, logintime, loginip, status, password, loginauth, ipport, userid, type', 'safe', 'on'=>'search'),
+			array('id, username, logintime, loginip, status, password, loginauth, ipport, userid, type, enterprise_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +71,7 @@ class LoginLog extends CActiveRecord
 			'ipport' => 'Ipport',
 			'userid' => 'Userid',
 			'type' => '类型：0登录日志，其他为操作日志',
+			'enterprise_id' => '百姓网网段',
 		);
 	}
 
@@ -101,6 +103,7 @@ class LoginLog extends CActiveRecord
 		$criteria->compare('ipport',$this->ipport,true);
 		$criteria->compare('userid',$this->userid);
 		$criteria->compare('type',$this->type);
+		$criteria->compare('enterprise_id',$this->enterprise_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

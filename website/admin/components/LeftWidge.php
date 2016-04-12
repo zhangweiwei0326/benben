@@ -66,7 +66,7 @@ class LeftWidge extends CWidget {
 			"dopay"=>$dopay,
 			"doservice"=>$doservice
 		);
-		session_start();
+//		session_start();//特殊设置apache默认开启的，如果不是需要拿去注释
 		session_regenerate_id(true);
 		Yii::app()->session['role_arr']=json_encode($role_arr);
 		//会员管理

@@ -310,6 +310,7 @@ class BaseController extends Controller {
 	function insert_log($status){
 		$userid = Yii::app ()->user->getState('userInfo')->id;
 		$username = Yii::app ()->user->getState('userInfo')->username;
+		$enterprise_id = Yii::app ()->user->getState('userInfo')->enterprise_id;
 		$log = new LoginLog();
 		$log->username = $username;
 		$log->logintime = time();
@@ -317,6 +318,7 @@ class BaseController extends Controller {
 		$log->ipport = $this->egetipport();
 		$log->status = $status;
 		$log->userid = $userid;
+		$log->enterprise_id = $enterprise_id;
 		$log->save();
 	}
 
