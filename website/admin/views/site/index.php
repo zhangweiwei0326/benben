@@ -14,6 +14,13 @@
 				<div class="main_login_logo">
 					奔犇管理后台
 				</div>
+				<div class="bx-enterprise">
+					<select name="enterprise_id" id="enterprise_id">
+						<?php foreach ($eninfo as $k=>$v){?>
+							<option value="<?php echo $v['id'];?>"><?php echo $v['name'];?></option>
+						<?php }?>
+					</select>
+				</div>
 				<div class="main_login_name">
 					<i class="username_icon"></i>
 					<input id="login_username" type="text" placeholder="登录名" />

@@ -8,10 +8,11 @@ class PasswordController extends BaseController
 	{
 		$this->insert_log(82);
 		$user = $this->loadModel($this->getLoginId());
-		$password = trim($_POST['password']);
-		$repassword = trim($_POST['repassword']);
-		$old_password = trim($_POST['oldpassword']);
-		
+		$password=Frame::getStringFromRequest('password');
+		$repassword=Frame::getStringFromRequest('repassword');
+		$old_password=Frame::getStringFromRequest('oldpassword');
+		$msg="";
+		$result="";
 		$pass = array();
 		if(isset($_POST['password'])){
 			if(md5($old_password) != $user->password){

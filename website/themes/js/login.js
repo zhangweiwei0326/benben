@@ -2,6 +2,7 @@ $(document).ready(function() {
 	$('#dologin').click(function() {
 		var username = $('#login_username').val();
 		var password = $('#login_pwd').val();
+		var enterpriseId = $('#enterprise_id').val();
 		var baseUrl = $('#baseUrl').val();
 		if (!$.trim(username)) {
 			alert('请输入登录名');
@@ -11,10 +12,10 @@ $(document).ready(function() {
 			alert('请输入密码');
 			return;
 		}
-
 		$.post(baseUrl + "/admin.php/site/login", {
 			"username" : username,
-			"password" : password
+			"password" : password,
+			"enterprise_id" : enterpriseId
 		}, function(result) {
 			var obj = jQuery.parseJSON(result);
 			if (obj.status == 1) {

@@ -1,9 +1,13 @@
 <?php
 //数据库变量
-$dbhost = 'rds6wfhisehv94ixcz0s8.mysql.rds.aliyuncs.com';
+$dbhost = 'localhost';
+//$dbhost = 'rds6wfhisehv94ixcz0s8.mysql.rds.aliyuncs.com';
 $dbname = 'benben_test';
-$username = 'benben_test';
-$password = 'Benben2015';
+//$dbname = 'benben_test';
+$username = 'root';
+//$username = 'benben_test';
+$password = '';
+//$password = 'Benben2015';
 $charset = 'utf8';
 define("BXID", 136);
 define('URL', 'http://112.124.101.177:81');

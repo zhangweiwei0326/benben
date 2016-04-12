@@ -19,9 +19,17 @@ class UserIdentity extends CUserIdentity {
 	public $role;
 	public $username;
 	public $disable;
+	public $enterprise_id;
+
+	public function __construct($username, $password, $enterprise_id)
+	{
+		parent::__construct($username, $password);
+		$this->enterprise_id=$enterprise_id;
+	}
+
 	public function authenticate() {
 		$pwd = md5 ( $this->password );
-		$user = User::model ()->find ( "username = '{$this->username}' and password = '$pwd'" );
+		$user = User::model ()->find ( "username = '{$this->username}' and password = '$pwd' and enterprise_id=$this->enterprise_id" );
 		if (empty ( $user )) {
 			return false;
 		} else {
