@@ -153,18 +153,18 @@ class StatisticController extends Controller
 		$totalNumber = $totalQuery[0]['c'];
 
 		//主动加入
-		$asql = "SELECT count(*) c FROM bxapply a left join apply_complete b on a.id = b.apply_id where a.status = 3 and b.id > 0";
+		$asql = "SELECT count(*) c FROM bxapply a left join apply_complete b on a.id = b.apply_id where a.status = 3 and b.id > 0 and a.enterprise_id={$this->ownbx}";
 		$command = $connection->createCommand($asql);
 		$result1 = $command->queryAll();
 		$selfAdd = $result1[0]['c'];
 		//全部人数
-		$asql = "SELECT count(*) c FROM bxapply where status = 3 ";
+		$asql = "SELECT count(*) c FROM bxapply where status = 3 and enterprise_id={$this->ownbx}";
 		$command = $connection->createCommand($asql);
 		$result2 = $command->queryAll();
 		$allAdd = $result2[0]['c'];
 
 		//百姓网用户是否是奔犇用户
-		$isql = "select distinct(b.id) from bxapply a left join member b on a.phone = b.phone where a.status = 3 and b.id>0 and id_enable = 1";
+		$isql = "select distinct(b.id) from bxapply a left join member b on a.phone = b.phone where a.status = 3 and a.enterprise_id={$this->ownbx} and b.id>0 and id_enable = 1";
 		$command = $connection->createCommand($isql);
 		$resulti = $command->queryAll();
 		$isBenben = count($resulti);
@@ -175,11 +175,13 @@ class StatisticController extends Controller
 
 		//统计通讯录中有百姓网的数量
 		if (count($benbenMember)) {
-			$csql = "select count(a.id) c, b.member_id from group_contact_phone a left join group_contact_info b on a.contact_info_id = b.id where a.is_baixing > 0 and b.member_id  in (".implode(",", $benbenMember).") group by b.member_id";
+			$csql = "select count(a.id) c, b.member_id from group_contact_phone a left join group_contact_info b on a.contact_info_id = b.id
+ 			left join bxapply as d on d.short_phone=a.is_baixing
+			where d.enterprise_id={$this->ownbx} and a.is_baixing > 0 and b.member_id  in (".implode(",", $benbenMember).") group by b.member_id";
 			$command = $connection->createCommand($csql);
 			$friendQuery = $command->queryAll();
 		}
-		
+
 		$friendInfo = array(
 			array('number'=>0, 'name'=>'0'),
 			array('number'=>0, 'name'=>'1-5'),
@@ -221,19 +223,19 @@ class StatisticController extends Controller
 		//统计在网时长 小于3个月的人数
 		$month = 3600*24*90;
 		$dateline = time()-$month;
-		$asql = "SELECT count(*) c FROM bxapply where status = 3 and join_time > ".$dateline;
+		$asql = "SELECT count(*) c FROM bxapply where status = 3 and enterprise_id={$this->ownbx} and join_time > ".$dateline;
 		$command = $connection->createCommand($asql);
 		$query1 = $command->queryAll();
-		$asql = "SELECT count(*) c FROM bxapply where status = 4 and (cancel_time - join_time) < ".$month;
+		$asql = "SELECT count(*) c FROM bxapply where status = 4 and enterprise_id={$this->ownbx} and (cancel_time - join_time) < ".$month;
 		$command = $connection->createCommand($asql);
 		$query2 = $command->queryAll();
 		$lessTime = $query1[0]['c'] + $query2[0]['c'];
 
 		//统计在网时长 大于3个月的人数
-		$asql = "SELECT count(*) c FROM bxapply where status = 3 and join_time <= ".$dateline;
+		$asql = "SELECT count(*) c FROM bxapply where status = 3 and enterprise_id={$this->ownbx} and join_time <= ".$dateline;
 		$command = $connection->createCommand($asql);
 		$query3 = $command->queryAll();
-		$asql = "SELECT count(*) c FROM bxapply where status = 4 and (cancel_time - join_time) >= ".$month;
+		$asql = "SELECT count(*) c FROM bxapply where status = 4 and enterprise_id={$this->ownbx} and (cancel_time - join_time) >= ".$month;
 		$command = $connection->createCommand($asql);
 		$query4 = $command->queryAll();
 		$moreTime = $query3[0]['c'] + $query4[0]['c'];
