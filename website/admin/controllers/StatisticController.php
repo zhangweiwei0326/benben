@@ -15,6 +15,17 @@ class StatisticController extends Controller
 	 */
 	 
 	 public $menuIndex = 11;
+
+	/**
+	 * @var int the define the bx for multibx
+	 */
+	public $ownbx=0;
+
+	public function __construct()
+	{
+		$this->ownbx = Yii::app()->user->getState('userInfo')->enterprise_id;
+	}
+
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
