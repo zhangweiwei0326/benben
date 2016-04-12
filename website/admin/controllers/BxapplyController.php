@@ -1022,6 +1022,7 @@ class BxapplyController extends BaseController
         $cri->select = "t.*, a.username as rname, c.name";
         $cri->join = "left join user a on a.id = t.user_id left join bxapply c on t.apply_id = c .id";
         $cri->order = "t.id desc";
+        $cri->addSearchCondition("c.enterprise_id",$this->ownbx,true,"AND");
         if ($_GET['created_time1'] && $_GET['created_time2']) {
             $ct1 = strtotime($_GET['created_time1']);
             $ct2 = strtotime($_GET['created_time2']) + 86399;
