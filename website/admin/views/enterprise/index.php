@@ -235,7 +235,7 @@ $url = "type={$_GET['type']}&member_name={$_GET['member_name']}&member_phone={$_
 				
 			</ul>
 		</form>
-		<table cellspacing=1 border="0" class="table table-hover">
+		<table cellspacing=1 border="0" class="table table-hover" style="table-layout: fixed">
 			<thead>
 				<tr class="main_right_content_content_title">
 					<td width="10%">通讯录名称</td>
