@@ -279,12 +279,13 @@ class StatisticController extends Controller
 		$connection = Yii::app()->db;
 		$type = intval($_GET['type']);
 		$key = intval($_GET['key']);
+		$this->setOwnbx();
 		if($type == 2){
 			if ($key == 0) {
-				$asql = "SELECT a.phone, a.name, a.short_phone,a.province, a.city, a.area FROM bxapply a left join apply_complete b on a.id = b.apply_id where a.status = 3 and b.id > 0";
+				$asql = "SELECT a.phone, a.name, a.short_phone,a.province, a.city, a.area FROM bxapply a left join apply_complete b on a.id = b.apply_id where a.enterprise_id=".$this->ownbx." and a.status = 3 and b.id > 0";
 			
 			}else{
-				$asql = "SELECT a.phone, a.name, a.short_phone, a.province, a.city, a.area FROM bxapply a left join apply_complete b on a.id = b.apply_id where a.status = 3 and b.id is null";
+				$asql = "SELECT a.phone, a.name, a.short_phone, a.province, a.city, a.area FROM bxapply a left join apply_complete b on a.id = b.apply_id where a.enterprise_id=".$this->ownbx." and a.status = 3 and b.id is null";
 			}
 			
 			$command = $connection->createCommand($asql);
@@ -371,7 +372,7 @@ class StatisticController extends Controller
 
 		}else if($type == 3){
 			//百姓网用户是否是奔犇用户
-			$isql = "select a.phone,a.name,a.short_phone,b.id, b.benben_id, a.member_id, c.nick_name sname, c.phone sphone,a.province,a.city,a.area from bxapply a left join member b on a.phone = b.phone left join member c on a.member_id = c.id where a.status = 3";
+			$isql = "select a.phone,a.name,a.short_phone,b.id, b.benben_id, a.member_id, c.nick_name sname, c.phone sphone,a.province,a.city,a.area from bxapply a left join member b on a.phone = b.phone left join member c on a.member_id = c.id where a.enterprise_id=".$this->ownbx." and a.status = 3";
 			if($key == 1){
 				$isql .=" and b.id>0 and b.id_enable = 1 group by b.id";
 			}
@@ -474,13 +475,13 @@ class StatisticController extends Controller
 			//统计在网时长 小于3个月的人数
 			$month = 3600*24*90;
 			$dateline = time()-$month;
-			$asql0 = "SELECT id,name,phone,short_phone,cancel_time,created_time , province, city, area FROM bxapply where status = 3 and join_time > ".$dateline;
+			$asql0 = "SELECT id,name,phone,short_phone,cancel_time,created_time , province, city, area FROM bxapply where enterprise_id=".$this->ownbx." and status = 3 and join_time > ".$dateline;
 			$asql = "SELECT a.id,a.name,a.phone,a.short_phone,a.cancel_time,b.reason,b.created_time , a.province, a.city, a.area FROM bxapply a inner join bxapply_record b on a.id = b.apply_id
-			where a.status = 4 and (a.cancel_time - a.join_time) < {$month} and b.status = 4 order by b.created_time desc ";
+			where a.enterprise_id=".$this->ownbx." and a.status = 4 and (a.cancel_time - a.join_time) < {$month} and b.status = 4 order by b.created_time desc ";
 			if($key==1){//统计在网时长 大于3个月的人数
-				$asql0 = "SELECT id,name,phone,short_phone,cancel_time,created_time, province, city, area FROM bxapply where status = 3 and join_time <= ".$dateline;
+				$asql0 = "SELECT id,name,phone,short_phone,cancel_time,created_time, province, city, area FROM bxapply where enterprise_id=".$this->ownbx." and status = 3 and join_time <= ".$dateline;
 				$asql = "SELECT a.id,a.name,a.phone,a.short_phone,a.cancel_time,b.reason,b.created_time, a.province, a.city, a.area  FROM bxapply a inner join bxapply_record b on a.id = b.apply_id
-				where a.status = 4 and (a.cancel_time - a.join_time) >= {$month} and b.status = 4 order by b.created_time desc ";
+				where a.enterprise_id=".$this->ownbx." and a.status = 4 and (a.cancel_time - a.join_time) >= {$month} and b.status = 4 order by b.created_time desc ";
 			}
 			
 			$command = $connection->createCommand($asql0);
@@ -632,7 +633,7 @@ class StatisticController extends Controller
 		$type = intval($_GET['type']);
 		$download = intval($_GET['download']);
 		//百姓网用户是否是奔犇用户
-		$isql = "select distinct(b.id) from bxapply a left join member b on a.phone = b.phone where a.status = 3 and b.id>0 and id_enable = 1";
+		$isql = "select distinct(b.id) from bxapply a left join member b on a.phone = b.phone where a.status = 3 and a.enterprise_id=".$this->ownbx." and b.id>0 and b.benben_id>0 and id_enable = 1";
 		$command = $connection->createCommand($isql);
 		$resulti = $command->queryAll();
 		$isBenben = count($resulti);
@@ -643,9 +644,17 @@ class StatisticController extends Controller
 
 		//统计通讯录中有百姓网的数量
 		// $csql = "select count(a.id) c, b.member_id from group_contact_phone a left join group_contact_info b on a.contact_info_id = b.id where a.is_baixing > 0 and b.member_id  in (".implode(",", $benbenMember).") group by b.member_id";
-		
 
-		$csql = "select count(a.id) c, b.member_id,a.is_baixing from group_contact_phone a left join group_contact_info b on a.contact_info_id = b.id where a.is_baixing > 0 and b.member_id  in (".implode(",", $benbenMember).") ";
+		//所有本百姓网用户
+		$allOwnBx=Bxapply::model()->findAll("enterprise_id=".$this->ownbx." and short_phone>0 and status=3");
+		$bxNo=array();
+		if($allOwnBx){
+			foreach ($allOwnBx as $ak=>$av){
+				$bxNo[]=$av['short_phone'];
+			}
+		}
+
+		$csql = "select count(a.id) c, b.member_id,a.is_baixing from group_contact_phone a left join group_contact_info b on a.contact_info_id = b.id where a.is_baixing > 0 and a.is_baixing in (".implode(",",$bxNo).") and b.member_id  in (".implode(",", $benbenMember).") ";
 		$csql .= ' group by b.member_id order by c desc';
 		$memberCount = array();
 		$command = $connection->createCommand($csql);
@@ -694,7 +703,7 @@ class StatisticController extends Controller
 			$arrayInfo = array();
 			$bxapplyArea = array();
 			if ($keyValue == -1) {
-				$sql = "select a.id, a.phone, a.nick_name,a.benben_id, a.name from member a left join bxapply b on a.phone = b.phone   where b.status = 3 and a.id_enable = 1 and a.id not in (".implode(",", $haveMemberId).")";
+				$sql = "select a.id, a.phone, a.nick_name,a.benben_id, a.name from member a left join bxapply b on a.phone = b.phone where b.enterprise_id=".$this->ownbx." and b.status = 3 and a.id_enable = 1 and a.benben_id>0 and a.id not in (".implode(",", $haveMemberId).")";
 				$command = $connection->createCommand($sql);
 				$personList = $command->queryAll();
 				$allShortphone = array();
@@ -704,7 +713,7 @@ class StatisticController extends Controller
 					}
 				}
 				if (count($allShortphone)>0) {
-					$sql = "select phone, province,city, area, short_phone, name from bxapply where phone in (".implode(",", $allShortphone).")";
+					$sql = "select phone, province,city, area, short_phone, name from bxapply where enterprise_id=".$this->ownbx." and phone in (".implode(",", $allShortphone).")";
 					$command = $connection->createCommand($sql);
 					$BxaplyQuery = $command->queryAll();
 					foreach($BxaplyQuery as $each){
@@ -717,7 +726,7 @@ class StatisticController extends Controller
 				}
 				$totalNumber = $friendInfo[$keyValue]['number'];
 			}else if (isset($friendInfo[$keyValue])) {
-				$sql = "select id, phone, nick_name,benben_id from member where id in (".implode(",", $friendInfo[$keyValue]['info']).")";
+				$sql = "select id, phone, nick_name,benben_id from member where benben_id>0 and id in (".implode(",", $friendInfo[$keyValue]['info']).")";
 				$command = $connection->createCommand($sql);
 				$personList = $command->queryAll();
 				$allShortphone = array();
@@ -727,7 +736,7 @@ class StatisticController extends Controller
 					}
 				}
 				if (count($allShortphone)>0) {
-					$sql = "select phone, province,city, area, short_phone from bxapply where phone in (".implode(",", $allShortphone).")";
+					$sql = "select phone, province,city, area, short_phone from bxapply where enterprise_id=".$this->ownbx." and phone in (".implode(",", $allShortphone).")";
 					$command = $connection->createCommand($sql);
 					$BxaplyQuery = $command->queryAll();
 					foreach($BxaplyQuery as $each){
