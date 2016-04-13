@@ -118,7 +118,7 @@ class LeftWidge extends CWidget {
 		}
 
 		//通讯录管理
-		if($doenterprise || $dogroup || $dostore){
+		if($doenterprise || $dogroup || $dostore || $doapplyregister){
 			$menu['3']['role'] = 1;
 			if($dostore){
 				$menu['3']['uri'] = '/numberTrain';
@@ -131,6 +131,10 @@ class LeftWidge extends CWidget {
 			if($doenterprise){
 				$subMenu['3']['1']['role'] =1;
 				$menu['3']['uri'] = '/enterprise';
+			}
+			if($doapplyregister){
+				$subMenu['3']['4']['role'] =1;
+				$menu['3']['uri'] = '/applyRegister';
 			}
 		}
 		//发现管理

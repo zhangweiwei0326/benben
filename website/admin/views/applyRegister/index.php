@@ -131,7 +131,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl."/themes/
 				</ul>
 			</form>
 		
-			<table cellspacing=1 border="0" class="table table-hover">
+			<table cellspacing=1 border="0" class="table table-hover" style="table-layout: fixed;">
 				<thead>
 					<tr class="main_right_content_content_title">
 						<td width="13%">申请名称</td><td width="14%">政企通讯录名称</td><td width="10%">政企通讯录类型</td><td width="8%">申请类型</td><td width="7%">审核状态</td><td width="10%">审核人</td><td width="14%">审核时间</td><td width="14%">申请时间</td><td width="10%">操作</td>
@@ -141,8 +141,10 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl."/themes/
 					<?php					$i=0;
 					foreach ( $items as $item ) {
 						if($item->status!=1&&$item->status!=2){
-								$readOnly=0;}else{
+								$readOnly=0;}elseif($item->status==1){
 									$readOnly=1;
+								}elseif($item->status==2){
+									$readOnly=2;
 								}
 					$edit_url = Yii::app()->createUrl('applyRegister/review',array('id'=>$item->id,'page'=>$_REQUEST['page'],'readOnly'=>$readOnly));
 					?>
@@ -161,6 +163,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl."/themes/
 										<?php }else{?>
 													<a class="btn btn-success btn-sm" href="<?php echo $edit_url?>">查看</a>
 										<?php }?>
+										<?php $this->widget("ApplyFixWidge",array("apply_id"=>$item->id));?>
+									
 					</td>
 				</tr>
 				<?php } ?>				</tbody>

@@ -101,12 +101,28 @@
 					<div class="col-sm-8">
 						<?php echo $form->textField($model,'created_time', array('class'=>'form-control','readonly'=>'readonly')); ?>
 					</div>
-				</div>		
+				</div>
+				<div class="form-group" style="display:none" id="reason_form">
+					<?php echo $form->labelEx($model,'拒绝原因', array("class"=>"col-sm-2 control-label"));?>
+					<div class="col-sm-8">
+						<?php echo $form->textField($model,'reason', array('class'=>'form-control')); ?>
+					</div>
+					
+				</div>	
+				<?php if($_GET['readOnly']==2){?>	
+						<div class="form-group"  >
+							<?php echo $form->labelEx($model,'拒绝原因', array("class"=>"col-sm-2 control-label"));?>
+							<div class="col-sm-8">
+								<?php echo $form->textField($model,'reason', array('class'=>'form-control','readonly'=>'readonly')); ?>
+							</div>	
+						</div>
+				<?php }?>
 
 			<div class="form-group form-group-center">
 			<?php $readOnly=$_GET['readOnly'];if($readOnly==0){?>
-				<button class="btn btn-success btn-lg" type="submit">　同意　</button>
-				<a class="btn btn-danger btn-lg"  type="button" href="<?php echo Yii::app()->createUrl("applyRegister/review",array('id'=>$_GET['id'],'page'=>$_REQUEST['page'],'status'=>'reject'));?>">　拒绝　</a>
+				<button id="agree_but" class="btn btn-success btn-lg" type="submit">　同意　</button>
+				<button id="reject_but" class="btn btn-danger btn-lg"  type="button" href="">　拒绝　</button>
+				<button id="reject_qr"  style="display:none" class="btn btn-danger btn-lg"  type="button"  currid="<?php echo $_GET['id']?>" currstatus="reject" currpage="<?php echo $_REQUEST['page'];?>">　确认拒绝　</button>
 				<a class="btn btn-default btn-lg" type="button" href="<?php echo $backUrl;?>">　取消　</a>
 				<?php }else{ ?>
 					<a class="btn btn-default btn-lg" type="button" href="<?php echo $backUrl;?>">　返回　</a>
@@ -117,4 +133,36 @@
  $this->endWidget (); ?>
 	</div>
 </div>
+<script type="text/javascript">
+	$('#reject_but').click(function(){
+		$('#reason_form').css('display','block');
+		$(this).hide();
+		$('#agree_but').hide();
+		$('#reject_qr').show();
+		
+	});
+	$('#reject_qr').click(function(){
+		var reason=$('#ApplyRegister_reason').val();
+		var curr_id=$(this).attr('currid');
+		var status=$(this).attr('currstatus');
+		$.ajax({
+			type:"POST",
+			url:"/admin.php/applyRegister/review/"+curr_id,
+			data:{
+    			'reason': reason,
+    			'status':status,
+					},
+			async:true,
+			cache:false,
+			dataType:"json",
+			beforeSend:function(){	 			
+			},
+			success:function(data){
+				if(data==200){
+					window.location.href="/admin.php/applyRegister/index";
+					}
+				}
+		});
+	});
+</script>
 

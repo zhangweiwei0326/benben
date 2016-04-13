@@ -110,6 +110,10 @@ function getSubMenu() {
 			3 => array (
 				'name' => '号码直通车',
 				'uri' => '/numberTrain'
+			),
+			4 => array(
+				'name' => '申请审核',
+				'uri' =>'/applyRegister'
 			)
 		) ,
 		4 => array (
