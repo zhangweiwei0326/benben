@@ -13,6 +13,28 @@ class RoleController extends BaseController
 	 */
 	 
 	 public $menuIndex = 101;
+
+	/**
+	 * @var int the define dongyang bx's id
+	 */
+	public $dongyang=136;
+
+	/**
+	 * @var int the define the id of the bx
+	 */
+	public $ownbx=0;
+
+	/**
+	 * UserController constructor.
+	 * @param $id
+	 * @param null $module
+	 */
+	public function __construct($id, $module)
+	{
+		parent::__construct($id, $module);
+		$this->ownbx = Yii::app()->user->getState('userInfo')->enterprise_id;
+	}
+
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -218,15 +240,24 @@ class RoleController extends BaseController
 					$model->doleague= $doleague;
 				}
 				$model->created_time =  time();
+				$model->enterprise_id = $this->ownbx;
 				if($model->save())
 				$this->redirect($this->getBackListPageUrl());
 			}
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-			'backUrl' => $this->getBackListPageUrl(),
-		));
+		//东阳百姓网为总后台，需要最全的权限，其余只需要对应的百姓网管理和系统管理权限
+		if($this->ownbx==$this->dongyang){
+			$this->render('create',array(
+				'model'=>$model,
+				'backUrl' => $this->getBackListPageUrl(),
+			));
+		}else{
+			$this->render('branchCreate',array(
+				'model'=>$model,
+				'backUrl' => $this->getBackListPageUrl(),
+			));
+		}
 	}
 
 	/**
@@ -445,13 +476,21 @@ class RoleController extends BaseController
 				$this->redirect($this->getBackListPageUrl());
 			}
 		}
-				
-	
-		$this->render('update',array(
-			'model'=>$model,
-			'msg' => $msg,
-			'backUrl' => $this->getBackListPageUrl(),
-		));
+
+		//东阳百姓网为总后台，需要最全的权限，其余只需要对应的百姓网管理和系统管理权限
+		if($this->ownbx==$this->dongyang){
+			$this->render('update',array(
+				'model'=>$model,
+				'msg' => $msg,
+				'backUrl' => $this->getBackListPageUrl(),
+			));
+		}else{
+			$this->render('branchUpdate',array(
+				'model'=>$model,
+				'msg' => $msg,
+				'backUrl' => $this->getBackListPageUrl(),
+			));
+		}
 	}
 
 	/**
@@ -477,6 +516,7 @@ class RoleController extends BaseController
 		$this->insert_log(101);
 		$model = Role::model();
 		$cri = new CDbCriteria();
+		$cri->addSearchCondition("enterprise_id",$this->ownbx,true,'AND');
 		$cri->order = "id desc";
 		$pages = new CPagination();
 		$pages->itemCount = $model->count($cri);

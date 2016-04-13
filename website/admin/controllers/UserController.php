@@ -13,6 +13,24 @@ class UserController extends BaseController
 	 */
 	 
 	 public $menuIndex = 80;
+
+	/**
+	 * @var int the define the id for the bx
+	 */
+	public $ownbx=0;
+
+	/**
+	 * UserController constructor.
+	 * @param $id
+	 * @param null $module
+	 */
+	public function __construct($id, $module)
+	{
+		parent::__construct($id, $module);
+		$this->ownbx = Yii::app()->user->getState('userInfo')->enterprise_id;
+	}
+
+
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -23,7 +41,7 @@ class UserController extends BaseController
 
 		$crole = new Role();
 		$role = $this->getRole("dosystem");
-		$sql = "SELECT id, role_name FROM role ORDER BY created_time DESC";
+		$sql = "SELECT id, role_name FROM role where enterprise_id=".$this->ownbx." ORDER BY created_time DESC";
 		$roles = $crole->findAllBySql($sql);
 		
 		$result = array();
@@ -39,6 +57,7 @@ class UserController extends BaseController
 				$model->role = $_POST['role'];
 				$model->password = md5($_POST['User']['password']);
 				$model->created_time = time();
+				$model->enterprise_id = $this->ownbx;
 				if($model->save())
 				$this->redirect($this->getBackListPageUrl());
 			}else{
@@ -125,8 +144,10 @@ class UserController extends BaseController
 		$role = $this->getRole("dosystem");
 		$model = User::model();
 		$cri = new CDbCriteria();
+		$cri->addSearchCondition("t.enterprise_id",$this->ownbx,true,'AND');
 		$cri->select = "t.*, role.role_name as rname";
 		$cri->join = "left join role on role.id = t.role";
+		$cri->addSearchCondition("role.enterprise_id",$this->ownbx,true,'AND');
 		$cri->order = "t.created_time desc";
 		$pages = new CPagination();
 		$pages->itemCount = $model->count($cri);

@@ -16,6 +16,22 @@ class LoginLogController extends BaseController
 	 
 	public $menuIndex = 83;
 
+	/**
+	 * @var int the define of dongyang bx's id
+	 */
+	public $dongyang = 136;
+
+	/**
+	 * @var int the define of my own bx's id
+	 */
+	public $ownbx = 0;
+
+	public function __construct($id, $module)
+	{
+		parent::__construct($id, $module);
+		$this->ownbx = Yii::app()->user->getState('userInfo')->enterprise_id;
+	}
+
 
 	/**
 	 * Creates a new model.
@@ -127,6 +143,7 @@ class LoginLogController extends BaseController
 		$model = LoginLog::model();
 		$cri = new CDbCriteria();
 		$cri->select = "t.*";
+		$cri->addSearchCondition("t.enterprise_id",$this->ownbx,true,'AND');
 		//$cri->join = "left join user b on t.id = b.member_id";
 		//$cri->group = "t.id";
 		$cri->addCondition('t.type = 0');
@@ -218,6 +235,7 @@ class LoginLogController extends BaseController
 		$model = LoginLog::model();
 		$cri = new CDbCriteria();
 		$cri->select = "t.*";
+		$cri->addSearchCondition("t.enterprise_id",$this->ownbx,true,'AND');
 		//$cri->join = "left join user b on t.id = b.member_id";
 		//$cri->group = "t.id";
 		$cri->addCondition('t.type = 0');
