@@ -68,8 +68,9 @@ class RoleController extends BaseController
 				if(1){
 					$dobaixing = 0;
 					if($baixing_arr['editall']){
-						$dobaixing += 3;
+						$dobaixing += 35;
 					}else{
+						if($baixing_arr['index']) $dobaixing += 32;
 						if($baixing_arr['edit']) $dobaixing += 1;
 						if($baixing_arr['put']) $dobaixing += 2;
 					}
@@ -239,6 +240,20 @@ class RoleController extends BaseController
 					//var_dump($doleague);exit;
 					$model->doleague= $doleague;
 				}
+
+				//新增百姓网
+				$newbx_arr = $_POST['Role']['donewbx'];
+				if(1){
+					$donewbx = 0;
+					if($newbx_arr['newbx']){
+						$donewbx += 1;
+					}
+					if($newbx_arr['newmanager']){
+						$donewbx += 2;
+					}
+					//var_dump($doleague);exit;
+					$model->donewbx= $donewbx;
+				}
 				$model->created_time =  time();
 				$model->enterprise_id = $this->ownbx;
 				if($model->save())
@@ -307,7 +322,6 @@ class RoleController extends BaseController
 					if($baixing_arr['putapply']) $dobaixing += 4;
 					if($baixing_arr['input']) $dobaixing += 8;
 					if($baixing_arr['statistic']) $dobaixing += 16;
-					if($baixing_arr['newbx']) $dobaixing += 64;
 					//var_dump($dobaixing);exit;
 					$model->dobaixing= $dobaixing;
 				}
@@ -470,6 +484,20 @@ class RoleController extends BaseController
 					}					
 					//var_dump($doleague);exit;
 					$model->doleague= $doleague;
+				}
+
+				//新增百姓网
+				$newbx_arr = $_POST['Role']['donewbx'];
+				if(1){
+					$donewbx = 0;
+					if($newbx_arr['newbx']){
+						$donewbx += 1;
+					}
+					if($newbx_arr['newmanager']){
+						$donewbx += 2;
+					}
+					//var_dump($doleague);exit;
+					$model->donewbx= $donewbx;
 				}
 				$model->created_time =  time();
 				if($model->save())

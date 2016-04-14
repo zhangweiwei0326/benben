@@ -72,7 +72,7 @@ table{background:none}
 								<td></td>
 							</tr>
 							<tr>
-								<td rowspan="5">百姓网管理</td>
+								<td rowspan="4">百姓网管理</td>
 								<td>
 									<span id="Role_dobaixing0">
 										<input id="Role_dobaixing_0" value="1" type="checkbox" <?php if(($model->dobaixing & 1) && ($model->dobaixing & 2) && ($model->dobaixing & 32)) echo "checked=checked ";?>name="Role[dobaixing][editall]"> 
@@ -117,15 +117,6 @@ table{background:none}
 									<span id="Role_dobaixing5">
 										<input id="Role_dobaixing_5" value="1" type="checkbox" <?php if($model->dobaixing & 16) echo "checked=checked ";?>name="Role[dobaixing][statistic]"> 
 										<label for="Role_dobaixing_5">百姓网统计</label>
-									</span>
-								</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>
-									<span id="Role_dobaixing6">
-										<input id="Role_dobaixing_6" value="1" type="checkbox" <?php if($model->dobaixing & 64) echo "checked=checked ";?>name="Role[dobaixing][newbx]">
-										<label for="Role_dobaixing_6">百姓网新增</label>
 									</span>
 								</td>
 								<td></td>
@@ -373,7 +364,7 @@ table{background:none}
 								<td></td>
 							</tr>
 							<tr>
-								<td rowspan="5">系统管理</td>
+								<td rowspan="4">系统管理</td>
 								<td>
 									<span id="Role_domember0">
 										<input id="" value="1" type="checkbox" <?php if($model->dosystem & 1) echo "checked=checked ";?>name="Role[dosystem][user]"> 
@@ -405,6 +396,24 @@ table{background:none}
 									<span id="Role_domember1">
 										<input id="" value="1" type="checkbox" <?php if($model->dosystem & 8) echo "checked=checked ";?>name="Role[dosystem][log]"> 
 										<label for="Role_domember_1">登录日志</label>
+									</span>
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td rowspan="2">新增百姓网</td>
+								<td>
+									<span id="Role_domember0">
+										<input id="Role_domember_0" value="1" type="checkbox" <?php if($model->donewbx & 1) echo "checked=checked ";?>name="Role[donewbx][newbx]">
+										<label for="Role_domember_0">百姓网新增</label>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span id="Role_domember1">
+										<input id="Role_domember_1" value="1" type="checkbox" <?php if($model->donewbx & 2) echo "checked=checked ";?>name="Role[donewbx][newmanager]">
+										<label for="Role_domember_1">百姓管理新增</label>
 									</span>
 								</td>
 								<td></td>

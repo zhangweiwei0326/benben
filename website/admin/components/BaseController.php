@@ -16,7 +16,7 @@ class BaseController extends Controller {
 							"enterpriseDisable" =>"doenterprise", "enterpriseMember" => "doenterprise", "buyDisable" => "dorelease",
 							"creationDisable"  => "docreation", "creationComment" => "docreation", "notice" => "donews",
 							"friendLeague" => "doleague", "applyRegister" => "doapplyregister", "storePriceAdmin"=>"doservice",
-							"pay"=>"dopay");
+							"pay"=>"dopay", "baixing"=>"donewbx","bxUser"=>"donewbx");
 
 
 	protected function beforeAction($action) {
@@ -37,6 +37,7 @@ class BaseController extends Controller {
 		}
 
 		if (Yii::app ()->user->isGuest && !in_array($action->id, array('login','test'))) {
+//		if (Yii::app ()->user->isGuest && in_array($action->id, array('login','test','index'))) {
 			// 游客
 // 			$this->redirect ( array ('/' ) );
 			return true;

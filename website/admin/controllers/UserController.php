@@ -12,7 +12,7 @@ class UserController extends BaseController
 	 * @var int the define the index for the menu
 	 */
 	 
-	 public $menuIndex = 80;
+	 public $menuIndex = 100;
 
 	/**
 	 * @var int the define the id for the bx
@@ -83,7 +83,7 @@ class UserController extends BaseController
 	{
 		$model=$this->loadModel($id);
 		$role = new Role();
-		$sql = "SELECT id, role_name FROM role ORDER BY created_time DESC";
+		$sql = "SELECT id, role_name FROM role WHERE enterprise_id=".$this->ownbx." ORDER BY created_time DESC";
 		$role = $role->findAllBySql($sql);
 		$roles = $this->getRole("dosystem");
 		$result = array();
@@ -140,7 +140,7 @@ class UserController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$this->insert_log(80);
+		$this->insert_log(100);
 		$role = $this->getRole("dosystem");
 		$model = User::model();
 		$cri = new CDbCriteria();

@@ -2,7 +2,7 @@
 	Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl."/themes/css/content.css");
 ?>
 <?php
-/* @var $this UserController */
+/* @var $this BxUserController */
 /* @var $model User */
 /* @var $form CActiveForm */
 ?>
@@ -13,7 +13,7 @@
 <div class="main_right_content">
 	<ol class="breadcrumb main_right_content_breadcrumb">
 		<li><a href="<?php echo Yii::app()->createUrl('user/index')?>">用户管理</a></li>
-		<li><a href="javascript:void(0)">用户详细</a></li>
+		<li><a href="javascript:void(0)">百姓管理员</a></li>
 	</ol>
 
 	<div class="main_right_content_content">
@@ -38,11 +38,31 @@
 						<?php echo $form->textField($model,'username',array('class'=>'form-control','size'=>'45','maxlength'=>'45', readonly=>'readonly')); ?>
 						<?php }?>
 					</div>
-				</div>	
+				</div>
+
+				<div class="form-group">
+					<?php echo $form->labelEx($model,'enterprise_id', array("class"=>"col-sm-2 control-label"));?>
+					<div class="col-sm-8">
+						<?php if($_GET['add']){?>
+							<select class="form-control" name="enterprise_id" id="type">
+						<?php }else{?>
+							<select class="form-control" name="enterprise_id" id="type" disabled="disabled">
+						<?php }?>
+								<?php foreach ($enterprise_id as $value){?>
+									<?php if($value['id'] == $model->enterprise_id){?>
+										<option value="<?php echo $value['id']?>" selected="selected"><?php echo $value['name']?></option>
+									<?php }else{?>
+										<option value="<?php echo $value['id']?>" ><?php echo $value['name']?></option>
+								<?php }}?>
+						</select>
+					</div>
+				</div>
+
+				<?php if(!$_GET['add']){?>
 				<div class="form-group">
 					<?php echo $form->labelEx($model,'role', array("class"=>"col-sm-2 control-label"));?>
 					<div class="col-sm-8">
-						<select class="form-control" name="role" id="type">
+						<select class="form-control" name="role" id="type" disabled="disabled">
 							<?php foreach ($result as $value){?>
 								<?php if($value['id'] == $model->role){?>
 								<option value="<?php echo $value['id']?>" selected="selected"><?php echo $value['role_name']?></option>
@@ -52,6 +72,8 @@
 						</select>
 					</div>
 				</div>
+				<?php }?>
+
 				<div class="form-group">
 					<?php echo $form->labelEx($model,'password', array("class"=>"col-sm-2 control-label"));?>
 					<div class="col-sm-8">

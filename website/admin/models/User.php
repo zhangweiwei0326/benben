@@ -18,6 +18,7 @@ class User extends CActiveRecord
 	 * @return string the associated database table name
 	 */
 	public $rname;
+	public $enterprise_name;
 	public function tableName()
 	{
 		return 'user';

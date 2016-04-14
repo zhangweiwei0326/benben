@@ -44,6 +44,7 @@ class LeftWidge extends CWidget {
 		$doother = $roles->doother;
 		$dopay = $roles->dopay;
 		$doservice = $roles->doservice;
+		$donewbx = $roles->donewbx;
 		$role_arr = array(
 			"domember"=>$domember,
 			"dobaixing"=>$dobaixing,
@@ -64,7 +65,8 @@ class LeftWidge extends CWidget {
 			"dofind"=>$dofind,
 			"doother"=>$doother,
 			"dopay"=>$dopay,
-			"doservice"=>$doservice
+			"doservice"=>$doservice,
+			"donewbx"=>$donewbx
 		);
 //		session_start();//特殊设置apache默认开启的，如果不是需要拿去注释
 		session_regenerate_id(true);
@@ -186,6 +188,12 @@ class LeftWidge extends CWidget {
 			$menu['12']['role'] = 1;
 			$subMenu['12']['1']['role'] =1;
 			$subMenu['12']['2']['role'] =1;
+		}
+		//新建百姓网管理
+		if($donewbx){
+			$menu['13']['role'] = 1;
+			if($donewbx & 1) $subMenu['13']['1']['role'] =1;
+			if($donewbx & 2) $subMenu['13']['2']['role'] =1;
 		}
 		$this->render ( 'leftView', array (
 			"index" => $this->index,

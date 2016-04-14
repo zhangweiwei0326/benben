@@ -56,6 +56,10 @@ function getMenu() {
 		12 => array (
 			'name' => '抽奖管理',
 			'uri' => '/lottery'
+		),
+		13 => array(
+			'name' => '新增百姓网',
+			'uri' => '/baixing/newbx'
 		)
 	);
 	return $menu;
@@ -238,6 +242,16 @@ function getSubMenu() {
 			2 => array(
 				'name' =>'中奖列表',
 				'uri' =>'/winningList'
+			)
+		),
+		13 => array(
+			1 => array(
+				'name' => '百姓网新增',
+				'uri' => '/baixing/newbx'
+			),
+			2 => array(
+				'name' => '百姓管理新增',
+				'uri' => '/bxUser'
 			)
 		)
 

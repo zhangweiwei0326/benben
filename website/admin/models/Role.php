@@ -46,7 +46,7 @@ class Role extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('role_name, doshop', 'required'),
+            array('role_name', 'required'),
             array('domember, dobaixing, doenterprise, dogroup, dostore, docreation, dorelease, dofriend, doshop, dohappy, donews, dowebsite, dosystem, created_time, doleague, dofind, doother, doservice, dopay, doapplyregister, enterprise_id', 'numerical', 'integerOnly' => true),
             array('role_name', 'length', 'max' => 20),
             // The following rule is used by search().
