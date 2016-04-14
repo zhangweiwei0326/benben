@@ -115,7 +115,6 @@ $url = "province={$_GET['province']}&city={$_GET['city']}&area={$_GET['area']}";
                             <option value="4" <?php if($result['status'] == 4) echo 'selected="selected"';?>>未开始</option>
                         </select>
                     </div>
-                    <input type="button" style ="width:150px;height:30px;float:left;margin-left: 25px;border:1px #000000 solid;background-color: #FFFFFF;" value="批量开始" class="startAllAuction">
 
                     <button type="submit" style ="width:150px;height:30px;float:left;margin-left: 25px;border:1px #000000 solid;background-color: #FFFFFF;" name="tenDay" value="1" id="submit_search">  10日内到期  </button>
        
@@ -168,22 +167,25 @@ $url = "province={$_GET['province']}&city={$_GET['city']}&area={$_GET['area']}";
                 $item ->end_time= date('Y-m-d H:i:s',$item ->end_time);
                 $item ->top_start_period= date('Y-m-d H:i:s',$item ->top_start_period);
                 $item ->top_end_period= date('Y-m-d H:i:s',$item ->top_end_period);
-                //置顶区域
-                if($item ->place =="1"){
-                    $item ->place ="置顶一";
-                }else if($item ->place =="2"){
-                    $item ->place ="置顶二";
-                }else if($item ->place =="3"){
-                    $item ->place ="置顶三";
-                }else{
-                    $item ->place="置顶四";
-                }    
             ?>
             <tr class="main_right_content_content_body">
                 <td><input type="checkbox" class="selectOne" name="<?php echo $item->auction_id; ?>" /></td>
                 <td><?php echo $areaInfo[$item->province].'-'.$areaInfo[$item->city] .'-'.$areaInfo[$item->area]?></td>
                 <td><?php echo $industryInfo[$item ->industry] ?></td>
-                <td><?php echo $item->place ?></td>
+                <td data-place="<?php echo($item ->place);?>" class="place"><?php
+                    //置顶区域
+                    if($item ->place =="1"){
+                        echo "置顶一";
+                    }else if($item ->place =="2"){
+                        echo "置顶二";
+                    }else if($item ->place =="3"){
+                        echo "置顶三";
+                    }else if($item ->place==0){
+                        echo "拍卖场总控制";
+                    }else{
+                        echo "置顶四";
+                    }
+                    ?></td>
                 <td><?php echo $item->top_start_period ?></td>
                 <td><?php echo $item->top_end_period ?></td>
                 <td><?php echo $item->start_price ?></td>
@@ -192,14 +194,14 @@ $url = "province={$_GET['province']}&city={$_GET['city']}&area={$_GET['area']}";
                 <td><?php echo $item->end_time ?></td>
                 <td class="status_name"><?php echo $status_name ?></td>
                 <td>
-                <?php  if($status_name == "进行中"){ ?> 
+                <?php  if($item->place==0 && $status_name == "进行中"){ ?>
                         <a class="btn btn-danger btn-sm close-auction" type="submit" name="<?php echo $item ->auction_id ?>" 
                             >关闭</a>
                 <?php } ?>
-                <?php  if($status_name == "成交" || $status_name == "流拍"|| $status_name == "等待中" ){?>
+                <?php  if($item->place==0 && ($status_name == "成交" || $status_name == "流拍"|| $status_name == "等待中") ){?>
                     <a class="btn btn-primary btn-sm" href="<?php echo $edit_url; ?>">编辑</a>
                 <?php } ?>   
-                <?php  if($status_name == "未开始"){ ?> 
+                <?php  if($item->place==0 && $status_name == "未开始"){ ?>
                     <a class="btn btn-success btn-sm open-auction" type="submit" name="<?php echo $item ->auction_id ?>">开始</a>
                 <?php } ?>
                 </td>
@@ -223,20 +225,28 @@ $url = "province={$_GET['province']}&city={$_GET['city']}&area={$_GET['area']}";
 <script type="text/javascript">
     //关闭按钮
     $(".close-auction").on("click",function(){
+        var closeAuction=window.confirm("你确定要关闭此拍卖吗？");
         var _this=this;
-        url="<?php echo Yii::app()->createUrl("topAuction/closeAuction")?>";//json输出
-        $.post(url, {auction_id:_this.name}, function(data){
-            if (data.status) {
-                $(_this).after('<a class="btn btn-primary btn-sm" href='+data.url+'>编辑</a>');
-                $(_this).css({
-                    display: 'none',
-                });
-                $(_this).parent().parent().find(".status_name").text("流拍");
-                alert("操作成功！");
-            }else{
-                alert("网络错误！");
-            };
-        },'json');
+        if(closeAuction){
+            console.log($(_this).parent().siblings(".place"));
+            if($(_this).parent().siblings(".place").attr("data-place")!=0){
+                alert("只能在总控中修改参数！");
+                return false;
+            }
+            url="<?php echo Yii::app()->createUrl("topAuction/closeAuction")?>";//json输出
+            $.post(url, {auction_id:_this.name}, function(data){
+                if (data.status) {
+                    $(_this).after('<a class="btn btn-primary btn-sm" href='+data.url+'>编辑</a>');
+                    $(_this).css({
+                        display: 'none',
+                    });
+                    $(_this).parent().parent().find(".status_name").text("流拍");
+                    alert("操作成功！");
+                }else{
+                    alert("网络错误！");
+                };
+            },'json');
+        }
     });
     //开始按钮
     $(".open-auction").on("click",function(){
@@ -254,34 +264,6 @@ $url = "province={$_GET['province']}&city={$_GET['city']}&area={$_GET['area']}";
                 alert("网络错误！");
             };
         },'json');
-    });
-    //点击批量开始
-    $(".startAllAuction").on("click",function(){
-        
-        var ob=confirm("您确定批量开始？");
-        if(ob==true){
-            //批量操作
-            $(".selectOne").each(function(){
-                if(this.checked){
-                    url="<?php echo Yii::app()->createUrl("topAuction/openAuction")?>";//json输出
-                    $.post(url, {auction_id:this.name}, function(data){
-                        if (data.status == 1) {
-                            $(this).after('<a class="btn btn-primary btn-sm" href='+data.url+'>编辑</a>');
-                            $(this).css({
-                                display: 'none',
-                            });
-                            $(this).parent().parent().find(".status_name").text("等待中");
-                                //alert("操作成功！"+$(this).name);
-                        }else{
-                                //alert("操作失败，不可执行该操作"+$(this).name);
-                        };
-                    },'json');
-                }
-            });
-        }else{
-           
-        }
-        
     });
     //点击全选
     $(".SelectAll").click(function(){

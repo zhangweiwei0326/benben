@@ -41,9 +41,9 @@
 					<div class="form-group" style="padding: 0 0 0 5px;">
 						<label for="start_time" style="float: left; margin-top: 7px;">开始时间:</label>
 						<div class="col-sm-8" style="margin-bottom: 10px;">
-							<input type="text" class="form-control "
+							<input type="text" class="form-control datetimepicker"
 								name="start_time" id="start_time"
-								value="<?php echo $item[0]->start_time ?>"onclick="SelectDate(this,'yyyy/MM/dd hh:mm:ss')">
+								value="<?php echo $item[0]->start_time ?>">
 						</div>
 					</div>
 				</div>
@@ -51,9 +51,9 @@
 					<div class="form-group" style="padding: 0 0 0 5px;">
 						<label for="end_time" style="float: left; margin-top: 7px;">结束时间:</label>
 						<div class="col-sm-8" style="margin-bottom: 10px;">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control datetimepicker"
 								name="end_time" id="end_time"
-								value="<?php echo $item[0]->end_time ?>" onclick="SelectDate(this,'yyyy/MM/dd hh:mm:ss')" >
+								value="<?php echo $item[0]->end_time ?>">
 						</div>
 					</div>
 				</div>	
@@ -80,21 +80,13 @@
                     	</div>				
                  </div>
 				<div class="form-group">
-					    <div class="form-group" style="padding: 0 0 0 5px;">
-                        	<label  for="place" style="float:left;margin-top:7px;">置顶区域:</label>
-                        	<input style="margin-left: 25px;border:1px solid #CCC;" name="place" id="place" value="<?php echo $item[0]->place?>" />
-							<label  for="place" style="margin-top:7px;font-family: cursive;color: cadetblue;">(1,2,3分别代表置顶区域一,二,三)</label>
-                        </div>    
-    				
-                 </div>
-				<div class="form-group">
 					<div class="form-group" style="padding: 0 0 0 5px;">
 						<label for="top_start_period" style="float: left; margin-top: 7px;">置顶开始时间:</label>
 						
 						<div class="col-sm-8" style="margin-bottom: 10px;">
-							<input type="text" class="form-control "
+							<input type="text" class="form-control datetimepicker"
 								name="top_start_period" id="top_start_period"
-								value="<?php echo $item[0]->top_start_period ?>"onclick="SelectDate(this,'yyyy/MM/dd hh:mm:ss')">
+								value="<?php echo $item[0]->top_start_period ?>">
 						</div>
 					</div>
 				</div>
@@ -102,9 +94,9 @@
 					<div class="form-group" style="padding: 0 0 0 5px;">
 						<label for="top_end_period" style="float: left; margin-top: 7px;">置顶结束时间:</label>
 						<div class="col-sm-8" style="margin-bottom: 10px;">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control datetimepicker"
 								name="top_end_period" id="top_end_period"
-								value="<?php echo $item[0]->top_end_period ?>" onclick="SelectDate(this,'yyyy/MM/dd hh:mm:ss')">
+								value="<?php echo $item[0]->top_end_period ?>">
 
 						</div>
 					</div>
@@ -139,7 +131,13 @@
  $this->endWidget (); ?>
 	</div>
 </div>
+<script src='<?php echo Yii::app()->request->baseUrl."/themes/js/jquery-ui-timepicker-addon.js"?>'></script>
+<script src='<?php echo Yii::app()->request->baseUrl."/themes/js/jquery-ui-timepicker-zh-CN.js"?>'></script>
 <script type="text/javascript">
+	$('.datetimepicker').datetimepicker({
+		timeFormat: "HH:mm:ss",
+		dateFormat: "yy/mm/dd"
+	});
 		//点击确定提交
 	    $(".enter-save").on("click",function(){
 	    	//获取数据
@@ -155,7 +153,22 @@
 		    var top_end_period =Date.parse(new Date($("#top_end_period").val()))/1000;
 		    var is_close =$("#is_close").val();
 		    var is_paid =$("#is_paid").val();
-		    
+			if(!start_time){
+				alert("开始时间必填！");
+				return false;
+			}
+			if(!end_time){
+				alert("结束时间必填！");
+				return false;
+			}
+		    if(!top_start_period){
+				alert("置顶开始时间必填！");
+				return false;
+			}
+			if(!top_end_period){
+				alert("置顶结束时间必填！");
+				return false;
+			}
 	    url="<?php echo Yii::app()->createUrl("topAuction/saveAuction")?>";//json输出
 
 	            if(start_time > end_time || top_start_period > top_end_period){
@@ -176,8 +189,8 @@
 			            if (data.status==1) {
 			               alert("保存成功");
 			            }else{
-			               alert("网络错误！");
-			            };
+			               alert(data.msg);
+			            }
         				},'json');
         		}
 
