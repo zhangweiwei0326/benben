@@ -1267,13 +1267,17 @@ class StoreController extends PublicController
             die ();
         }
         //判断可用小喇叭数
-        $nowmonth=strtotime(date("Y-m",time())."-1 0:0:0");
-        if(date("m",time())==12){
-            $nextmonth=strtotime((date("Y",time())+1)."-1-1 0:0:0");
-        }else{
-            $nextmonth=strtotime(date("Y",time())."-".(date("m",time())+1)."-1 0:0:0");
-        }
-        $bcnum=BroadcastingLog::model()->count("type=1 and member_id={$user['id']} and created_time>={$nowmonth} and created_time<{$nextmonth}");
+        /*
+         * @keal 根据原先需求，1辈子只能发2个号直小喇叭，以防需求再次变动
+         * $nowmonth=strtotime(date("Y-m",time())."-1 0:0:0");
+         * if(date("m",time())==12){
+         *    $nextmonth=strtotime((date("Y",time())+1)."-1-1 0:0:0");
+         * }else{
+         *    $nextmonth=strtotime(date("Y",time())."-".(date("m",time())+1)."-1 0:0:0");
+         * }
+         * $bcnum=BroadcastingLog::model()->count("type=1 and member_id={$user['id']} and created_time>={$nowmonth} and created_time<{$nextmonth}");
+         */
+        $bcnum=BroadcastingLog::model()->count("type=1 and member_id={$user['id']}");
         $restnum=2-$bcnum>=0 ? 2-$bcnum:0;//剩余小喇叭数
 
         //判断好友联盟是否开通
