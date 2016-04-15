@@ -65,6 +65,12 @@
         float: right;
         color: #999;
     }
+    .comment-meta >span{
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
     .comment-success{
         color: #5eb95e;
     }
@@ -132,7 +138,7 @@
                                     echo ('<span class="comment-danger">差评</span>');
                                 }?>
                             </div>
-                            <span><?php echo $v['nick_name']; ?></span>
+                            <span ><?php echo $v['nick_name']; ?></span>
                         </div>
                     </header>
                     <div class="comment-bd">
