@@ -2630,6 +2630,8 @@ class UserController extends PublicController
     /*
      * 我的账单
      * order_info和order_goods
+     * order_type:支付类型,0订单支付,1充值
+     * extension_code:活动类型，0促销，1团购，2.我要买，3.PC端支付业务，4.账户充值，5.拍卖
      */
     public function actionMyPayLog(){
         $this->check_key();
@@ -2643,7 +2645,7 @@ class UserController extends PublicController
         $page=ceil($max_num/$per_page);
 
         $connection=Yii::app()->db;
-        $sql="select a.pay_time,a.fee,a.coin,b.goods_name,a.order_amount,a.extension_code from store_order_info as a left join store_order_goods as b
+        $sql="select a.pay_time,a.fee,a.coin,b.goods_name,a.order_amount,a.extension_code,b.extension_code as charge_type from store_order_info as a left join store_order_goods as b
         on a.order_id=b.order_id where a.member_id={$user['id']} and a.pay_status=2 order by a.pay_time desc limit ".($p-1)*$per_page.",".$per_page;
         $command = $connection->createCommand($sql);
         $result1 = $command->queryAll();
@@ -2655,7 +2657,8 @@ class UserController extends PublicController
                 "fee"=>$v['order_amount']?$v['order_amount']:"",
                 "remain"=>$v['fee']?$v['fee']:"",
                 "coin"=>$v['coin']?$v['coin']:"",
-                "order_type"=>$v['extension_code']?0:0
+                "order_type"=>$v['extension_code']==4?1:
+                    (($v['extension_code']==3&&$v['charge_type']==4)?1:0)
             );
         }
         $result['ret_num'] = 0;
