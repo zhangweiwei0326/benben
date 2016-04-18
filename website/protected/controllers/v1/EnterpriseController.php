@@ -947,7 +947,6 @@ class EnterpriseController extends PublicController
             $result['firstin'] = $firstin;
             $result['name'] = $name;
             echo json_encode($result);
-
         }
     }
 
@@ -1999,13 +1998,18 @@ class EnterpriseController extends PublicController
             echo json_encode($result);
             die ();
         }
-        if($enterinfo['enterprise_apply']==1||$enterinfo['enterprise_apply']==3){
+        if($enterinfo['enterprise_apply']==3){
             $result['ret_num'] = 1105;
             $result['ret_msg'] = '该政企通讯录不允许申请加入！';
             echo json_encode($result);
             die ();
         }
-
+        if($enterinfo['enterprise_apply']==1){
+            $result['ret_num'] = 1106;
+            $result['ret_msg'] = '该政企通讯录可自由申请加入！';
+            echo json_encode($result);
+            die ();
+        }
         $news=new News();
         $news->type=4;
         $news->sender=$user['id'];
