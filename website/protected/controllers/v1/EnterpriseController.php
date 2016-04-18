@@ -2309,6 +2309,7 @@ class EnterpriseController extends PublicController
                                 $enterMM=new EnterpriseMemberManage();
                                 $enterMM->member_id=$lastid;
                                 $enterMM->access_level=1;
+                                $enterMM->group_id=0;//未分组
                                 $enterMM->created_time=time();
                                 $enterMM->save();
                             }
