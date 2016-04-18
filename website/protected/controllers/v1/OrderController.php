@@ -876,7 +876,7 @@ class OrderController extends PublicController
         }
         if ($soinfo->pay_id == 1) {
             $result ['ret_num'] = 105;
-            $result ['ret_msg'] = '您选择的不是到店消费，不能使用';
+            $result ['ret_msg'] = '该订单不是到店消费，无法验证';
             echo json_encode($result);
             die();
         }
