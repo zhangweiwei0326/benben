@@ -2630,7 +2630,7 @@ class UserController extends PublicController
     /*
      * 我的账单
      * order_info和order_goods
-     * order_type:支付类型,0订单支付,1充值
+     * order_type:支付类型,0订单支付,2充值
      * extension_code:活动类型，0促销，1团购，2.我要买，3.PC端支付业务，4.账户充值，5.拍卖
      */
     public function actionMyPayLog(){
@@ -2657,8 +2657,8 @@ class UserController extends PublicController
                 "fee"=>$v['order_amount']?$v['order_amount']:"",
                 "remain"=>$v['fee']?$v['fee']:"",
                 "coin"=>$v['coin']?$v['coin']:"",
-                "order_type"=>$v['extension_code']==4?1:
-                    (($v['extension_code']==3&&$v['charge_type']==4)?1:0)
+                "order_type"=>$v['extension_code']==4?2:
+                    (($v['extension_code']==3&&$v['charge_type']==4)?2:0)
             );
         }
         $result['ret_num'] = 0;
