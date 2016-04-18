@@ -2829,9 +2829,9 @@ class UserController extends PublicController
             echo json_encode($result);
             die();
         }
-        if($fee<=10){
+        if($fee<0.01){
             $result['ret_num'] = 2101;
-            $result['ret_msg'] = '每笔至少10元哦！';
+            $result['ret_msg'] = '每笔至少0.01元哦！';
             echo json_encode($result);
             die();
         }
