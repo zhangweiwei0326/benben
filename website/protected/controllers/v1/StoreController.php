@@ -145,6 +145,8 @@ class StoreController extends PublicController
             }else{
                 $auctionSqlAddr.="industry=".$industry." and ";
             }
+        }else{
+            $auctionSqlAddr.="industry=0 and ";
         }
         $auctionSqlAddr.= "pid!=0";
         $asql .= "is_close = 0 and status = 0 and ";
