@@ -962,7 +962,7 @@ class EnterpriseController extends PublicController
         $keyword = Frame::getStringFromRequest('keyword');
         $enterprise = Enterprise::model()->findByPk($enterpriseid);
         //判断是否为后台创建的，才有分权限查看的可能性
-        if(($enterprise['type']==1||$enterprise['type']==2)&&$enterprise['origin']==2){
+        if(($enterprise['type']==1||$enterprise['type']==2)&&($enterprise['origin']==2||$enterprise['origin']==3)){
             $is_back=1;
             $emInfo=EnterpriseMember::model()->find("contact_id={$enterpriseid} and member_id={$user['id']}");
             $readLevel=EnterpriseMemberManage::model()->find("member_id={$emInfo['id']}");
