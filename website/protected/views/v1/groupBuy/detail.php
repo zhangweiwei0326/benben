@@ -45,7 +45,7 @@
                         <h3 class="am-gallery-title am-slider-desc">
                             <div>
                                 <span style="font-size:18px; "><?php echo $result['name'];?></span>
-                                <?php echo $result['name'];?><?php if($result['shownext']) echo('<b style="float: right">下一组团购</b>');?>
+                                <?php if($result['shownext']) echo('<b style="float: right">下一组团购</b>');?>
                             </div>
                             <?php if($result['model']){echo ("<div style='font-size:12px;font-weight: 300;'>".$result['model']."</div>");}?>
                         </h3>
